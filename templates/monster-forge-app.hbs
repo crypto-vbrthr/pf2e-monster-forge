@@ -1,0 +1,71 @@
+<form class="pf2e-mf">
+  <section class="pf2e-mf-grid">
+    <div class="pf2e-mf-panel">
+      <h2>{{localize "PF2EMF.section.basics"}}</h2>
+
+      <label>{{localize "PF2EMF.field.name"}}</label>
+      <input type="text" name="name" value="{{state.name}}" placeholder="{{localize 'PF2EMF.defaultMonsterName'}}">
+
+      <label>{{localize "PF2EMF.field.level"}}</label>
+      <select name="level">
+        {{#each levels}}
+          <option value="{{this}}" {{#ifEquals ../state.level this}}selected{{/ifEquals}}>{{this}}</option>
+        {{/each}}
+      </select>
+
+      <label>{{localize "PF2EMF.field.role"}}</label>
+      <select name="role">
+        {{#each roles}}
+          <option value="{{key}}" {{#ifEquals ../state.role key}}selected{{/ifEquals}}>{{label}}</option>
+        {{/each}}
+      </select>
+
+      <label>{{localize "PF2EMF.field.size"}}</label>
+      <select name="size">
+        {{#each sizes}}
+          <option value="{{key}}" {{#ifEquals ../state.size key}}selected{{/ifEquals}}>{{label}}</option>
+        {{/each}}
+      </select>
+
+      <h3>{{localize "PF2EMF.section.traits"}}</h3>
+      <div class="pf2e-mf-traits">
+        {{#each traits}}
+          <label><input type="checkbox" name="traits.{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="pf2e-mf-panel">
+      <h2>{{localize "PF2EMF.section.ranks"}}</h2>
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="hpRank" label=(localize "PF2EMF.stat.hp") value=state.hpRank ranks=ranks}}
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="acRank" label=(localize "PF2EMF.stat.ac") value=state.acRank ranks=ranks}}
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="fortitudeRank" label=(localize "PF2EMF.stat.fortitude") value=state.fortitudeRank ranks=ranks}}
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="reflexRank" label=(localize "PF2EMF.stat.reflex") value=state.reflexRank ranks=ranks}}
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="willRank" label=(localize "PF2EMF.stat.will") value=state.willRank ranks=ranks}}
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="attackRank" label=(localize "PF2EMF.stat.attack") value=state.attackRank ranks=ranks}}
+      {{> "modules/pf2e-monster-forge/templates/stat-row.hbs" field="damageRank" label=(localize "PF2EMF.stat.damage") value=state.damageRank ranks=ranks}}
+    </div>
+  </section>
+
+  <section class="pf2e-mf-panel pf2e-mf-preview">
+    <h2>{{localize "PF2EMF.section.preview"}}</h2>
+    <h3>{{draft.name}} {{localize "PF2EMF.preview.level"}} {{draft.level}}</h3>
+    <p><strong>{{localize "PF2EMF.field.role"}}:</strong> {{draft.roleLabel}}</p>
+    <p><strong>{{localize "PF2EMF.section.traits"}}:</strong> {{draft.traits}}</p>
+    <div class="pf2e-mf-statline">
+      <span>AC {{draft.stats.ac}}</span>
+      <span>HP {{draft.stats.hp}}</span>
+      <span>Fort +{{draft.stats.fortitude}}</span>
+      <span>Ref +{{draft.stats.reflex}}</span>
+      <span>Will +{{draft.stats.will}}</span>
+      <span>Per +{{draft.stats.perception}}</span>
+    </div>
+    {{#each draft.attacks}}
+      <p><strong>{{name}}</strong> +{{bonus}}, {{damage}} {{damageType}}</p>
+    {{/each}}
+  </section>
+
+  <footer class="pf2e-mf-footer">
+    <button type="button" data-action="create-actor"><i class="fa-solid fa-dragon"></i> {{localize "PF2EMF.button.createActor"}}</button>
+  </footer>
+</form>

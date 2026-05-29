@@ -1,0 +1,6 @@
+<label>{{label}}</label>
+<select name="{{field}}">
+  {{#each ranks}}
+    <option value="{{key}}" {{#ifEquals ../value key}}selected{{/ifEquals}}>{{label}}</option>
+  {{/each}}
+</select>
