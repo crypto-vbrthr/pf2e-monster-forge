@@ -1,58 +1,29 @@
-export const RANKS = ["terrible", "low", "moderate", "high", "extreme"];
-
-export const PF2E_STAT_TABLES = {
-  0:  { ac: { low: 13, moderate: 15, high: 16, extreme: 19 }, hp: { low: 15, moderate: 20, high: 30 }, attack: { low: 4, moderate: 6, high: 8, extreme: 10 }, damage: { low: "1d4+1", moderate: "1d6+2", high: "1d8+3" }, save: { terrible: 1, low: 3, moderate: 5, high: 7, extreme: 9 }, perception: { low: 3, moderate: 5, high: 7, extreme: 9 }, dc: { low: 13, moderate: 15, high: 16, extreme: 19 } },
-  1:  { ac: { low: 14, moderate: 16, high: 18, extreme: 19 }, hp: { low: 20, moderate: 30, high: 45 }, attack: { low: 6, moderate: 8, high: 10, extreme: 12 }, damage: { low: "1d6+2", moderate: "1d8+3", high: "1d10+4" }, save: { terrible: 2, low: 4, moderate: 7, high: 9, extreme: 11 }, perception: { low: 4, moderate: 7, high: 9, extreme: 11 }, dc: { low: 14, moderate: 17, high: 18, extreme: 20 } },
-  2:  { ac: { low: 16, moderate: 18, high: 19, extreme: 21 }, hp: { low: 30, moderate: 45, high: 60 }, attack: { low: 8, moderate: 10, high: 12, extreme: 14 }, damage: { low: "1d8+3", moderate: "1d10+4", high: "2d6+5" }, save: { terrible: 4, low: 6, moderate: 8, high: 11, extreme: 13 }, perception: { low: 6, moderate: 8, high: 11, extreme: 13 }, dc: { low: 16, moderate: 18, high: 20, extreme: 22 } },
-  3:  { ac: { low: 18, moderate: 19, high: 21, extreme: 22 }, hp: { low: 45, moderate: 60, high: 75 }, attack: { low: 10, moderate: 12, high: 14, extreme: 16 }, damage: { low: "1d10+4", moderate: "2d6+5", high: "2d8+6" }, save: { terrible: 6, low: 8, moderate: 10, high: 12, extreme: 15 }, perception: { low: 8, moderate: 10, high: 12, extreme: 15 }, dc: { low: 18, moderate: 20, high: 22, extreme: 23 } },
-  4:  { ac: { low: 20, moderate: 21, high: 23, extreme: 25 }, hp: { low: 60, moderate: 75, high: 95 }, attack: { low: 12, moderate: 14, high: 16, extreme: 18 }, damage: { low: "2d6+5", moderate: "2d8+6", high: "2d10+7" }, save: { terrible: 7, low: 9, moderate: 12, high: 14, extreme: 17 }, perception: { low: 9, moderate: 12, high: 14, extreme: 17 }, dc: { low: 19, moderate: 21, high: 23, extreme: 25 } },
-  5:  { ac: { low: 21, moderate: 22, high: 24, extreme: 26 }, hp: { low: 75, moderate: 95, high: 115 }, attack: { low: 13, moderate: 15, high: 17, extreme: 19 }, damage: { low: "2d8+6", moderate: "2d10+7", high: "2d12+8" }, save: { terrible: 8, low: 10, moderate: 13, high: 15, extreme: 18 }, perception: { low: 10, moderate: 13, high: 15, extreme: 18 }, dc: { low: 20, moderate: 22, high: 24, extreme: 26 } }
+export const PF2E_CREATURE_STATS = {
+  "-1": { ac: { terrible: 11, low: 12, moderate: 13, high: 15, extreme: 16 }, hp: { terrible: 5, low: 8, moderate: 9, high: 12, extreme: 18 }, saves: { terrible: 0, low: 2, moderate: 4, high: 6, extreme: 8 }, attack: { terrible: 2, low: 4, moderate: 6, high: 8, extreme: 10 }, damage: { terrible: "1d4-1", low: "1d4", moderate: "1d6", high: "1d8+1", extreme: "1d10+2" } },
+  0: { ac: { terrible: 12, low: 13, moderate: 15, high: 16, extreme: 18 }, hp: { terrible: 8, low: 12, moderate: 16, high: 20, extreme: 26 }, saves: { terrible: 1, low: 3, moderate: 5, high: 7, extreme: 9 }, attack: { terrible: 3, low: 5, moderate: 7, high: 9, extreme: 11 }, damage: { terrible: "1d4", low: "1d6", moderate: "1d8+1", high: "1d10+2", extreme: "1d12+3" } },
+  1: { ac: { terrible: 13, low: 14, moderate: 16, high: 17, extreme: 19 }, hp: { terrible: 10, low: 16, moderate: 22, high: 30, extreme: 40 }, saves: { terrible: 2, low: 4, moderate: 7, high: 9, extreme: 11 }, attack: { terrible: 5, low: 7, moderate: 9, high: 11, extreme: 13 }, damage: { terrible: "1d4+1", low: "1d6+1", moderate: "1d8+3", high: "1d10+4", extreme: "1d12+6" } },
+  2: { ac: { terrible: 14, low: 16, moderate: 18, high: 19, extreme: 21 }, hp: { terrible: 18, low: 25, moderate: 35, high: 45, extreme: 60 }, saves: { terrible: 4, low: 6, moderate: 8, high: 11, extreme: 13 }, attack: { terrible: 7, low: 9, moderate: 11, high: 13, extreme: 15 }, damage: { terrible: "1d6+1", low: "1d8+2", moderate: "1d10+4", high: "1d12+6", extreme: "2d8+6" } },
+  3: { ac: { terrible: 16, low: 18, moderate: 19, high: 21, extreme: 22 }, hp: { terrible: 24, low: 35, moderate: 50, high: 65, extreme: 80 }, saves: { terrible: 6, low: 8, moderate: 10, high: 12, extreme: 15 }, attack: { terrible: 8, low: 10, moderate: 12, high: 14, extreme: 16 }, damage: { terrible: "1d6+3", low: "1d8+4", moderate: "1d10+6", high: "1d12+8", extreme: "2d10+8" } },
+  4: { ac: { terrible: 18, low: 19, moderate: 21, high: 22, extreme: 24 }, hp: { terrible: 32, low: 45, moderate: 60, high: 80, extreme: 105 }, saves: { terrible: 7, low: 9, moderate: 12, high: 14, extreme: 17 }, attack: { terrible: 10, low: 12, moderate: 14, high: 16, extreme: 18 }, damage: { terrible: "1d8+3", low: "1d10+4", moderate: "2d8+6", high: "2d10+8", extreme: "2d12+10" } },
+  5: { ac: { terrible: 19, low: 21, moderate: 22, high: 24, extreme: 25 }, hp: { terrible: 40, low: 55, moderate: 75, high: 95, extreme: 125 }, saves: { terrible: 8, low: 11, moderate: 13, high: 15, extreme: 18 }, attack: { terrible: 11, low: 13, moderate: 15, high: 17, extreme: 19 }, damage: { terrible: "1d8+5", low: "1d10+6", moderate: "2d8+8", high: "2d10+10", extreme: "2d12+12" } },
+  6: { ac: { terrible: 21, low: 22, moderate: 24, high: 25, extreme: 27 }, hp: { terrible: 48, low: 70, moderate: 95, high: 120, extreme: 155 }, saves: { terrible: 10, low: 12, moderate: 15, high: 17, extreme: 20 }, attack: { terrible: 13, low: 15, moderate: 17, high: 19, extreme: 21 }, damage: { terrible: "1d10+5", low: "2d8+6", moderate: "2d10+8", high: "2d12+10", extreme: "3d10+12" } },
+  7: { ac: { terrible: 22, low: 24, moderate: 25, high: 27, extreme: 28 }, hp: { terrible: 60, low: 85, moderate: 115, high: 145, extreme: 180 }, saves: { terrible: 11, low: 14, moderate: 16, high: 18, extreme: 21 }, attack: { terrible: 14, low: 16, moderate: 18, high: 20, extreme: 22 }, damage: { terrible: "1d10+7", low: "2d8+8", moderate: "2d10+10", high: "2d12+12", extreme: "3d10+14" } },
+  8: { ac: { terrible: 24, low: 25, moderate: 27, high: 28, extreme: 30 }, hp: { terrible: 72, low: 100, moderate: 135, high: 170, extreme: 215 }, saves: { terrible: 12, low: 15, moderate: 18, high: 20, extreme: 23 }, attack: { terrible: 16, low: 18, moderate: 20, high: 22, extreme: 24 }, damage: { terrible: "2d6+7", low: "2d10+8", moderate: "2d12+10", high: "3d10+12", extreme: "3d12+16" } },
+  9: { ac: { terrible: 25, low: 27, moderate: 28, high: 30, extreme: 31 }, hp: { terrible: 84, low: 115, moderate: 155, high: 195, extreme: 245 }, saves: { terrible: 14, low: 17, moderate: 19, high: 21, extreme: 24 }, attack: { terrible: 17, low: 19, moderate: 21, high: 23, extreme: 25 }, damage: { terrible: "2d6+9", low: "2d10+10", moderate: "2d12+12", high: "3d10+14", extreme: "3d12+18" } },
+  10: { ac: { terrible: 27, low: 28, moderate: 30, high: 31, extreme: 33 }, hp: { terrible: 96, low: 130, moderate: 175, high: 220, extreme: 275 }, saves: { terrible: 15, low: 18, moderate: 21, high: 23, extreme: 26 }, attack: { terrible: 19, low: 21, moderate: 23, high: 25, extreme: 27 }, damage: { terrible: "2d8+9", low: "2d12+10", moderate: "3d10+12", high: "3d12+16", extreme: "4d12+18" } },
+  11: { ac: { terrible: 28, low: 30, moderate: 31, high: 33, extreme: 34 }, hp: { terrible: 108, low: 145, moderate: 195, high: 245, extreme: 305 }, saves: { terrible: 16, low: 20, moderate: 22, high: 24, extreme: 27 }, attack: { terrible: 20, low: 22, moderate: 24, high: 26, extreme: 28 }, damage: { terrible: "2d8+11", low: "2d12+12", moderate: "3d10+14", high: "3d12+18", extreme: "4d12+20" } },
+  12: { ac: { terrible: 30, low: 31, moderate: 33, high: 34, extreme: 36 }, hp: { terrible: 120, low: 160, moderate: 215, high: 270, extreme: 335 }, saves: { terrible: 18, low: 21, moderate: 24, high: 26, extreme: 29 }, attack: { terrible: 22, low: 24, moderate: 26, high: 28, extreme: 30 }, damage: { terrible: "2d10+11", low: "3d10+12", moderate: "3d12+16", high: "4d12+18", extreme: "5d12+20" } },
+  13: { ac: { terrible: 31, low: 33, moderate: 34, high: 36, extreme: 37 }, hp: { terrible: 132, low: 175, moderate: 235, high: 295, extreme: 365 }, saves: { terrible: 19, low: 23, moderate: 25, high: 27, extreme: 30 }, attack: { terrible: 23, low: 25, moderate: 27, high: 29, extreme: 31 }, damage: { terrible: "2d10+13", low: "3d10+14", moderate: "3d12+18", high: "4d12+20", extreme: "5d12+22" } },
+  14: { ac: { terrible: 33, low: 34, moderate: 36, high: 37, extreme: 39 }, hp: { terrible: 144, low: 190, moderate: 255, high: 320, extreme: 395 }, saves: { terrible: 21, low: 24, moderate: 27, high: 29, extreme: 32 }, attack: { terrible: 25, low: 27, moderate: 29, high: 31, extreme: 33 }, damage: { terrible: "2d12+13", low: "3d12+14", moderate: "4d12+18", high: "5d12+20", extreme: "6d12+22" } },
+  15: { ac: { terrible: 34, low: 36, moderate: 37, high: 39, extreme: 40 }, hp: { terrible: 156, low: 205, moderate: 275, high: 345, extreme: 425 }, saves: { terrible: 22, low: 26, moderate: 28, high: 30, extreme: 33 }, attack: { terrible: 26, low: 28, moderate: 30, high: 32, extreme: 34 }, damage: { terrible: "2d12+15", low: "3d12+16", moderate: "4d12+20", high: "5d12+22", extreme: "6d12+24" } },
+  16: { ac: { terrible: 36, low: 37, moderate: 39, high: 40, extreme: 42 }, hp: { terrible: 168, low: 220, moderate: 295, high: 370, extreme: 455 }, saves: { terrible: 24, low: 27, moderate: 30, high: 32, extreme: 35 }, attack: { terrible: 28, low: 30, moderate: 32, high: 34, extreme: 36 }, damage: { terrible: "3d10+15", low: "4d10+16", moderate: "5d10+20", high: "6d10+22", extreme: "7d10+24" } },
+  17: { ac: { terrible: 37, low: 39, moderate: 40, high: 42, extreme: 43 }, hp: { terrible: 180, low: 235, moderate: 315, high: 395, extreme: 485 }, saves: { terrible: 25, low: 29, moderate: 31, high: 33, extreme: 36 }, attack: { terrible: 29, low: 31, moderate: 33, high: 35, extreme: 37 }, damage: { terrible: "3d10+17", low: "4d10+18", moderate: "5d10+22", high: "6d10+24", extreme: "7d10+26" } },
+  18: { ac: { terrible: 39, low: 40, moderate: 42, high: 43, extreme: 45 }, hp: { terrible: 192, low: 250, moderate: 335, high: 420, extreme: 515 }, saves: { terrible: 27, low: 30, moderate: 33, high: 35, extreme: 38 }, attack: { terrible: 31, low: 33, moderate: 35, high: 37, extreme: 39 }, damage: { terrible: "3d12+17", low: "4d12+18", moderate: "5d12+22", high: "6d12+24", extreme: "7d12+28" } },
+  19: { ac: { terrible: 40, low: 42, moderate: 43, high: 45, extreme: 46 }, hp: { terrible: 204, low: 265, moderate: 355, high: 445, extreme: 545 }, saves: { terrible: 28, low: 32, moderate: 34, high: 36, extreme: 39 }, attack: { terrible: 32, low: 34, moderate: 36, high: 38, extreme: 40 }, damage: { terrible: "3d12+19", low: "4d12+20", moderate: "5d12+24", high: "6d12+26", extreme: "8d12+28" } },
+  20: { ac: { terrible: 42, low: 43, moderate: 45, high: 46, extreme: 48 }, hp: { terrible: 216, low: 280, moderate: 375, high: 470, extreme: 575 }, saves: { terrible: 30, low: 33, moderate: 36, high: 38, extreme: 41 }, attack: { terrible: 34, low: 36, moderate: 38, high: 40, extreme: 42 }, damage: { terrible: "4d10+19", low: "5d10+20", moderate: "6d10+24", high: "7d10+26", extreme: "8d10+30" } },
+  21: { ac: { terrible: 43, low: 45, moderate: 46, high: 48, extreme: 49 }, hp: { terrible: 228, low: 295, moderate: 395, high: 495, extreme: 610 }, saves: { terrible: 31, low: 35, moderate: 37, high: 39, extreme: 42 }, attack: { terrible: 35, low: 37, moderate: 39, high: 41, extreme: 43 }, damage: { terrible: "4d10+21", low: "5d10+22", moderate: "6d10+26", high: "7d10+28", extreme: "8d10+32" } },
+  22: { ac: { terrible: 45, low: 46, moderate: 48, high: 49, extreme: 51 }, hp: { terrible: 240, low: 310, moderate: 415, high: 520, extreme: 645 }, saves: { terrible: 33, low: 36, moderate: 39, high: 41, extreme: 44 }, attack: { terrible: 37, low: 39, moderate: 41, high: 43, extreme: 45 }, damage: { terrible: "4d12+21", low: "5d12+22", moderate: "6d12+26", high: "7d12+28", extreme: "8d12+34" } },
+  23: { ac: { terrible: 46, low: 48, moderate: 49, high: 51, extreme: 52 }, hp: { terrible: 252, low: 325, moderate: 435, high: 545, extreme: 680 }, saves: { terrible: 34, low: 38, moderate: 40, high: 42, extreme: 45 }, attack: { terrible: 38, low: 40, moderate: 42, high: 44, extreme: 46 }, damage: { terrible: "4d12+23", low: "5d12+24", moderate: "6d12+28", high: "7d12+30", extreme: "9d12+34" } },
+  24: { ac: { terrible: 48, low: 49, moderate: 51, high: 52, extreme: 54 }, hp: { terrible: 264, low: 340, moderate: 455, high: 570, extreme: 715 }, saves: { terrible: 36, low: 39, moderate: 42, high: 44, extreme: 47 }, attack: { terrible: 40, low: 42, moderate: 44, high: 46, extreme: 48 }, damage: { terrible: "5d10+23", low: "6d10+24", moderate: "7d10+28", high: "8d10+30", extreme: "9d10+36" } },
+  25: { ac: { terrible: 49, low: 51, moderate: 52, high: 54, extreme: 55 }, hp: { terrible: 276, low: 355, moderate: 475, high: 595, extreme: 750 }, saves: { terrible: 37, low: 41, moderate: 43, high: 45, extreme: 48 }, attack: { terrible: 41, low: 43, moderate: 45, high: 47, extreme: 49 }, damage: { terrible: "5d10+25", low: "6d10+26", moderate: "7d10+30", high: "8d10+32", extreme: "9d10+38" } }
 };
-
-// Fill levels 6-20 by progression so the module remains usable while the exact table can be refined later.
-for (let level = 6; level <= 20; level++) {
-  const prev = PF2E_STAT_TABLES[level - 1];
-  PF2E_STAT_TABLES[level] = {
-    ac: {
-      low: prev.ac.low + 1,
-      moderate: prev.ac.moderate + 1,
-      high: prev.ac.high + 1,
-      extreme: prev.ac.extreme + 1
-    },
-    hp: {
-      low: prev.hp.low + 15,
-      moderate: prev.hp.moderate + 20,
-      high: prev.hp.high + 25
-    },
-    attack: {
-      low: prev.attack.low + 1,
-      moderate: prev.attack.moderate + 1,
-      high: prev.attack.high + 1,
-      extreme: prev.attack.extreme + 1
-    },
-    damage: {
-      low: `${Math.ceil(level / 2)}d6+${level}`,
-      moderate: `${Math.ceil(level / 2)}d8+${level + 2}`,
-      high: `${Math.ceil(level / 2)}d10+${level + 4}`
-    },
-    save: {
-      terrible: prev.save.terrible + 1,
-      low: prev.save.low + 1,
-      moderate: prev.save.moderate + 1,
-      high: prev.save.high + 1,
-      extreme: prev.save.extreme + 1
-    },
-    perception: {
-      low: prev.perception.low + 1,
-      moderate: prev.perception.moderate + 1,
-      high: prev.perception.high + 1,
-      extreme: prev.perception.extreme + 1
-    },
-    dc: {
-      low: prev.dc.low + 1,
-      moderate: prev.dc.moderate + 1,
-      high: prev.dc.high + 1,
-      extreme: prev.dc.extreme + 1
-    }
-  };
-}

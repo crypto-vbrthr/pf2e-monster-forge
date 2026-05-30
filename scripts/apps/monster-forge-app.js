@@ -2,7 +2,6 @@ import { generateMonsterDraft } from "../generators/monster-generator.js";
 import * as TraitsData from "../data/traits.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-
 const MODULE_ID = "pf2e-monster-forge";
 
 export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -10,21 +9,13 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     id: "pf2e-monster-forge",
     tag: "form",
     window: {
-      title: "PF2EMF.AppTitle",
+      title: "Monster Forge",
       icon: "fa-solid fa-dragon",
       resizable: true
     },
     position: {
       width: 520,
       height: "auto"
-    },
-    form: {
-      handler: MonsterForgeApp.#onSubmit,
-      closeOnSubmit: false
-    },
-    actions: {
-      preview: MonsterForgeApp.#onPreview,
-      createActor: MonsterForgeApp.#onCreateActor
     }
   };
 
@@ -52,28 +43,72 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       damage: "moderate"
     };
 
-    this.preview = generateMonsterDraft(this.formData);
+    this.preview = this.#makeMonster();
   }
 
   async _prepareContext(options) {
     return {
       data: this.formData,
       preview: this.preview,
-      traits: TraitsData.CREATURE_TRAITS ?? TraitsData.TRAITS ?? TraitsData.default ?? []
+      traits: TraitsData.CREATURE_TRAITS ?? TraitsData.TRAITS ?? TraitsData.default ?? [],
+
+      statRanks: {
+        terrible: game.i18n.localize("PF2EMF.StatRanks.Terrible"),
+        low: game.i18n.localize("PF2EMF.StatRanks.Low"),
+        moderate: game.i18n.localize("PF2EMF.StatRanks.Moderate"),
+        high: game.i18n.localize("PF2EMF.StatRanks.High"),
+        extreme: game.i18n.localize("PF2EMF.StatRanks.Extreme")
+      },
+
+      roles: {
+        brute: game.i18n.localize("PF2EMF.Roles.Brute"),
+        soldier: game.i18n.localize("PF2EMF.Roles.Soldier"),
+        skirmisher: game.i18n.localize("PF2EMF.Roles.Skirmisher"),
+        spellcaster: game.i18n.localize("PF2EMF.Roles.Spellcaster")
+      },
+
+      sizes: {
+        tiny: game.i18n.localize("PF2EMF.Sizes.Tiny"),
+        sm: game.i18n.localize("PF2EMF.Sizes.Small"),
+        med: game.i18n.localize("PF2EMF.Sizes.Medium"),
+        lg: game.i18n.localize("PF2EMF.Sizes.Large"),
+        huge: game.i18n.localize("PF2EMF.Sizes.Huge"),
+        grg: game.i18n.localize("PF2EMF.Sizes.Gargantuan")
+      }
     };
   }
 
   async _onRender(context, options) {
     await super._onRender(context, options);
 
-    const form = this.element;
+    const root = this.element;
+    if (!root) return;
 
-    form.querySelectorAll("input, select").forEach(input => {
+    root.querySelectorAll("input, select").forEach(input => {
       input.addEventListener("change", () => {
         this.#readForm();
-        this.preview = generateMonster(this.formData);
-        this.render();
       });
+    });
+
+    root.querySelector('[data-action="preview"]')?.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      this.#readForm();
+      this.preview = this.#makeMonster();
+      this.render();
+    });
+
+    root.querySelector('[data-action="createActor"]')?.addEventListener("click", async event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      this.#readForm();
+      const monster = this.#makeMonster();
+
+      await this.#createActor(monster);
+
+      ui.notifications.info(`Monster Forge: ${monster.name} erstellt.`);
     });
   }
 
@@ -81,41 +116,52 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const form = this.element;
     if (!form) return;
 
-    const formData = new FormData(form);
+    const fd = new FormData(form);
 
     this.formData = {
-      name: formData.get("name") || "Forged Monster",
-      level: Number(formData.get("level") ?? 1),
-      role: formData.get("role") || "brute",
-      size: formData.get("size") || "med",
-      traits: formData.getAll("traits"),
-      ac: formData.get("ac") || "moderate",
-      hp: formData.get("hp") || "moderate",
-      fortitude: formData.get("fortitude") || "moderate",
-      reflex: formData.get("reflex") || "moderate",
-      will: formData.get("will") || "moderate",
-      attack: formData.get("attack") || "moderate",
-      damage: formData.get("damage") || "moderate"
+      name: fd.get("name") || "Forged Monster",
+      level: Number(fd.get("level") ?? 1),
+      role: fd.get("role") || "brute",
+      size: fd.get("size") || "med",
+      traits: fd.getAll("traits"),
+      ac: fd.get("ac") || "moderate",
+      hp: fd.get("hp") || "moderate",
+      fortitude: fd.get("fortitude") || "moderate",
+      reflex: fd.get("reflex") || "moderate",
+      will: fd.get("will") || "moderate",
+      attack: fd.get("attack") || "moderate",
+      damage: fd.get("damage") || "moderate"
     };
   }
 
-  static async #onSubmit(event, form, formData) {
-    event.preventDefault();
+  #makeMonster() {
+    const raw = generateMonsterDraft(this.formData);
+    return this.#normalizeMonster(raw);
   }
 
-  static async #onPreview(event, target) {
-    const app = this;
-    app.#readForm();
-    app.preview = generateMonsterDraft(app.formData);
-    app.render();
+  #normalizeMonster(raw = {}) {
+    return {
+      name: raw.name ?? this.formData.name ?? "Forged Monster",
+      level: Number(raw.level ?? this.formData.level ?? 1),
+      size: raw.size ?? this.formData.size ?? "med",
+      traits: raw.traits ?? this.formData.traits ?? [],
+
+      ac: Number(raw.ac ?? raw.armorClass ?? 10),
+      hp: Number(raw.hp ?? raw.hitPoints ?? 10),
+
+      saves: {
+        fortitude: Number(raw.saves?.fortitude ?? raw.fortitude ?? raw.fort ?? 0),
+        reflex: Number(raw.saves?.reflex ?? raw.reflex ?? raw.ref ?? 0),
+        will: Number(raw.saves?.will ?? raw.will ?? 0)
+      },
+
+      attack: Number(raw.attack ?? raw.attackBonus ?? raw.strike ?? 0),
+      damage: raw.damage ?? raw.damageFormula ?? "1d6"
+    };
   }
 
-  static async #onCreateActor(event, target) {
-    const app = this;
-    app.#readForm();
-    const monster = generateMonsterDraft(app.formData);
-
-    const actorData = {
+  async #createActor(monster) {
+    return Actor.create({
       name: monster.name,
       type: "npc",
       system: {
@@ -128,7 +174,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           size: {
             value: monster.size
           },
-          value: monster.traits ?? []
+          value: monster.traits
         },
         attributes: {
           ac: {
@@ -151,12 +197,6 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           }
         }
       }
-    };
-
-    await Actor.create(actorData);
-
-    ui.notifications.info(
-      game.i18n.format("PF2EMF.ActorCreated", { name: monster.name })
-    );
+    });
   }
 }

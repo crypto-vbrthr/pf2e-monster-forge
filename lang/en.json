@@ -49,5 +49,22 @@
   "PF2EMF.stat.damage": "Damage",
   "PF2EMF.attack.primaryStrike": "Primary Strike",
   "PF2EMF.attack.energyBolt": "Energy Bolt",
-  "PF2EMF.OpenForge": "Monster Forge"
-}
+  "PF2EMF.OpenForge": "Monster Forge",
+
+  "PF2EMF.StatRanks.Terrible": "Terrible",
+  "PF2EMF.StatRanks.Low": "Low",
+  "PF2EMF.StatRanks.Moderate": "Moderate",
+  "PF2EMF.StatRanks.High": "High",
+  "PF2EMF.StatRanks.Extreme": "Extreme",
+
+  "PF2EMF.Roles.Brute": "Brute",
+  "PF2EMF.Roles.Soldier": "Soldier",
+  "PF2EMF.Roles.Skirmisher": "Skirmisher",
+  "PF2EMF.Roles.Spellcaster": "Spellcaster",
+
+  "PF2EMF.Sizes.Tiny": "Tiny",
+  "PF2EMF.Sizes.Small": "Small",
+  "PF2EMF.Sizes.Medium": "Medium",
+  "PF2EMF.Sizes.Large": "Large",
+  "PF2EMF.Sizes.Huge": "Huge",
+  "PF2EMF.Sizes.Gargantuan": "Gargantuan"}

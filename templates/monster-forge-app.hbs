@@ -1,4 +1,5 @@
 <section class="pf2emf-app">
+
   <div class="form-group">
     <label>Name</label>
     <input type="text" name="name" value="{{data.name}}" />
@@ -12,124 +13,92 @@
   <div class="form-group">
     <label>Rolle</label>
     <select name="role">
-      <option value="brute">Brute</option>
-      <option value="soldier">Soldier</option>
-      <option value="skirmisher">Skirmisher</option>
-      <option value="spellcaster">Spellcaster</option>
+      {{selectOptions roles selected=data.role}}
     </select>
   </div>
 
   <div class="form-group">
     <label>Größe</label>
     <select name="size">
-      <option value="tiny">Winzig</option>
-      <option value="sm">Klein</option>
-      <option value="med">Mittelgroß</option>
-      <option value="lg">Groß</option>
-      <option value="huge">Riesig</option>
-      <option value="grg">Gigantisch</option>
+      {{selectOptions sizes selected=data.size}}
     </select>
   </div>
 
-  <hr />
+  <hr>
 
   <h3>Werte</h3>
 
   <div class="form-group">
     <label>RK</label>
     <select name="ac">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.ac}}
     </select>
   </div>
 
   <div class="form-group">
     <label>TP</label>
     <select name="hp">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.hp}}
     </select>
   </div>
 
   <div class="form-group">
     <label>Zähigkeit</label>
     <select name="fortitude">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.fortitude}}
     </select>
   </div>
 
   <div class="form-group">
     <label>Reflex</label>
     <select name="reflex">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.reflex}}
     </select>
   </div>
 
   <div class="form-group">
     <label>Willen</label>
     <select name="will">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.will}}
     </select>
   </div>
 
   <div class="form-group">
     <label>Angriff</label>
     <select name="attack">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.attack}}
     </select>
   </div>
 
   <div class="form-group">
     <label>Schaden</label>
     <select name="damage">
-      <option value="terrible">Schwach</option>
-      <option value="low">Niedrig</option>
-      <option value="moderate">Moderat</option>
-      <option value="high">Stark</option>
-      <option value="extreme">Extrem</option>
+      {{selectOptions statRanks selected=data.damage}}
     </select>
   </div>
 
-  <hr />
+  <hr>
 
   <h3>Vorschau</h3>
 
   <div class="pf2emf-preview">
-    <p><strong>{{preview.name}}</strong> Level {{preview.level}}</p>
+    <p><strong>{{preview.name}}</strong> Stufe {{preview.level}}</p>
+    <p>Größe: {{preview.size}}</p>
     <p>RK {{preview.ac}} | TP {{preview.hp}}</p>
     <p>ZÄH {{preview.saves.fortitude}} | REF {{preview.saves.reflex}} | WIL {{preview.saves.will}}</p>
-    <p>Angriff {{preview.attack}} | Schaden {{preview.damage}}</p>
+    <p>Angriff +{{preview.attack}} | Schaden {{preview.damage}}</p>
   </div>
 
   <footer class="sheet-footer flexrow">
     <button type="button" data-action="preview">
-      <i class="fas fa-eye"></i> Vorschau
+      <i class="fas fa-eye"></i>
+      Vorschau
     </button>
 
     <button type="button" data-action="createActor">
-      <i class="fas fa-user-plus"></i> Actor erstellen
+      <i class="fas fa-user-plus"></i>
+      Actor erstellen
     </button>
   </footer>
+
 </section>
