@@ -18,7 +18,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     position: {
       width: 760,
-      height: 700
+      height: 840
     }
   };
 
@@ -54,39 +54,95 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   async _prepareContext(options) {
+    const selectedTraits = new Set(this.formData.traits ?? []);
+
+    const rawTraitsSource =
+      TraitsData.CREATURE_TRAITS ??
+      TraitsData.TRAITS ??
+      TraitsData.default ??
+      [];
+
+    const rawTraits = Array.isArray(rawTraitsSource)
+      ? rawTraitsSource
+      : Object.entries(rawTraitsSource).map(([key, value]) => {
+          if (typeof value === "string") {
+            return {
+              value: key,
+              label: value
+            };
+          }
+
+          return {
+            value: value?.value ?? value?.slug ?? value?.id ?? key,
+            label: value?.label ?? value?.name ?? key
+          };
+        });
+
+    const traitList = rawTraits.map(trait => {
+      if (typeof trait === "string") {
+        return {
+          value: trait,
+          label: localizeMaybe(`PF2EMF.Traits.${trait}`, trait),
+          checked: selectedTraits.has(trait)
+        };
+      }
+
+      const value =
+        trait?.value ??
+        trait?.slug ??
+        trait?.id ??
+        String(trait);
+
+      const rawLabel =
+        trait?.label ??
+        trait?.name ??
+        value;
+
+      const label =
+        typeof rawLabel === "string"
+          ? localizeMaybe(rawLabel, value)
+          : String(value);
+
+      return {
+        value,
+        label,
+        checked: selectedTraits.has(value)
+      };
+    });
+
     return {
       data: this.formData,
       preview: this.preview,
-      traits: TraitsData.CREATURE_TRAITS ?? TraitsData.TRAITS ?? TraitsData.default ?? [],
+      traits: traitList,
 
       statRanks: {
-        terrible: game.i18n.localize("PF2EMF.StatRanks.Terrible"),
-        low: game.i18n.localize("PF2EMF.StatRanks.Low"),
-        moderate: game.i18n.localize("PF2EMF.StatRanks.Moderate"),
-        high: game.i18n.localize("PF2EMF.StatRanks.High"),
-        extreme: game.i18n.localize("PF2EMF.StatRanks.Extreme")
+        terrible: localizeMaybe("PF2EMF.StatRanks.Terrible", "Terrible"),
+        low: localizeMaybe("PF2EMF.StatRanks.Low", "Low"),
+        moderate: localizeMaybe("PF2EMF.StatRanks.Moderate", "Moderate"),
+        high: localizeMaybe("PF2EMF.StatRanks.High", "High"),
+        extreme: localizeMaybe("PF2EMF.StatRanks.Extreme", "Extreme")
       },
 
       roles: {
-        brute: game.i18n.localize("PF2EMF.Roles.Brute"),
-        soldier: game.i18n.localize("PF2EMF.Roles.Soldier"),
-        skirmisher: game.i18n.localize("PF2EMF.Roles.Skirmisher"),
-        spellcaster: game.i18n.localize("PF2EMF.Roles.Spellcaster")
+        brute: localizeMaybe("PF2EMF.Roles.Brute", "Brute"),
+        soldier: localizeMaybe("PF2EMF.Roles.Soldier", "Soldier"),
+        skirmisher: localizeMaybe("PF2EMF.Roles.Skirmisher", "Skirmisher"),
+        spellcaster: localizeMaybe("PF2EMF.Roles.Spellcaster", "Spellcaster")
       },
 
       sizes: {
-        tiny: game.i18n.localize("PF2EMF.Sizes.Tiny"),
-        sm: game.i18n.localize("PF2EMF.Sizes.Small"),
-        med: game.i18n.localize("PF2EMF.Sizes.Medium"),
-        lg: game.i18n.localize("PF2EMF.Sizes.Large"),
-        huge: game.i18n.localize("PF2EMF.Sizes.Huge"),
-        grg: game.i18n.localize("PF2EMF.Sizes.Gargantuan")
+        tiny: localizeMaybe("PF2EMF.Sizes.Tiny", "Tiny"),
+        sm: localizeMaybe("PF2EMF.Sizes.Small", "Small"),
+        med: localizeMaybe("PF2EMF.Sizes.Medium", "Medium"),
+        lg: localizeMaybe("PF2EMF.Sizes.Large", "Large"),
+        huge: localizeMaybe("PF2EMF.Sizes.Huge", "Huge"),
+        grg: localizeMaybe("PF2EMF.Sizes.Gargantuan", "Gargantuan")
       },
 
       attackProfiles: Object.fromEntries(
         Object.entries(ATTACK_PROFILES).map(([key, profile]) => [
           key,
-          game.i18n.localize(profile.label)
+          localizeMaybe(profile.label, key)
         ])
       )
     };
@@ -214,8 +270,8 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         ? raw.attacks.map(attack => ({
             key: attack.key ?? foundry.utils.randomID(),
             name: attack.name ?? "Strike",
-            attack: Number(attack.attack ?? this.formData.attack ?? 0),
-            damage: attack.damage ?? this.formData.damage ?? "1d6",
+            attack: Number(attack.attack ?? 0),
+            damage: attack.damage ?? "1d6",
             damageType: attack.damageType ?? "bludgeoning",
             traits: attack.traits ?? []
           }))
@@ -313,4 +369,16 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       }
     };
   }
+}
+
+function localizeMaybe(key, fallback) {
+  if (typeof key !== "string") return String(fallback ?? "");
+
+  const localized = game.i18n.localize(key);
+
+  if (!localized || localized === key) {
+    return String(fallback ?? key);
+  }
+
+  return localized;
 }
