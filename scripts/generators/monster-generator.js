@@ -411,25 +411,18 @@ function generateSkills(
   return result;
 }
 
-function getSkillModifier(
-  level,
-  rank
-) {
-  const base =
-    Number(level);
+function getSkillModifier(level, rank) {
+  const base = Number(level);
 
   const ranks = {
-    terrible: base + 0,
-    low: base + 3,
-    moderate: base + 5,
-    high: base + 7,
-    extreme: base + 9
+    terrible: base + 2,
+    low: base + 5,
+    moderate: base + 8,
+    high: base + 11,
+    extreme: base + 13
   };
 
-  return (
-    ranks[rank] ??
-    ranks.moderate
-  );
+  return ranks[rank] ?? ranks.moderate;
 }
 
 function fallback(category) {

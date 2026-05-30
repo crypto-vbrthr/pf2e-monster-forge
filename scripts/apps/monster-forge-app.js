@@ -332,7 +332,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           Object.entries(monster.skills ?? {}).map(([slug, skill]) => [
             slug,
             {
-              value: skill.value
+              base: skill.value
             }
           ])
         )
