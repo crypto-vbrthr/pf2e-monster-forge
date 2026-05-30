@@ -2,7 +2,12 @@ import { PF2E_CREATURE_STATS } from "../data/pf2e-stat-tables.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
 import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
-import { ATTACK_PROFILES } from "../data/attack-profiles.js";
+import {
+  ATTACK_PROFILES,
+  ROLE_ATTACK_STYLES,
+  TRAIT_ATTACK_OVERRIDES,
+  ATTACK_TEMPLATES
+} from "../data/attack-profiles.js";
 
 export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
@@ -45,30 +50,104 @@ export function generateMonsterDraft(input = {}) {
 
     abilities: generateAbilities(level, preset),
     skills: generateSkills(level, role),
-    attacks: generateAttacks(level, baseAttack, damageRank, attackProfile)
+    attacks: generateAttacks(level, baseAttack, damageRank, attackProfile, role, input.traits ?? [])
   };
 }
 
-function generateAttacks(level, baseAttack, damageRank, profileKey) {
+function generateAttacks(level, baseAttack, damageRank, profileKey, role = "brute", traits = []) {
   const profile =
     ATTACK_PROFILES[profileKey] ??
     ATTACK_PROFILES.standard;
 
-  return profile.attacks.map(attack => {
-    const adjustedDamageRank = adjustDamageRank(
-      damageRank,
-      attack.damageRank
-    );
+  const style = resolveAttackStyle(role, traits);
+  const elemental = resolveElementalTrait(traits);
 
-    return {
-      key: attack.key,
-      name: attack.name,
-      attack: baseAttack + Number(attack.attackAdjustment ?? 0),
-      damage: getStat(level, "damage", adjustedDamageRank),
-      damageType: attack.damageType ?? "bludgeoning",
-      traits: attack.traits ?? []
-    };
-  });
+  if (profile.mode === "accurateAndHeavy") {
+    return [
+      buildAttack({
+        key: "accurate",
+        templateKey: style.accurate,
+        level,
+        attack: baseAttack + 2,
+        damageRank: adjustDamageRank(damageRank, "lower"),
+        elemental
+      }),
+
+      buildAttack({
+        key: "heavy",
+        templateKey: style.heavy,
+        level,
+        attack: baseAttack - 2,
+        damageRank: adjustDamageRank(damageRank, "higher"),
+        elemental
+      })
+    ];
+  }
+
+  return [
+    buildAttack({
+      key: "primary",
+      templateKey: style.heavy ?? style.accurate ?? "slam",
+      level,
+      attack: baseAttack,
+      damageRank,
+      elemental
+    })
+  ];
+}
+
+function resolveAttackStyle(role, traits = []) {
+  const base =
+    ROLE_ATTACK_STYLES[role] ??
+    ROLE_ATTACK_STYLES.brute;
+
+  for (const trait of traits) {
+    const override = TRAIT_ATTACK_OVERRIDES[trait];
+
+    if (override?.preferred) {
+      return {
+        ...base,
+        ...override
+      };
+    }
+  }
+
+  return base;
+}
+
+function resolveElementalTrait(traits = []) {
+  for (const trait of traits) {
+    const override = TRAIT_ATTACK_OVERRIDES[trait];
+
+    if (override?.damageType || override?.extraTrait) {
+      return override;
+    }
+  }
+
+  return null;
+}
+
+function buildAttack({ key, templateKey, level, attack, damageRank, elemental }) {
+  const template =
+    ATTACK_TEMPLATES[templateKey] ??
+    ATTACK_TEMPLATES.slam;
+
+  const traits = [
+    ...(template.traits ?? [])
+  ];
+
+  if (elemental?.extraTrait && !traits.includes(elemental.extraTrait)) {
+    traits.push(elemental.extraTrait);
+  }
+
+  return {
+    key,
+    name: template.name,
+    attack,
+    damage: getStat(level, "damage", damageRank),
+    damageType: elemental?.damageType ?? template.damageType ?? "bludgeoning",
+    traits
+  };
 }
 
 function adjustDamageRank(baseRank, mode) {
