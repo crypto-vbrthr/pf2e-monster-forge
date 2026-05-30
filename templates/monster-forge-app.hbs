@@ -85,12 +85,19 @@
     <p><strong>{{preview.name}}</strong> Stufe {{preview.level}}</p>
     <p>Rolle: {{preview.role}}</p>
     <p>Größe: {{preview.size}}</p>
+
     <p>RK {{preview.ac}} | TP {{preview.hp}}</p>
-    <p>ZÄH {{preview.saves.fortitude}} | REF {{preview.saves.reflex}} | WIL {{preview.saves.will}}</p>
+
+    <p>
+      ZÄH {{preview.saves.fortitude}} |
+      REF {{preview.saves.reflex}} |
+      WIL {{preview.saves.will}}
+    </p>
+
     <p>Angriff +{{preview.attack}} | Schaden {{preview.damage}}</p>
 
     <p>
-      Attribute:
+      <strong>Attribute:</strong>
       STR {{preview.abilities.str}},
       DEX {{preview.abilities.dex}},
       CON {{preview.abilities.con}},
@@ -98,6 +105,15 @@
       WIS {{preview.abilities.wis}},
       CHA {{preview.abilities.cha}}
     </p>
+
+    {{#if preview.skills}}
+      <p><strong>Fertigkeiten:</strong></p>
+      <ul>
+        {{#each preview.skills}}
+          <li>{{this.label}} +{{this.value}}</li>
+        {{/each}}
+      </ul>
+    {{/if}}
   </div>
 
   <footer class="sheet-footer flexrow">

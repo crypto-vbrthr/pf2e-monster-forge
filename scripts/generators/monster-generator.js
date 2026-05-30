@@ -1,6 +1,7 @@
 import { PF2E_CREATURE_STATS } from "../data/pf2e-stat-tables.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
+import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
 
 export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
@@ -102,7 +103,12 @@ export function generateMonsterDraft(input = {}) {
     abilities: generateAbilities(
       level,
       preset
-    )
+    ),
+
+    skills: generateSkills(
+      level, 
+      role, 
+      preset)
   };
 }
 
@@ -221,3 +227,30 @@ function fallback(category) {
   }
 }
 
+function generateSkills(level, role, preset) {
+  const skills = ROLE_SKILL_PRESETS[role] ?? ROLE_SKILL_PRESETS.brute;
+  const result = {};
+
+  for (const [slug, rank] of Object.entries(skills)) {
+    result[slug] = {
+      label: SKILL_LABELS[slug] ?? slug,
+      value: getSkillModifier(level, rank)
+    };
+  }
+
+  return result;
+}
+
+function getSkillModifier(level, rank) {
+  const base = Number(level);
+
+  const ranks = {
+    terrible: base + 0,
+    low: base + 3,
+    moderate: base + 5,
+    high: base + 7,
+    extreme: base + 9
+  };
+
+  return ranks[rank] ?? ranks.moderate;
+}

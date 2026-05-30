@@ -116,6 +116,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       event.stopPropagation();
 
       this.#readForm();
+
       const monster = this.#makeMonster();
 
       await this.#createActor(monster);
@@ -195,7 +196,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         int: Number(raw.abilities?.int ?? 0),
         wis: Number(raw.abilities?.wis ?? 0),
         cha: Number(raw.abilities?.cha ?? 0)
-      }
+      },
+
+      skills: raw.skills ?? {}
     };
   }
 
@@ -246,7 +249,16 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           will: {
             value: monster.saves.will
           }
-        }
+        },
+
+        skills: Object.fromEntries(
+          Object.entries(monster.skills ?? {}).map(([slug, skill]) => [
+            slug,
+            {
+              value: skill.value
+            }
+          ])
+        )
       }
     });
   }
