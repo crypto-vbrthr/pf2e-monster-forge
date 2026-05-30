@@ -1,47 +1,73 @@
 export const ROLE_PRESETS = {
   brute: {
-    i18n: "PF2EMF.role.brute",
+    ac: "low",
     hp: "high",
-    ac: "moderate",
     fortitude: "high",
     reflex: "low",
-    will: "moderate",
-    attack: "high",
-    damage: "high",
-    perception: "moderate"
+    will: "low",
+    attack: "moderate",
+    damage: "extreme",
+    abilities: {
+      str: "extreme",
+      dex: "low",
+      con: "high",
+      int: "low",
+      wis: "moderate",
+      cha: "low"
+    }
   },
+
   soldier: {
-    i18n: "PF2EMF.role.soldier",
-    hp: "moderate",
     ac: "high",
+    hp: "high",
     fortitude: "high",
     reflex: "moderate",
     will: "moderate",
     attack: "high",
     damage: "moderate",
-    perception: "moderate"
+    abilities: {
+      str: "high",
+      dex: "moderate",
+      con: "high",
+      int: "low",
+      wis: "moderate",
+      cha: "low"
+    }
   },
+
   skirmisher: {
-    i18n: "PF2EMF.role.skirmisher",
-    hp: "moderate",
     ac: "moderate",
+    hp: "moderate",
     fortitude: "moderate",
     reflex: "high",
     will: "low",
     attack: "high",
-    damage: "moderate",
-    perception: "high"
+    damage: "high",
+    abilities: {
+      str: "moderate",
+      dex: "extreme",
+      con: "moderate",
+      int: "low",
+      wis: "moderate",
+      cha: "low"
+    }
   },
+
   spellcaster: {
-    i18n: "PF2EMF.role.spellcaster",
-    hp: "low",
     ac: "low",
+    hp: "low",
     fortitude: "low",
     reflex: "moderate",
     will: "high",
     attack: "low",
     damage: "low",
-    spellDC: "high",
-    perception: "moderate"
+    abilities: {
+      str: "low",
+      dex: "moderate",
+      con: "low",
+      int: "high",
+      wis: "high",
+      cha: "high"
+    }
   }
 };

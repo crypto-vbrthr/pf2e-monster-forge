@@ -1,7 +1,9 @@
 import { generateMonsterDraft } from "../generators/monster-generator.js";
+import { ROLE_PRESETS } from "../data/role-presets.js";
 import * as TraitsData from "../data/traits.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
 const MODULE_ID = "pf2e-monster-forge";
 
 export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -14,7 +16,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       resizable: true
     },
     position: {
-      width: 520,
+      width: 540,
       height: "auto"
     }
   };
@@ -28,19 +30,22 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(options = {}) {
     super(options);
 
+    const role = game.settings.get(MODULE_ID, "defaultRole") ?? "brute";
+    const preset = ROLE_PRESETS[role] ?? ROLE_PRESETS.brute;
+
     this.formData = {
       name: "Forged Monster",
       level: game.settings.get(MODULE_ID, "defaultLevel") ?? 1,
-      role: game.settings.get(MODULE_ID, "defaultRole") ?? "brute",
+      role,
       size: game.settings.get(MODULE_ID, "defaultSize") ?? "med",
       traits: [],
-      ac: "moderate",
-      hp: "moderate",
-      fortitude: "moderate",
-      reflex: "moderate",
-      will: "moderate",
-      attack: "moderate",
-      damage: "moderate"
+      ac: preset.ac ?? "moderate",
+      hp: preset.hp ?? "moderate",
+      fortitude: preset.fortitude ?? "moderate",
+      reflex: preset.reflex ?? "moderate",
+      will: preset.will ?? "moderate",
+      attack: preset.attack ?? "moderate",
+      damage: preset.damage ?? "moderate"
     };
 
     this.preview = this.#makeMonster();
@@ -87,6 +92,13 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     root.querySelectorAll("input, select").forEach(input => {
       input.addEventListener("change", () => {
         this.#readForm();
+
+        if (input.name === "role") {
+          this.#applyRolePreset();
+        }
+
+        this.preview = this.#makeMonster();
+        this.render();
       });
     });
 
@@ -134,6 +146,23 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     };
   }
 
+  #applyRolePreset() {
+    const preset =
+      ROLE_PRESETS[this.formData.role] ??
+      ROLE_PRESETS.brute;
+
+    this.formData = {
+      ...this.formData,
+      ac: preset.ac ?? "moderate",
+      hp: preset.hp ?? "moderate",
+      fortitude: preset.fortitude ?? "moderate",
+      reflex: preset.reflex ?? "moderate",
+      will: preset.will ?? "moderate",
+      attack: preset.attack ?? "moderate",
+      damage: preset.damage ?? "moderate"
+    };
+  }
+
   #makeMonster() {
     const raw = generateMonsterDraft(this.formData);
     return this.#normalizeMonster(raw);
@@ -143,6 +172,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       name: raw.name ?? this.formData.name ?? "Forged Monster",
       level: Number(raw.level ?? this.formData.level ?? 1),
+      role: raw.role ?? this.formData.role ?? "brute",
       size: raw.size ?? this.formData.size ?? "med",
       traits: raw.traits ?? this.formData.traits ?? [],
 
@@ -156,7 +186,16 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       },
 
       attack: Number(raw.attack ?? raw.attackBonus ?? raw.strike ?? 0),
-      damage: raw.damage ?? raw.damageFormula ?? "1d6"
+      damage: raw.damage ?? raw.damageFormula ?? "1d6",
+
+      abilities: {
+        str: Number(raw.abilities?.str ?? 0),
+        dex: Number(raw.abilities?.dex ?? 0),
+        con: Number(raw.abilities?.con ?? 0),
+        int: Number(raw.abilities?.int ?? 0),
+        wis: Number(raw.abilities?.wis ?? 0),
+        cha: Number(raw.abilities?.cha ?? 0)
+      }
     };
   }
 
@@ -170,12 +209,23 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             value: monster.level
           }
         },
+
         traits: {
           size: {
             value: monster.size
           },
           value: monster.traits
         },
+
+        abilities: {
+          str: { mod: monster.abilities.str },
+          dex: { mod: monster.abilities.dex },
+          con: { mod: monster.abilities.con },
+          int: { mod: monster.abilities.int },
+          wis: { mod: monster.abilities.wis },
+          cha: { mod: monster.abilities.cha }
+        },
+
         attributes: {
           ac: {
             value: monster.ac
@@ -185,6 +235,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             max: monster.hp
           }
         },
+
         saves: {
           fortitude: {
             value: monster.saves.fortitude
