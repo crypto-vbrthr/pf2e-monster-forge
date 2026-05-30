@@ -1,125 +1,156 @@
 <section class="pf2emf-app">
 
-  <div class="form-group">
-    <label>Name</label>
-    <input type="text" name="name" value="{{data.name}}" />
+  <div class="pf2emf-grid">
+
+    <section class="pf2emf-panel">
+      <h3>Grunddaten</h3>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" value="{{data.name}}" />
+      </div>
+
+      <div class="pf2emf-two">
+        <div class="form-group">
+          <label>Level</label>
+          <input type="number" name="level" value="{{data.level}}" min="-1" max="25" />
+        </div>
+
+        <div class="form-group">
+          <label>Größe</label>
+          <select name="size">
+            {{selectOptions sizes selected=data.size}}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Rolle</label>
+        <select name="role">
+          {{selectOptions roles selected=data.role}}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "PF2EMF.AttackMode"}}</label>
+        <select name="attackProfile">
+          {{selectOptions attackProfiles selected=data.attackProfile}}
+        </select>
+      </div>
+
+      <h3>Werte</h3>
+
+      <div class="pf2emf-two">
+        <div class="form-group">
+          <label>RK</label>
+          <select name="ac">{{selectOptions statRanks selected=data.ac}}</select>
+        </div>
+
+        <div class="form-group">
+          <label>TP</label>
+          <select name="hp">{{selectOptions statRanks selected=data.hp}}</select>
+        </div>
+
+        <div class="form-group">
+          <label>Zähigkeit</label>
+          <select name="fortitude">{{selectOptions statRanks selected=data.fortitude}}</select>
+        </div>
+
+        <div class="form-group">
+          <label>Reflex</label>
+          <select name="reflex">{{selectOptions statRanks selected=data.reflex}}</select>
+        </div>
+
+        <div class="form-group">
+          <label>Willen</label>
+          <select name="will">{{selectOptions statRanks selected=data.will}}</select>
+        </div>
+
+        <div class="form-group">
+          <label>Angriff</label>
+          <select name="attack">{{selectOptions statRanks selected=data.attack}}</select>
+        </div>
+
+        <div class="form-group">
+          <label>Schaden</label>
+          <select name="damage">{{selectOptions statRanks selected=data.damage}}</select>
+        </div>
+      </div>
+    </section>
+
+    <section class="pf2emf-panel pf2emf-preview">
+      <h3>Vorschau</h3>
+
+      <div class="pf2emf-title">
+        <strong>{{preview.name}}</strong>
+        <span>Stufe {{preview.level}}</span>
+      </div>
+
+      <div class="pf2emf-tags">
+        <span>{{preview.role}}</span>
+        <span>{{preview.size}}</span>
+      </div>
+
+      <div class="pf2emf-statline">
+        <div><strong>RK</strong><span>{{preview.ac}}</span></div>
+        <div><strong>TP</strong><span>{{preview.hp}}</span></div>
+        <div><strong>Angriff</strong><span>+{{preview.attack}}</span></div>
+        <div><strong>Schaden</strong><span>{{preview.damage}}</span></div>
+      </div>
+
+      <h4>Rettungswürfe</h4>
+      <div class="pf2emf-inline">
+        <span>ZÄH +{{preview.saves.fortitude}}</span>
+        <span>REF +{{preview.saves.reflex}}</span>
+        <span>WIL +{{preview.saves.will}}</span>
+      </div>
+
+      <h4>Attribute</h4>
+      <div class="pf2emf-abilities">
+        <span>STR {{preview.abilities.str}}</span>
+        <span>DEX {{preview.abilities.dex}}</span>
+        <span>CON {{preview.abilities.con}}</span>
+        <span>INT {{preview.abilities.int}}</span>
+        <span>WIS {{preview.abilities.wis}}</span>
+        <span>CHA {{preview.abilities.cha}}</span>
+      </div>
+
+      {{#if preview.skills}}
+        <h4>Fertigkeiten</h4>
+        <ul class="pf2emf-list">
+          {{#each preview.skills}}
+            <li>{{this.label}} +{{this.value}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if preview.attacks}}
+        <h4>Generierte Angriffe</h4>
+        <ul class="pf2emf-list">
+          {{#each preview.attacks}}
+            <li>
+              <strong>{{this.name}}</strong>
+              <span>+{{this.attack}}</span>
+              <span>{{this.damage}} {{this.damageType}}</span>
+              {{#if this.traits.length}}
+                <small>
+                  {{#each this.traits}}
+                    {{this}}{{#unless @last}}, {{/unless}}
+                  {{/each}}
+                </small>
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </section>
+
   </div>
 
-  <div class="form-group">
-    <label>Level</label>
-    <input type="number" name="level" value="{{data.level}}" min="-1" max="25" />
-  </div>
-
-  <div class="form-group">
-    <label>Rolle</label>
-    <select name="role">
-      {{selectOptions roles selected=data.role}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Größe</label>
-    <select name="size">
-      {{selectOptions sizes selected=data.size}}
-    </select>
-  </div>
-
-  <hr>
-
-  <h3>Werte</h3>
-
-  <div class="form-group">
-    <label>RK</label>
-    <select name="ac">
-      {{selectOptions statRanks selected=data.ac}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>TP</label>
-    <select name="hp">
-      {{selectOptions statRanks selected=data.hp}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Zähigkeit</label>
-    <select name="fortitude">
-      {{selectOptions statRanks selected=data.fortitude}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Reflex</label>
-    <select name="reflex">
-      {{selectOptions statRanks selected=data.reflex}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Willen</label>
-    <select name="will">
-      {{selectOptions statRanks selected=data.will}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Angriff</label>
-    <select name="attack">
-      {{selectOptions statRanks selected=data.attack}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Schaden</label>
-    <select name="damage">
-      {{selectOptions statRanks selected=data.damage}}
-    </select>
-  </div>
-
-  <hr>
-
-  <h3>Vorschau</h3>
-
-  <div class="pf2emf-preview">
-    <p><strong>{{preview.name}}</strong> Stufe {{preview.level}}</p>
-    <p>Rolle: {{preview.role}}</p>
-    <p>Größe: {{preview.size}}</p>
-
-    <p>RK {{preview.ac}} | TP {{preview.hp}}</p>
-
-    <p>
-      ZÄH {{preview.saves.fortitude}} |
-      REF {{preview.saves.reflex}} |
-      WIL {{preview.saves.will}}
-    </p>
-
-    <p>Angriff +{{preview.attack}} | Schaden {{preview.damage}}</p>
-
-    <p>
-      <strong>Attribute:</strong>
-      STR {{preview.abilities.str}},
-      DEX {{preview.abilities.dex}},
-      CON {{preview.abilities.con}},
-      INT {{preview.abilities.int}},
-      WIS {{preview.abilities.wis}},
-      CHA {{preview.abilities.cha}}
-    </p>
-
-    {{#if preview.skills}}
-      <p><strong>Fertigkeiten:</strong></p>
-      <ul>
-        {{#each preview.skills}}
-          <li>{{this.label}} +{{this.value}}</li>
-        {{/each}}
-      </ul>
-    {{/if}}
-  </div>
-
-  <footer class="sheet-footer flexrow">
+  <footer class="pf2emf-footer">
     <button type="button" data-action="preview">
       <i class="fas fa-eye"></i>
-      Vorschau
+      Vorschau aktualisieren
     </button>
 
     <button type="button" data-action="createActor">

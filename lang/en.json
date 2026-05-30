@@ -67,4 +67,9 @@
   "PF2EMF.Sizes.Medium": "Medium",
   "PF2EMF.Sizes.Large": "Large",
   "PF2EMF.Sizes.Huge": "Huge",
-  "PF2EMF.Sizes.Gargantuan": "Gargantuan"}
+  "PF2EMF.Sizes.Gargantuan": "Gargantuan",
+
+  "PF2EMF.AttackMode": "Attack Mode",
+  "PF2EMF.AttackProfiles.Standard": "One standard attack",
+  "PF2EMF.AttackProfiles.AccurateAndHeavy": "Two attacks: accurate & heavy"
+}

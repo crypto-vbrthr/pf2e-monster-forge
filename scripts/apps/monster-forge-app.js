@@ -1,5 +1,6 @@
 import { generateMonsterDraft } from "../generators/monster-generator.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
+import { ATTACK_PROFILES } from "../data/attack-profiles.js";
 import * as TraitsData from "../data/traits.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -16,8 +17,8 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       resizable: true
     },
     position: {
-      width: 540,
-      height: "auto"
+      width: 760,
+      height: 700
     }
   };
 
@@ -39,6 +40,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       role,
       size: game.settings.get(MODULE_ID, "defaultSize") ?? "med",
       traits: [],
+      attackProfile: "standard",
       ac: preset.ac ?? "moderate",
       hp: preset.hp ?? "moderate",
       fortitude: preset.fortitude ?? "moderate",
@@ -79,7 +81,14 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         lg: game.i18n.localize("PF2EMF.Sizes.Large"),
         huge: game.i18n.localize("PF2EMF.Sizes.Huge"),
         grg: game.i18n.localize("PF2EMF.Sizes.Gargantuan")
-      }
+      },
+
+      attackProfiles: Object.fromEntries(
+        Object.entries(ATTACK_PROFILES).map(([key, profile]) => [
+          key,
+          game.i18n.localize(profile.label)
+        ])
+      )
     };
   }
 
@@ -137,6 +146,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       role: fd.get("role") || "brute",
       size: fd.get("size") || "med",
       traits: fd.getAll("traits"),
+      attackProfile: fd.get("attackProfile") || "standard",
       ac: fd.get("ac") || "moderate",
       hp: fd.get("hp") || "moderate",
       fortitude: fd.get("fortitude") || "moderate",
@@ -198,12 +208,23 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         cha: Number(raw.abilities?.cha ?? 0)
       },
 
-      skills: raw.skills ?? {}
+      skills: raw.skills ?? {},
+
+      attacks: Array.isArray(raw.attacks)
+        ? raw.attacks.map(attack => ({
+            key: attack.key ?? foundry.utils.randomID(),
+            name: attack.name ?? "Strike",
+            attack: Number(attack.attack ?? this.formData.attack ?? 0),
+            damage: attack.damage ?? this.formData.damage ?? "1d6",
+            damageType: attack.damageType ?? "bludgeoning",
+            traits: attack.traits ?? []
+          }))
+        : []
     };
   }
 
   async #createActor(monster) {
-    return Actor.create({
+    const actor = await Actor.create({
       name: monster.name,
       type: "npc",
       system: {
@@ -261,5 +282,35 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         )
       }
     });
+
+    if (monster.attacks?.length) {
+      await actor.createEmbeddedDocuments(
+        "Item",
+        monster.attacks.map(attack => this.#buildStrikeItem(attack))
+      );
+    }
+
+    return actor;
+  }
+
+  #buildStrikeItem(attack) {
+    return {
+      name: attack.name,
+      type: "melee",
+      system: {
+        bonus: {
+          value: attack.attack
+        },
+        damageRolls: {
+          main: {
+            damage: attack.damage,
+            damageType: attack.damageType
+          }
+        },
+        traits: {
+          value: attack.traits ?? []
+        }
+      }
+    };
   }
 }

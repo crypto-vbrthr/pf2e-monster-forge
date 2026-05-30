@@ -1,19 +1,139 @@
-.pf2e-mf { padding: 0.75rem; }
-.pf2e-mf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-.pf2e-mf-panel { border: 1px solid var(--color-border-light-tertiary); border-radius: 6px; padding: 0.75rem; background: rgba(0,0,0,0.04); }
-.pf2e-mf-panel label { display: block; margin-top: 0.45rem; font-weight: 600; }
-.pf2e-mf-panel select, .pf2e-mf-panel input[type="text"] { width: 100%; }
-.pf2e-mf-traits { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; }
-.pf2e-mf-traits label { font-weight: 400; }
-.pf2e-mf-preview { margin-top: 0.75rem; }
-.pf2e-mf-statline { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
-.pf2e-mf-statline span { border: 1px solid var(--color-border-light-tertiary); border-radius: 4px; padding: 0.2rem 0.4rem; background: rgba(255,255,255,0.25); }
-.pf2e-mf-footer { margin-top: 0.75rem; display: flex; justify-content: flex-end; }
-
-.monster-forge-button {
-    width: 100%;
+.pf2emf-app {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 520px;
 }
 
-.monster-forge-button i {
-    margin-right: 5px;
+.pf2emf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.pf2emf-panel {
+  border: 1px solid var(--color-border-light-tertiary);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.04);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.pf2emf-panel h3 {
+  margin: 0 0 8px;
+  border-bottom: 1px solid var(--color-border-light-tertiary);
+  padding-bottom: 4px;
+}
+
+.pf2emf-panel h4 {
+  margin: 12px 0 6px;
+}
+
+.pf2emf-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pf2emf-app .form-group {
+  margin-bottom: 8px;
+}
+
+.pf2emf-app label {
+  font-weight: 600;
+}
+
+.pf2emf-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+}
+
+.pf2emf-tags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.pf2emf-tags span {
+  border: 1px solid var(--color-border-light-tertiary);
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pf2emf-statline {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.pf2emf-statline div {
+  border: 1px solid var(--color-border-light-tertiary);
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pf2emf-inline,
+.pf2emf-abilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pf2emf-inline span,
+.pf2emf-abilities span {
+  border-radius: 6px;
+  padding: 3px 7px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.pf2emf-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.pf2emf-list li {
+  margin-bottom: 6px;
+}
+
+.pf2emf-list li span {
+  display: inline-block;
+  margin-left: 6px;
+}
+
+.pf2emf-list small {
+  display: block;
+  opacity: 0.8;
+}
+
+.pf2emf-footer {
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid var(--color-border-light-tertiary);
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+
+.pf2emf-footer button {
+  flex: 1;
+}
+
+@media (max-width: 720px) {
+  .pf2emf-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pf2emf-two {
+    grid-template-columns: 1fr;
+  }
 }

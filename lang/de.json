@@ -67,5 +67,9 @@
   "PF2EMF.Sizes.Medium": "Mittelgroß",
   "PF2EMF.Sizes.Large": "Groß",
   "PF2EMF.Sizes.Huge": "Riesig",
-  "PF2EMF.Sizes.Gargantuan": "Gigantisch"
+  "PF2EMF.Sizes.Gargantuan": "Gigantisch",
+
+  "PF2EMF.AttackMode": "Angriffsmodus",
+  "PF2EMF.AttackProfiles.Standard": "Ein Standardangriff",
+  "PF2EMF.AttackProfiles.AccurateAndHeavy": "Zwei Angriffe: präzise & schwer"
 }
