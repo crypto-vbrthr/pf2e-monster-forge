@@ -1,5 +1,6 @@
 import { PF2E_CREATURE_STATS } from "../data/pf2e-stat-tables.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
+import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
 
 export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
@@ -185,32 +186,16 @@ function generateAbilities(
   };
 }
 
-function getAbilityModifier(
-  level,
-  rank
-) {
-  const safeLevel =
-    Math.max(
-      0,
-      Number(level)
-    );
-
-  const tier =
-    Math.floor(
-      safeLevel / 5
-    );
-
-  const values = {
-    terrible: -1 + tier,
-    low: 0 + tier,
-    moderate: 2 + tier,
-    high: 4 + tier,
-    extreme: 5 + tier
-  };
+function getAbilityModifier(level, rank) {
+  const table =
+    ABILITY_MODIFIERS[level] ??
+    ABILITY_MODIFIERS[String(level)] ??
+    ABILITY_MODIFIERS[1];
 
   return (
-    values[rank] ??
-    values.moderate
+    table?.[rank] ??
+    table?.moderate ??
+    0
   );
 }
 
@@ -235,3 +220,4 @@ function fallback(category) {
       return 0;
   }
 }
+
