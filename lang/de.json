@@ -48,5 +48,6 @@
   "PF2EMF.stat.attack": "Angriff",
   "PF2EMF.stat.damage": "Schaden",
   "PF2EMF.attack.primaryStrike": "Primärangriff",
-  "PF2EMF.attack.energyBolt": "Energiestrahl"
+  "PF2EMF.attack.energyBolt": "Energiestrahl",
+  "PF2EMF.OpenForge": "Monster Forge"
 }

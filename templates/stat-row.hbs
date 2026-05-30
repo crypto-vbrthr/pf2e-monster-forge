@@ -1,6 +1,21 @@
-<label>{{label}}</label>
-<select name="{{field}}">
-  {{#each ranks}}
-    <option value="{{key}}" {{#ifEquals ../value key}}selected{{/ifEquals}}>{{label}}</option>
-  {{/each}}
-</select>
+<div class="pf2emf-stat-row">
+  <label for="{{id}}">{{label}}</label>
+
+  <select id="{{id}}" name="{{name}}">
+    <option value="terrible" {{#if (eq value "terrible")}}selected{{/if}}>
+      {{localize "PF2EMF.StatRanks.Terrible"}}
+    </option>
+    <option value="low" {{#if (eq value "low")}}selected{{/if}}>
+      {{localize "PF2EMF.StatRanks.Low"}}
+    </option>
+    <option value="moderate" {{#if (eq value "moderate")}}selected{{/if}}>
+      {{localize "PF2EMF.StatRanks.Moderate"}}
+    </option>
+    <option value="high" {{#if (eq value "high")}}selected{{/if}}>
+      {{localize "PF2EMF.StatRanks.High"}}
+    </option>
+    <option value="extreme" {{#if (eq value "extreme")}}selected{{/if}}>
+      {{localize "PF2EMF.StatRanks.Extreme"}}
+    </option>
+  </select>
+</div>
