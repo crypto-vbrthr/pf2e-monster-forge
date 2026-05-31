@@ -1,34 +1,36 @@
 export const ADJUSTMENT_PROFILES = {
   normal: {
     label: "PF2EMF.Adjustments.Normal",
-    ac: 0,
-    perception: 0,
-    saves: 0,
-    attack: 0,
-    damageStep: 0,
-    skill: 0,
-    hpMultiplier: 1
+    modifier: 0,
+    damage: 0,
+    hpMode: "none"
   },
 
   weak: {
     label: "PF2EMF.Adjustments.Weak",
-    ac: -2,
-    perception: -2,
-    saves: -2,
-    attack: -2,
-    damageStep: -1,
-    skill: -2,
-    hpMultiplier: 0.8
+    modifier: -2,
+    damage: -2,
+    hpMode: "weak"
   },
 
   elite: {
     label: "PF2EMF.Adjustments.Elite",
-    ac: 2,
-    perception: 2,
-    saves: 2,
-    attack: 2,
-    damageStep: 1,
-    skill: 2,
-    hpMultiplier: 1.2
+    modifier: 2,
+    damage: 2,
+    hpMode: "elite"
   }
 };
+
+export function getHpAdjustment(level, hpMode) {
+  if (hpMode === "none") return 0;
+
+  const absoluteLevel = Number(level);
+
+  let amount = 20;
+
+  if (absoluteLevel <= 1) amount = 10;
+  else if (absoluteLevel <= 4) amount = 15;
+  else if (absoluteLevel >= 20) amount = 30;
+
+  return hpMode === "weak" ? -amount : amount;
+}

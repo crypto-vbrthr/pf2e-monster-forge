@@ -2,11 +2,16 @@ import {
   PF2E_CREATURE_STATS,
   PF2E_PERCEPTION_STATS
 } from "../data/pf2e-stat-tables.js";
+
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
 import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
 import { TRAIT_EFFECTS, scaleTraitValue } from "../data/trait-effects.js";
-import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
+
+import {
+  ADJUSTMENT_PROFILES,
+  getHpAdjustment
+} from "../data/adjustment-profiles.js";
 
 import {
   ATTACK_PROFILES,
@@ -18,10 +23,15 @@ import {
 export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
   const role = input.role ?? "brute";
-  const attackProfile = input.attackProfile ?? "standard";
-  const adjustmentKey = input.adjustment ?? "normal";
-  const adjustment = ADJUSTMENT_PROFILES[adjustmentKey] ?? ADJUSTMENT_PROFILES.norma
   const traits = input.traits ?? [];
+  const attackProfile = input.attackProfile ?? "standard";
+
+  const adjustmentKey = input.adjustment ?? "normal";
+  const adjustment =
+    ADJUSTMENT_PROFILES[adjustmentKey] ??
+    ADJUSTMENT_PROFILES.normal;
+
+  const adjustmentMod = Number(adjustment.modifier ?? 0);
 
   const preset =
     ROLE_PRESETS[role] ??
@@ -29,52 +39,55 @@ export function generateMonsterDraft(input = {}) {
 
   const acRank = input.ac ?? preset.ac ?? "moderate";
   const hpRank = input.hp ?? preset.hp ?? "moderate";
+  const perceptionRank = input.perception ?? preset.perception ?? "moderate";
   const fortRank = input.fortitude ?? preset.fortitude ?? "moderate";
   const reflexRank = input.reflex ?? preset.reflex ?? "moderate";
   const willRank = input.will ?? preset.will ?? "moderate";
-  const perceptionRank =
-    input.perception ??
-    preset.perception ??
-    "moderate";
   const attackRank = input.attack ?? preset.attack ?? "moderate";
   const damageRank = input.damage ?? preset.damage ?? "moderate";
 
   const baseAttack = getStat(level, "attack", attackRank);
   const baseDamage = getStat(level, "damage", damageRank);
-  const perception =
-    getPerception(level, perceptionRank, traits);
 
   const traitEffects = generateTraitEffects(level, traits);
   const abilities = generateAbilities(level, preset, traitEffects);
+
   const skills = applySkillAdjustment(
     generateSkills(level, role, traitEffects),
-    adjustment
+    adjustmentMod
   );
+
+  const perception =
+    getPerception(level, perceptionRank, traits) + adjustmentMod;
 
   return {
     name: input.name || "Forged Monster",
     level,
     role,
     size: input.size ?? "med",
+    adjustment: adjustmentKey,
 
     traits,
     extraTraits: traitEffects.extraTraits,
 
-    ac: getStat(level, "ac", acRank) + adjustment.ac,
-    hp: applyHpAdjustment(
-      getStat(level, "hp", hpRank),
-      adjustment
+    ac: getStat(level, "ac", acRank) + adjustmentMod,
+
+    hp: Math.max(
+      1,
+      getStat(level, "hp", hpRank) +
+        getHpAdjustment(level, adjustment.hpMode)
     ),
-    perception: perception + adjustment.perception,
+
+    perception,
 
     saves: {
-      fortitude: getStat(level, "saves", fortRank) + adjustment.saves,
-      reflex: getStat(level, "saves", reflexRank) + adjustment.saves,
-      will: getStat(level, "saves", willRank) + adjustment.saves
+      fortitude: getStat(level, "saves", fortRank) + adjustmentMod,
+      reflex: getStat(level, "saves", reflexRank) + adjustmentMod,
+      will: getStat(level, "saves", willRank) + adjustmentMod
     },
 
-    attack: baseAttack + adjustment.attack,
-    damage: baseDamage,
+    attack: baseAttack + adjustmentMod,
+    damage: adjustDamageFormula(baseDamage, adjustment.damage),
 
     abilities,
     skills,
@@ -88,11 +101,12 @@ export function generateMonsterDraft(input = {}) {
 
     attacks: generateAttacks(
       level,
-      baseAttack + adjustment.attack,
-      adjustDamageRankByStep(damageRank, adjustment.damageStep),
+      baseAttack + adjustmentMod,
+      damageRank,
       attackProfile,
       role,
-      traits
+      traits,
+      adjustment.damage
     )
   };
 }
@@ -117,23 +131,34 @@ function generateTraitEffects(level, traits = []) {
     if (!effect) continue;
 
     for (const sense of effect.senses ?? []) {
-      if (!result.senses.includes(sense)) result.senses.push(sense);
+      if (!result.senses.includes(sense)) {
+        result.senses.push(sense);
+      }
     }
 
     for (const language of effect.languages ?? []) {
-      if (!result.languages.includes(language)) result.languages.push(language);
+      if (!result.languages.includes(language)) {
+        result.languages.push(language);
+      }
     }
 
     for (const immunity of effect.immunities ?? []) {
-      if (!result.immunities.includes(immunity)) result.immunities.push(immunity);
+      if (!result.immunities.includes(immunity)) {
+        result.immunities.push(immunity);
+      }
     }
 
     for (const extraTrait of effect.traits ?? []) {
-      if (!result.extraTraits.includes(extraTrait)) result.extraTraits.push(extraTrait);
+      if (!result.extraTraits.includes(extraTrait)) {
+        result.extraTraits.push(extraTrait);
+      }
     }
 
     for (const [speed, value] of Object.entries(effect.speeds ?? {})) {
-      result.speeds[speed] = Math.max(result.speeds[speed] ?? 0, value);
+      result.speeds[speed] = Math.max(
+        result.speeds[speed] ?? 0,
+        value
+      );
     }
 
     for (const [type, value] of Object.entries(effect.resistances ?? {})) {
@@ -163,14 +188,12 @@ function getPerception(level, rank, traits = []) {
     PF2E_PERCEPTION_STATS[String(level)] ??
     PF2E_PERCEPTION_STATS[1];
 
-  let value =
+  const value =
     table?.[rank] ??
     table?.moderate ??
     0;
 
-  value += getPerceptionTraitModifier(traits);
-
-  return value;
+  return value + getPerceptionTraitModifier(traits);
 }
 
 function getPerceptionTraitModifier(traits = []) {
@@ -201,7 +224,8 @@ function generateAttacks(
   damageRank,
   profileKey,
   role = "brute",
-  traits = []
+  traits = [],
+  damageAdjustment = 0
 ) {
   const profile =
     ATTACK_PROFILES[profileKey] ??
@@ -218,7 +242,8 @@ function generateAttacks(
         level,
         attack: baseAttack + 2,
         damageRank: adjustDamageRank(damageRank, "lower"),
-        elemental
+        elemental,
+        damageAdjustment
       }),
 
       buildAttack({
@@ -227,7 +252,8 @@ function generateAttacks(
         level,
         attack: baseAttack - 2,
         damageRank: adjustDamageRank(damageRank, "higher"),
-        elemental
+        elemental,
+        damageAdjustment
       })
     ];
   }
@@ -242,7 +268,8 @@ function generateAttacks(
       level,
       attack: baseAttack,
       damageRank,
-      elemental
+      elemental,
+      damageAdjustment
     })
   ];
 }
@@ -284,7 +311,8 @@ function buildAttack({
   level,
   attack,
   damageRank,
-  elemental
+  elemental,
+  damageAdjustment = 0
 }) {
   const template =
     ATTACK_TEMPLATES[templateKey] ??
@@ -298,11 +326,13 @@ function buildAttack({
     traits.push(elemental.extraTrait);
   }
 
+  const baseDamage = getStat(level, "damage", damageRank);
+
   return {
     key,
     name: template.name,
     attack,
-    damage: getStat(level, "damage", damageRank),
+    damage: adjustDamageFormula(baseDamage, damageAdjustment),
     damageType: elemental?.damageType ?? template.damageType ?? "bludgeoning",
     traits
   };
@@ -329,6 +359,14 @@ function adjustDamageRank(baseRank, mode) {
   }
 
   return ranks[safeIndex];
+}
+
+function adjustDamageFormula(formula, adjustment = 0) {
+  const amount = Number(adjustment ?? 0);
+  if (!amount) return formula;
+
+  if (amount > 0) return `${formula}+${amount}`;
+  return `${formula}${amount}`;
 }
 
 function getStat(level, category, rank) {
@@ -415,41 +453,17 @@ function getSkillModifier(level, rank) {
   return ranks[rank] ?? ranks.moderate;
 }
 
-function applyHpAdjustment(hp, adjustment) {
-  return Math.max(1, Math.round(Number(hp) * adjustment.hpMultiplier));
-}
-
-function applySkillAdjustment(skills, adjustment) {
+function applySkillAdjustment(skills, modifier) {
   const result = {};
 
   for (const [slug, skill] of Object.entries(skills ?? {})) {
     result[slug] = {
       ...skill,
-      value: Number(skill.value ?? 0) + adjustment.skill
+      value: Number(skill.value ?? 0) + Number(modifier ?? 0)
     };
   }
 
   return result;
-}
-
-function adjustDamageRankByStep(rank, step = 0) {
-  const ranks = [
-    "terrible",
-    "low",
-    "moderate",
-    "high",
-    "extreme"
-  ];
-
-  const index = ranks.indexOf(rank);
-  const safeIndex = index >= 0 ? index : 2;
-
-  return ranks[
-    Math.min(
-      ranks.length - 1,
-      Math.max(0, safeIndex + Number(step ?? 0))
-    )
-  ];
 }
 
 function fallback(category) {
