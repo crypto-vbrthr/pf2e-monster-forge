@@ -2,6 +2,7 @@ import { PF2E_CREATURE_STATS } from "../data/pf2e-stat-tables.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
 import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
+import { TRAIT_EFFECTS, scaleTraitValue } from "../data/trait-effects.js";
 
 import {
   ATTACK_PROFILES,
@@ -14,64 +15,37 @@ export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
   const role = input.role ?? "brute";
   const attackProfile = input.attackProfile ?? "standard";
+  const traits = input.traits ?? [];
 
   const preset =
     ROLE_PRESETS[role] ??
     ROLE_PRESETS.brute;
 
-  const acRank =
-    input.ac ??
-    preset.ac ??
-    "moderate";
+  const acRank = input.ac ?? preset.ac ?? "moderate";
+  const hpRank = input.hp ?? preset.hp ?? "moderate";
+  const fortRank = input.fortitude ?? preset.fortitude ?? "moderate";
+  const reflexRank = input.reflex ?? preset.reflex ?? "moderate";
+  const willRank = input.will ?? preset.will ?? "moderate";
+  const attackRank = input.attack ?? preset.attack ?? "moderate";
+  const damageRank = input.damage ?? preset.damage ?? "moderate";
 
-  const hpRank =
-    input.hp ??
-    preset.hp ??
-    "moderate";
+  const baseAttack = getStat(level, "attack", attackRank);
+  const baseDamage = getStat(level, "damage", damageRank);
 
-  const fortRank =
-    input.fortitude ??
-    preset.fortitude ??
-    "moderate";
-
-  const reflexRank =
-    input.reflex ??
-    preset.reflex ??
-    "moderate";
-
-  const willRank =
-    input.will ??
-    preset.will ??
-    "moderate";
-
-  const attackRank =
-    input.attack ??
-    preset.attack ??
-    "moderate";
-
-  const damageRank =
-    input.damage ??
-    preset.damage ??
-    "moderate";
-
-  const baseAttack =
-    getStat(level, "attack", attackRank);
-
-  const baseDamage =
-    getStat(level, "damage", damageRank);
+  const traitEffects = generateTraitEffects(level, traits);
+  const abilities = generateAbilities(level, preset, traitEffects);
+  const skills = generateSkills(level, role, traitEffects);
 
   return {
     name: input.name || "Forged Monster",
-
     level,
     role,
-
     size: input.size ?? "med",
 
-    traits: input.traits ?? [],
+    traits,
+    extraTraits: traitEffects.extraTraits,
 
     ac: getStat(level, "ac", acRank),
-
     hp: getStat(level, "hp", hpRank),
 
     saves: {
@@ -81,18 +55,17 @@ export function generateMonsterDraft(input = {}) {
     },
 
     attack: baseAttack,
-
     damage: baseDamage,
 
-    abilities: generateAbilities(
-      level,
-      preset
-    ),
+    abilities,
+    skills,
 
-    skills: generateSkills(
-      level,
-      role
-    ),
+    senses: traitEffects.senses,
+    speeds: traitEffects.speeds,
+    languages: traitEffects.languages,
+    resistances: traitEffects.resistances,
+    weaknesses: traitEffects.weaknesses,
+    immunities: traitEffects.immunities,
 
     attacks: generateAttacks(
       level,
@@ -100,9 +73,69 @@ export function generateMonsterDraft(input = {}) {
       damageRank,
       attackProfile,
       role,
-      input.traits ?? []
+      traits
     )
   };
+}
+
+function generateTraitEffects(level, traits = []) {
+  const result = {
+    senses: [],
+    speeds: {
+      land: 25
+    },
+    languages: [],
+    resistances: {},
+    weaknesses: {},
+    immunities: [],
+    extraTraits: [],
+    skillOverrides: {},
+    abilityOverrides: {}
+  };
+
+  for (const trait of traits) {
+    const effect = TRAIT_EFFECTS[trait];
+    if (!effect) continue;
+
+    for (const sense of effect.senses ?? []) {
+      if (!result.senses.includes(sense)) result.senses.push(sense);
+    }
+
+    for (const language of effect.languages ?? []) {
+      if (!result.languages.includes(language)) result.languages.push(language);
+    }
+
+    for (const immunity of effect.immunities ?? []) {
+      if (!result.immunities.includes(immunity)) result.immunities.push(immunity);
+    }
+
+    for (const extraTrait of effect.traits ?? []) {
+      if (!result.extraTraits.includes(extraTrait)) result.extraTraits.push(extraTrait);
+    }
+
+    for (const [speed, value] of Object.entries(effect.speeds ?? {})) {
+      result.speeds[speed] = Math.max(result.speeds[speed] ?? 0, value);
+    }
+
+    for (const [type, value] of Object.entries(effect.resistances ?? {})) {
+      result.resistances[type] = Math.max(
+        result.resistances[type] ?? 0,
+        scaleTraitValue(level, value)
+      );
+    }
+
+    for (const [type, value] of Object.entries(effect.weaknesses ?? {})) {
+      result.weaknesses[type] = Math.max(
+        result.weaknesses[type] ?? 0,
+        scaleTraitValue(level, value)
+      );
+    }
+
+    Object.assign(result.skillOverrides, effect.skills ?? {});
+    Object.assign(result.abilityOverrides, effect.abilityOverrides ?? {});
+  }
+
+  return result;
 }
 
 function generateAttacks(
@@ -117,16 +150,8 @@ function generateAttacks(
     ATTACK_PROFILES[profileKey] ??
     ATTACK_PROFILES.standard;
 
-  const style =
-    resolveAttackStyle(
-      role,
-      traits
-    );
-
-  const elemental =
-    resolveElementalTrait(
-      traits
-    );
+  const style = resolveAttackStyle(role, traits);
+  const elemental = resolveElementalTrait(traits);
 
   if (profile.mode === "accurateAndHeavy") {
     return [
@@ -135,10 +160,7 @@ function generateAttacks(
         templateKey: style.accurate,
         level,
         attack: baseAttack + 2,
-        damageRank: adjustDamageRank(
-          damageRank,
-          "lower"
-        ),
+        damageRank: adjustDamageRank(damageRank, "lower"),
         elemental
       }),
 
@@ -147,10 +169,7 @@ function generateAttacks(
         templateKey: style.heavy,
         level,
         attack: baseAttack - 2,
-        damageRank: adjustDamageRank(
-          damageRank,
-          "higher"
-        ),
+        damageRank: adjustDamageRank(damageRank, "higher"),
         elemental
       })
     ];
@@ -171,17 +190,13 @@ function generateAttacks(
   ];
 }
 
-function resolveAttackStyle(
-  role,
-  traits = []
-) {
+function resolveAttackStyle(role, traits = []) {
   const base =
     ROLE_ATTACK_STYLES[role] ??
     ROLE_ATTACK_STYLES.brute;
 
   for (const trait of traits) {
-    const override =
-      TRAIT_ATTACK_OVERRIDES[trait];
+    const override = TRAIT_ATTACK_OVERRIDES[trait];
 
     if (override?.preferred) {
       return {
@@ -194,17 +209,11 @@ function resolveAttackStyle(
   return base;
 }
 
-function resolveElementalTrait(
-  traits = []
-) {
+function resolveElementalTrait(traits = []) {
   for (const trait of traits) {
-    const override =
-      TRAIT_ATTACK_OVERRIDES[trait];
+    const override = TRAIT_ATTACK_OVERRIDES[trait];
 
-    if (
-      override?.damageType ||
-      override?.extraTrait
-    ) {
+    if (override?.damageType || override?.extraTrait) {
       return override;
     }
   }
@@ -228,41 +237,21 @@ function buildAttack({
     ...(template.traits ?? [])
   ];
 
-  if (
-    elemental?.extraTrait &&
-    !traits.includes(elemental.extraTrait)
-  ) {
-    traits.push(
-      elemental.extraTrait
-    );
+  if (elemental?.extraTrait && !traits.includes(elemental.extraTrait)) {
+    traits.push(elemental.extraTrait);
   }
 
   return {
     key,
-
     name: template.name,
-
     attack,
-
-    damage: getStat(
-      level,
-      "damage",
-      damageRank
-    ),
-
-    damageType:
-      elemental?.damageType ??
-      template.damageType ??
-      "bludgeoning",
-
+    damage: getStat(level, "damage", damageRank),
+    damageType: elemental?.damageType ?? template.damageType ?? "bludgeoning",
     traits
   };
 }
 
-function adjustDamageRank(
-  baseRank,
-  mode
-) {
+function adjustDamageRank(baseRank, mode) {
   const ranks = [
     "terrible",
     "low",
@@ -271,40 +260,21 @@ function adjustDamageRank(
     "extreme"
   ];
 
-  const index =
-    ranks.indexOf(baseRank);
-
-  const safeIndex =
-    index >= 0
-      ? index
-      : 2;
+  const index = ranks.indexOf(baseRank);
+  const safeIndex = index >= 0 ? index : 2;
 
   if (mode === "lower") {
-    return ranks[
-      Math.max(
-        0,
-        safeIndex - 1
-      )
-    ];
+    return ranks[Math.max(0, safeIndex - 1)];
   }
 
   if (mode === "higher") {
-    return ranks[
-      Math.min(
-        ranks.length - 1,
-        safeIndex + 1
-      )
-    ];
+    return ranks[Math.min(ranks.length - 1, safeIndex + 1)];
   }
 
   return ranks[safeIndex];
 }
 
-function getStat(
-  level,
-  category,
-  rank
-) {
+function getStat(level, category, rank) {
   const levelTable =
     PF2E_CREATURE_STATS[level] ??
     PF2E_CREATURE_STATS[String(level)] ??
@@ -314,8 +284,7 @@ function getStat(
     return fallback(category);
   }
 
-  const categoryTable =
-    levelTable[category];
+  const categoryTable = levelTable[category];
 
   if (!categoryTable) {
     return fallback(category);
@@ -328,50 +297,23 @@ function getStat(
   );
 }
 
-function generateAbilities(
-  level,
-  preset
-) {
-  const abilityPreset =
-    preset.abilities ?? {};
+function generateAbilities(level, preset, traitEffects = {}) {
+  const abilityPreset = {
+    ...(preset.abilities ?? {}),
+    ...(traitEffects.abilityOverrides ?? {})
+  };
 
   return {
-    str: getAbilityModifier(
-      level,
-      abilityPreset.str ?? "moderate"
-    ),
-
-    dex: getAbilityModifier(
-      level,
-      abilityPreset.dex ?? "moderate"
-    ),
-
-    con: getAbilityModifier(
-      level,
-      abilityPreset.con ?? "moderate"
-    ),
-
-    int: getAbilityModifier(
-      level,
-      abilityPreset.int ?? "moderate"
-    ),
-
-    wis: getAbilityModifier(
-      level,
-      abilityPreset.wis ?? "moderate"
-    ),
-
-    cha: getAbilityModifier(
-      level,
-      abilityPreset.cha ?? "moderate"
-    )
+    str: getAbilityModifier(level, abilityPreset.str ?? "moderate"),
+    dex: getAbilityModifier(level, abilityPreset.dex ?? "moderate"),
+    con: getAbilityModifier(level, abilityPreset.con ?? "moderate"),
+    int: getAbilityModifier(level, abilityPreset.int ?? "moderate"),
+    wis: getAbilityModifier(level, abilityPreset.wis ?? "moderate"),
+    cha: getAbilityModifier(level, abilityPreset.cha ?? "moderate")
   };
 }
 
-function getAbilityModifier(
-  level,
-  rank
-) {
+function getAbilityModifier(level, rank) {
   const table =
     ABILITY_MODIFIERS[level] ??
     ABILITY_MODIFIERS[String(level)] ??
@@ -384,27 +326,18 @@ function getAbilityModifier(
   );
 }
 
-function generateSkills(
-  level,
-  role
-) {
-  const skills =
-    ROLE_SKILL_PRESETS[role] ??
-    ROLE_SKILL_PRESETS.brute;
+function generateSkills(level, role, traitEffects = {}) {
+  const skills = {
+    ...(ROLE_SKILL_PRESETS[role] ?? ROLE_SKILL_PRESETS.brute),
+    ...(traitEffects.skillOverrides ?? {})
+  };
 
   const result = {};
 
   for (const [slug, rank] of Object.entries(skills)) {
     result[slug] = {
-      label:
-        SKILL_LABELS[slug] ??
-        slug,
-
-      value:
-        getSkillModifier(
-          level,
-          rank
-        )
+      label: SKILL_LABELS[slug] ?? slug,
+      value: getSkillModifier(level, rank)
     };
   }
 

@@ -18,7 +18,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     position: {
       width: 760,
-      height: 840
+      height: 620
     }
   };
 
@@ -236,12 +236,17 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   #normalizeMonster(raw = {}) {
+    const traits = [
+      ...(raw.traits ?? this.formData.traits ?? []),
+      ...(raw.extraTraits ?? [])
+    ];
+
     return {
       name: raw.name ?? this.formData.name ?? "Forged Monster",
       level: Number(raw.level ?? this.formData.level ?? 1),
       role: raw.role ?? this.formData.role ?? "brute",
       size: raw.size ?? this.formData.size ?? "med",
-      traits: raw.traits ?? this.formData.traits ?? [],
+      traits: [...new Set(traits)],
 
       ac: Number(raw.ac ?? raw.armorClass ?? 10),
       hp: Number(raw.hp ?? raw.hitPoints ?? 10),
@@ -265,6 +270,13 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       },
 
       skills: raw.skills ?? {},
+
+      senses: Array.isArray(raw.senses) ? raw.senses : [],
+      speeds: raw.speeds ?? { land: 25 },
+      languages: Array.isArray(raw.languages) ? raw.languages : [],
+      resistances: raw.resistances ?? {},
+      weaknesses: raw.weaknesses ?? {},
+      immunities: Array.isArray(raw.immunities) ? raw.immunities : [],
 
       attacks: Array.isArray(raw.attacks)
         ? raw.attacks.map(attack => ({
@@ -335,7 +347,57 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
               base: skill.value
             }
           ])
-        )
+        ),
+
+        perception: {
+          senses: monster.senses.map(sense => ({
+            type: sense
+          }))
+        },
+
+        details: {
+          level: {
+            value: monster.level
+          },
+          languages: {
+            value: monster.languages
+          }
+        },
+
+        attributes: {
+          ac: {
+            value: monster.ac
+          },
+          hp: {
+            value: monster.hp,
+            max: monster.hp
+          },
+          speed: {
+            value: monster.speeds.land ?? 25,
+            otherSpeeds: Object.entries(monster.speeds)
+              .filter(([key]) => key !== "land")
+              .map(([type, value]) => ({
+                type,
+                value
+              }))
+          }
+        },
+
+        resistances: Object.fromEntries(
+          Object.entries(monster.resistances ?? {}).map(([type, value]) => [
+            type,
+            { value }
+          ])
+        ),
+
+        weaknesses: Object.fromEntries(
+          Object.entries(monster.weaknesses ?? {}).map(([type, value]) => [
+            type,
+            { value }
+          ])
+        ),
+
+        immunities: monster.immunities
       }
     });
 
