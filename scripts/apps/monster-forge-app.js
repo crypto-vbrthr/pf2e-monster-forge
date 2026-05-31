@@ -322,7 +322,22 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             otherSpeeds: Object.entries(monster.speeds)
               .filter(([key]) => key !== "land")
               .map(([type, value]) => ({ type, value }))
-          }
+          },
+          resistances: Object.entries(monster.resistances ?? {}).map(([type, value]) => ({
+            type,
+            value,
+            exceptions: [],
+            doubleVs: []
+          })),
+          weaknesses: Object.entries(monster.weaknesses ?? {}).map(([type, value]) => ({
+            type,
+            value,
+            exceptions: []
+          })),
+          immunities: (monster.immunities ?? []).map(type => ({
+            type,
+            exceptions: []
+          }))
         },
 
         perception: {
@@ -343,21 +358,19 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           ])
         ),
 
-        resistances: Object.fromEntries(
-          Object.entries(monster.resistances ?? {}).map(([type, value]) => [
-            type,
-            { value }
-          ])
-        ),
+        resistances: Object.entries(monster.resistances ?? {}).map(([type, value]) => ({
+          type,
+          value
+        })),
 
-        weaknesses: Object.fromEntries(
-          Object.entries(monster.weaknesses ?? {}).map(([type, value]) => [
-            type,
-            { value }
-          ])
-        ),
+        weaknesses: Object.entries(monster.weaknesses ?? {}).map(([type, value]) => ({
+          type,
+          value
+        })),
 
-        immunities: monster.immunities
+        immunities: (monster.immunities ?? []).map(type => ({
+          type
+        }))
       }
     });
 
