@@ -1,4 +1,7 @@
-import { PF2E_CREATURE_STATS } from "../data/pf2e-stat-tables.js";
+import {
+  PF2E_CREATURE_STATS,
+  PF2E_PERCEPTION_STATS
+} from "../data/pf2e-stat-tables.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
 import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
@@ -26,11 +29,17 @@ export function generateMonsterDraft(input = {}) {
   const fortRank = input.fortitude ?? preset.fortitude ?? "moderate";
   const reflexRank = input.reflex ?? preset.reflex ?? "moderate";
   const willRank = input.will ?? preset.will ?? "moderate";
+  const perceptionRank =
+    input.perception ??
+    preset.perception ??
+    "moderate";
   const attackRank = input.attack ?? preset.attack ?? "moderate";
   const damageRank = input.damage ?? preset.damage ?? "moderate";
 
   const baseAttack = getStat(level, "attack", attackRank);
   const baseDamage = getStat(level, "damage", damageRank);
+  const perception =
+    getPerception(level, perceptionRank, traits);
 
   const traitEffects = generateTraitEffects(level, traits);
   const abilities = generateAbilities(level, preset, traitEffects);
@@ -47,6 +56,7 @@ export function generateMonsterDraft(input = {}) {
 
     ac: getStat(level, "ac", acRank),
     hp: getStat(level, "hp", hpRank),
+    perception,
 
     saves: {
       fortitude: getStat(level, "saves", fortRank),
@@ -136,6 +146,44 @@ function generateTraitEffects(level, traits = []) {
   }
 
   return result;
+}
+
+function getPerception(level, rank, traits = []) {
+  const table =
+    PF2E_PERCEPTION_STATS[level] ??
+    PF2E_PERCEPTION_STATS[String(level)] ??
+    PF2E_PERCEPTION_STATS[1];
+
+  let value =
+    table?.[rank] ??
+    table?.moderate ??
+    0;
+
+  value += getPerceptionTraitModifier(traits);
+
+  return value;
+}
+
+function getPerceptionTraitModifier(traits = []) {
+  let modifier = 0;
+
+  if (traits.includes("animal")) {
+    modifier += 2;
+  }
+
+  if (traits.includes("dragon")) {
+    modifier += 2;
+  }
+
+  if (traits.includes("beast")) {
+    modifier += 1;
+  }
+
+  if (traits.includes("construct")) {
+    modifier -= 2;
+  }
+
+  return modifier;
 }
 
 function generateAttacks(

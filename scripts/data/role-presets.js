@@ -5,6 +5,7 @@ export const ROLE_PRESETS = {
     fortitude: "high",
     reflex: "low",
     will: "low",
+    perception: "moderate",
     attack: "moderate",
     damage: "extreme",
     abilities: {
@@ -23,6 +24,7 @@ export const ROLE_PRESETS = {
     fortitude: "high",
     reflex: "moderate",
     will: "moderate",
+    perception: "high",
     attack: "high",
     damage: "moderate",
     abilities: {
@@ -41,6 +43,7 @@ export const ROLE_PRESETS = {
     fortitude: "moderate",
     reflex: "high",
     will: "low",
+    perception: "high",
     attack: "high",
     damage: "high",
     abilities: {
@@ -59,6 +62,7 @@ export const ROLE_PRESETS = {
     fortitude: "low",
     reflex: "moderate",
     will: "high",
+    perception: "moderate",
     attack: "low",
     damage: "low",
     abilities: {

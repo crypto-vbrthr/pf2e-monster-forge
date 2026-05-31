@@ -74,6 +74,13 @@
         </div>
 
         <div class="form-group">
+          <label>Wahrnehmung</label>
+          <select name="perception">
+            {{selectOptions statRanks selected=data.perception}}
+          </select>
+        </div>
+
+        <div class="form-group">
           <label>Zähigkeit</label>
           <select name="fortitude">
             {{selectOptions statRanks selected=data.fortitude}}
@@ -124,25 +131,11 @@
       </div>
 
       <div class="pf2emf-statline">
-        <div>
-          <strong>RK</strong>
-          <span>{{preview.ac}}</span>
-        </div>
-
-        <div>
-          <strong>TP</strong>
-          <span>{{preview.hp}}</span>
-        </div>
-
-        <div>
-          <strong>Angriff</strong>
-          <span>+{{preview.attack}}</span>
-        </div>
-
-        <div>
-          <strong>Schaden</strong>
-          <span>{{preview.damage}}</span>
-        </div>
+        <div><strong>RK</strong><span>{{preview.ac}}</span></div>
+        <div><strong>TP</strong><span>{{preview.hp}}</span></div>
+        <div><strong>Wahrnehmung</strong><span>+{{preview.perception}}</span></div>
+        <div><strong>Angriff</strong><span>+{{preview.attack}}</span></div>
+        <div><strong>Schaden</strong><span>{{preview.damage}}</span></div>
       </div>
 
       <h4>Rettungswürfe</h4>

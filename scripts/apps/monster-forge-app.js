@@ -43,6 +43,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       attackProfile: "standard",
       ac: preset.ac ?? "moderate",
       hp: preset.hp ?? "moderate",
+      perception: preset.perception ?? "moderate",
       fortitude: preset.fortitude ?? "moderate",
       reflex: preset.reflex ?? "moderate",
       will: preset.will ?? "moderate",
@@ -205,6 +206,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       attackProfile: fd.get("attackProfile") || "standard",
       ac: fd.get("ac") || "moderate",
       hp: fd.get("hp") || "moderate",
+      perception: fd.get("perception") || "moderate",
       fortitude: fd.get("fortitude") || "moderate",
       reflex: fd.get("reflex") || "moderate",
       will: fd.get("will") || "moderate",
@@ -222,6 +224,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       ...this.formData,
       ac: preset.ac ?? "moderate",
       hp: preset.hp ?? "moderate",
+      perception: preset.perception ?? "moderate",
       fortitude: preset.fortitude ?? "moderate",
       reflex: preset.reflex ?? "moderate",
       will: preset.will ?? "moderate",
@@ -250,6 +253,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
       ac: Number(raw.ac ?? raw.armorClass ?? 10),
       hp: Number(raw.hp ?? raw.hitPoints ?? 10),
+      perception: Number(raw.perception ?? 0),
 
       saves: {
         fortitude: Number(raw.saves?.fortitude ?? raw.fortitude ?? raw.fort ?? 0),
@@ -350,6 +354,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         ),
 
         perception: {
+          mod: monster.perception,
           senses: monster.senses.map(sense => ({
             type: sense
           }))

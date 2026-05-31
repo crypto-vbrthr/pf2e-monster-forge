@@ -27,3 +27,33 @@ export const PF2E_CREATURE_STATS = {
   24: { ac: { terrible: 48, low: 49, moderate: 51, high: 52, extreme: 54 }, hp: { terrible: 264, low: 340, moderate: 455, high: 570, extreme: 715 }, saves: { terrible: 36, low: 39, moderate: 42, high: 44, extreme: 47 }, attack: { terrible: 40, low: 42, moderate: 44, high: 46, extreme: 48 }, damage: { terrible: "5d10+23", low: "6d10+24", moderate: "7d10+28", high: "8d10+30", extreme: "9d10+36" } },
   25: { ac: { terrible: 49, low: 51, moderate: 52, high: 54, extreme: 55 }, hp: { terrible: 276, low: 355, moderate: 475, high: 595, extreme: 750 }, saves: { terrible: 37, low: 41, moderate: 43, high: 45, extreme: 48 }, attack: { terrible: 41, low: 43, moderate: 45, high: 47, extreme: 49 }, damage: { terrible: "5d10+25", low: "6d10+26", moderate: "7d10+30", high: "8d10+32", extreme: "9d10+38" } }
 };
+
+export const PF2E_PERCEPTION_STATS = {
+  "-1": { terrible: 1, low: 3, moderate: 5, high: 7, extreme: 9 },
+  0: { terrible: 2, low: 4, moderate: 6, high: 8, extreme: 10 },
+  1: { terrible: 3, low: 5, moderate: 7, high: 9, extreme: 11 },
+  2: { terrible: 5, low: 7, moderate: 9, high: 11, extreme: 13 },
+  3: { terrible: 6, low: 8, moderate: 10, high: 12, extreme: 15 },
+  4: { terrible: 8, low: 10, moderate: 12, high: 14, extreme: 17 },
+  5: { terrible: 9, low: 11, moderate: 14, high: 16, extreme: 18 },
+  6: { terrible: 11, low: 13, moderate: 15, high: 17, extreme: 20 },
+  7: { terrible: 12, low: 14, moderate: 16, high: 18, extreme: 21 },
+  8: { terrible: 14, low: 16, moderate: 18, high: 20, extreme: 23 },
+  9: { terrible: 15, low: 17, moderate: 19, high: 21, extreme: 24 },
+  10: { terrible: 17, low: 19, moderate: 21, high: 23, extreme: 26 },
+  11: { terrible: 18, low: 20, moderate: 22, high: 24, extreme: 27 },
+  12: { terrible: 20, low: 22, moderate: 24, high: 26, extreme: 29 },
+  13: { terrible: 21, low: 23, moderate: 25, high: 27, extreme: 30 },
+  14: { terrible: 23, low: 25, moderate: 27, high: 29, extreme: 32 },
+  15: { terrible: 24, low: 26, moderate: 28, high: 30, extreme: 33 },
+  16: { terrible: 26, low: 28, moderate: 30, high: 32, extreme: 35 },
+  17: { terrible: 27, low: 29, moderate: 31, high: 33, extreme: 36 },
+  18: { terrible: 29, low: 31, moderate: 33, high: 35, extreme: 38 },
+  19: { terrible: 30, low: 32, moderate: 34, high: 36, extreme: 39 },
+  20: { terrible: 32, low: 34, moderate: 36, high: 38, extreme: 41 },
+  21: { terrible: 33, low: 35, moderate: 37, high: 39, extreme: 42 },
+  22: { terrible: 35, low: 37, moderate: 39, high: 41, extreme: 44 },
+  23: { terrible: 36, low: 38, moderate: 40, high: 42, extreme: 45 },
+  24: { terrible: 38, low: 40, moderate: 42, high: 44, extreme: 47 },
+  25: { terrible: 39, low: 41, moderate: 43, high: 45, extreme: 48 }
+};
