@@ -1,6 +1,7 @@
 import { generateMonsterDraft } from "../generators/monster-generator.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ATTACK_PROFILES } from "../data/attack-profiles.js";
+import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
 import * as TraitsData from "../data/traits.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -41,6 +42,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       size: game.settings.get(MODULE_ID, "defaultSize") ?? "med",
       traits: [],
       attackProfile: "standard",
+      adjustment: "normal",
       ac: preset.ac ?? "moderate",
       hp: preset.hp ?? "moderate",
       perception: preset.perception ?? "moderate",
@@ -67,10 +69,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       ? rawTraitsSource
       : Object.entries(rawTraitsSource).map(([key, value]) => {
           if (typeof value === "string") {
-            return {
-              value: key,
-              label: value
-            };
+            return { value: key, label: value };
           }
 
           return {
@@ -88,25 +87,12 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         };
       }
 
-      const value =
-        trait?.value ??
-        trait?.slug ??
-        trait?.id ??
-        String(trait);
-
-      const rawLabel =
-        trait?.label ??
-        trait?.name ??
-        value;
-
-      const label =
-        typeof rawLabel === "string"
-          ? localizeMaybe(rawLabel, value)
-          : String(value);
+      const value = trait?.value ?? trait?.slug ?? trait?.id ?? String(trait);
+      const rawLabel = trait?.label ?? trait?.name ?? value;
 
       return {
         value,
-        label,
+        label: typeof rawLabel === "string" ? localizeMaybe(rawLabel, value) : String(value),
         checked: selectedTraits.has(value)
       };
     });
@@ -142,6 +128,13 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
       attackProfiles: Object.fromEntries(
         Object.entries(ATTACK_PROFILES).map(([key, profile]) => [
+          key,
+          localizeMaybe(profile.label, key)
+        ])
+      ),
+
+      adjustmentProfiles: Object.fromEntries(
+        Object.entries(ADJUSTMENT_PROFILES).map(([key, profile]) => [
           key,
           localizeMaybe(profile.label, key)
         ])
@@ -182,7 +175,6 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       event.stopPropagation();
 
       this.#readForm();
-
       const monster = this.#makeMonster();
 
       await this.#createActor(monster);
@@ -204,6 +196,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       size: fd.get("size") || "med",
       traits: fd.getAll("traits"),
       attackProfile: fd.get("attackProfile") || "standard",
+      adjustment: fd.get("adjustment") || "normal",
       ac: fd.get("ac") || "moderate",
       hp: fd.get("hp") || "moderate",
       perception: fd.get("perception") || "moderate",
@@ -216,9 +209,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   #applyRolePreset() {
-    const preset =
-      ROLE_PRESETS[this.formData.role] ??
-      ROLE_PRESETS.brute;
+    const preset = ROLE_PRESETS[this.formData.role] ?? ROLE_PRESETS.brute;
 
     this.formData = {
       ...this.formData,
@@ -249,6 +240,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       level: Number(raw.level ?? this.formData.level ?? 1),
       role: raw.role ?? this.formData.role ?? "brute",
       size: raw.size ?? this.formData.size ?? "med",
+      adjustment: raw.adjustment ?? this.formData.adjustment ?? "normal",
       traits: [...new Set(traits)],
 
       ac: Number(raw.ac ?? raw.armorClass ?? 10),
@@ -301,15 +293,12 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       type: "npc",
       system: {
         details: {
-          level: {
-            value: monster.level
-          }
+          level: { value: monster.level },
+          languages: { value: monster.languages }
         },
 
         traits: {
-          size: {
-            value: monster.size
-          },
+          size: { value: monster.size },
           value: monster.traits
         },
 
@@ -323,56 +312,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         },
 
         attributes: {
-          ac: {
-            value: monster.ac
-          },
-          hp: {
-            value: monster.hp,
-            max: monster.hp
-          }
-        },
-
-        saves: {
-          fortitude: {
-            value: monster.saves.fortitude
-          },
-          reflex: {
-            value: monster.saves.reflex
-          },
-          will: {
-            value: monster.saves.will
-          }
-        },
-
-        skills: Object.fromEntries(
-          Object.entries(monster.skills ?? {}).map(([slug, skill]) => [
-            slug,
-            {
-              base: skill.value
-            }
-          ])
-        ),
-
-        perception: {
-          mod: monster.perception,
-          senses: monster.senses.map(sense => ({
-            type: sense
-          }))
-        },
-
-        details: {
-          level: {
-            value: monster.level
-          },
-          languages: {
-            value: monster.languages
-          }
-        },
-
-        attributes: {
-          ac: {
-            value: monster.ac
-          },
+          ac: { value: monster.ac },
           hp: {
             value: monster.hp,
             max: monster.hp
@@ -381,12 +321,27 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             value: monster.speeds.land ?? 25,
             otherSpeeds: Object.entries(monster.speeds)
               .filter(([key]) => key !== "land")
-              .map(([type, value]) => ({
-                type,
-                value
-              }))
+              .map(([type, value]) => ({ type, value }))
           }
         },
+
+        perception: {
+          mod: monster.perception,
+          senses: monster.senses.map(sense => ({ type: sense }))
+        },
+
+        saves: {
+          fortitude: { value: monster.saves.fortitude },
+          reflex: { value: monster.saves.reflex },
+          will: { value: monster.saves.will }
+        },
+
+        skills: Object.fromEntries(
+          Object.entries(monster.skills ?? {}).map(([slug, skill]) => [
+            slug,
+            { base: skill.value }
+          ])
+        ),
 
         resistances: Object.fromEntries(
           Object.entries(monster.resistances ?? {}).map(([type, value]) => [
@@ -421,9 +376,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       name: attack.name,
       type: "melee",
       system: {
-        bonus: {
-          value: attack.attack
-        },
+        bonus: { value: attack.attack },
         damageRolls: {
           main: {
             damage: attack.damage,

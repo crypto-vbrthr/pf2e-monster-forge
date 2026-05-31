@@ -6,6 +6,7 @@ import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
 import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
 import { TRAIT_EFFECTS, scaleTraitValue } from "../data/trait-effects.js";
+import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
 
 import {
   ATTACK_PROFILES,
@@ -18,6 +19,8 @@ export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
   const role = input.role ?? "brute";
   const attackProfile = input.attackProfile ?? "standard";
+  const adjustmentKey = input.adjustment ?? "normal";
+  const adjustment = ADJUSTMENT_PROFILES[adjustmentKey] ?? ADJUSTMENT_PROFILES.norma
   const traits = input.traits ?? [];
 
   const preset =
@@ -43,7 +46,10 @@ export function generateMonsterDraft(input = {}) {
 
   const traitEffects = generateTraitEffects(level, traits);
   const abilities = generateAbilities(level, preset, traitEffects);
-  const skills = generateSkills(level, role, traitEffects);
+  const skills = applySkillAdjustment(
+    generateSkills(level, role, traitEffects),
+    adjustment
+  );
 
   return {
     name: input.name || "Forged Monster",
@@ -54,17 +60,20 @@ export function generateMonsterDraft(input = {}) {
     traits,
     extraTraits: traitEffects.extraTraits,
 
-    ac: getStat(level, "ac", acRank),
-    hp: getStat(level, "hp", hpRank),
-    perception,
+    ac: getStat(level, "ac", acRank) + adjustment.ac,
+    hp: applyHpAdjustment(
+      getStat(level, "hp", hpRank),
+      adjustment
+    ),
+    perception: perception + adjustment.perception,
 
     saves: {
-      fortitude: getStat(level, "saves", fortRank),
-      reflex: getStat(level, "saves", reflexRank),
-      will: getStat(level, "saves", willRank)
+      fortitude: getStat(level, "saves", fortRank) + adjustment.saves,
+      reflex: getStat(level, "saves", reflexRank) + adjustment.saves,
+      will: getStat(level, "saves", willRank) + adjustment.saves
     },
 
-    attack: baseAttack,
+    attack: baseAttack + adjustment.attack,
     damage: baseDamage,
 
     abilities,
@@ -79,8 +88,8 @@ export function generateMonsterDraft(input = {}) {
 
     attacks: generateAttacks(
       level,
-      baseAttack,
-      damageRank,
+      baseAttack + adjustment.attack,
+      adjustDamageRankByStep(damageRank, adjustment.damageStep),
       attackProfile,
       role,
       traits
@@ -404,6 +413,43 @@ function getSkillModifier(level, rank) {
   };
 
   return ranks[rank] ?? ranks.moderate;
+}
+
+function applyHpAdjustment(hp, adjustment) {
+  return Math.max(1, Math.round(Number(hp) * adjustment.hpMultiplier));
+}
+
+function applySkillAdjustment(skills, adjustment) {
+  const result = {};
+
+  for (const [slug, skill] of Object.entries(skills ?? {})) {
+    result[slug] = {
+      ...skill,
+      value: Number(skill.value ?? 0) + adjustment.skill
+    };
+  }
+
+  return result;
+}
+
+function adjustDamageRankByStep(rank, step = 0) {
+  const ranks = [
+    "terrible",
+    "low",
+    "moderate",
+    "high",
+    "extreme"
+  ];
+
+  const index = ranks.indexOf(rank);
+  const safeIndex = index >= 0 ? index : 2;
+
+  return ranks[
+    Math.min(
+      ranks.length - 1,
+      Math.max(0, safeIndex + Number(step ?? 0))
+    )
+  ];
 }
 
 function fallback(category) {

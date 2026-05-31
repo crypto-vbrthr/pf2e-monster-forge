@@ -71,5 +71,10 @@
 
   "PF2EMF.AttackMode": "Angriffsmodus",
   "PF2EMF.AttackProfiles.Standard": "Ein Standardangriff",
-  "PF2EMF.AttackProfiles.AccurateAndHeavy": "Zwei Angriffe: präzise & schwer"
+  "PF2EMF.AttackProfiles.AccurateAndHeavy": "Zwei Angriffe: präzise & schwer",
+
+  "PF2EMF.Adjustment": "Anpassung",
+  "PF2EMF.Adjustments.Normal": "Normal",
+  "PF2EMF.Adjustments.Weak": "Schwach",
+  "PF2EMF.Adjustments.Elite": "Elite"
 }

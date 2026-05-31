@@ -32,6 +32,13 @@
       </div>
 
       <div class="form-group">
+        <label>{{localize "PF2EMF.Adjustment"}}</label>
+        <select name="adjustment">
+          {{selectOptions adjustmentProfiles selected=data.adjustment}}
+        </select>
+      </div>
+
+      <div class="form-group">
         <label>{{localize "PF2EMF.AttackMode"}}</label>
         <select name="attackProfile">
           {{selectOptions attackProfiles selected=data.attackProfile}}
@@ -61,58 +68,42 @@
       <div class="pf2emf-two">
         <div class="form-group">
           <label>RK</label>
-          <select name="ac">
-            {{selectOptions statRanks selected=data.ac}}
-          </select>
+          <select name="ac">{{selectOptions statRanks selected=data.ac}}</select>
         </div>
 
         <div class="form-group">
           <label>TP</label>
-          <select name="hp">
-            {{selectOptions statRanks selected=data.hp}}
-          </select>
+          <select name="hp">{{selectOptions statRanks selected=data.hp}}</select>
         </div>
 
         <div class="form-group">
           <label>Wahrnehmung</label>
-          <select name="perception">
-            {{selectOptions statRanks selected=data.perception}}
-          </select>
+          <select name="perception">{{selectOptions statRanks selected=data.perception}}</select>
         </div>
 
         <div class="form-group">
           <label>Zähigkeit</label>
-          <select name="fortitude">
-            {{selectOptions statRanks selected=data.fortitude}}
-          </select>
+          <select name="fortitude">{{selectOptions statRanks selected=data.fortitude}}</select>
         </div>
 
         <div class="form-group">
           <label>Reflex</label>
-          <select name="reflex">
-            {{selectOptions statRanks selected=data.reflex}}
-          </select>
+          <select name="reflex">{{selectOptions statRanks selected=data.reflex}}</select>
         </div>
 
         <div class="form-group">
           <label>Willen</label>
-          <select name="will">
-            {{selectOptions statRanks selected=data.will}}
-          </select>
+          <select name="will">{{selectOptions statRanks selected=data.will}}</select>
         </div>
 
         <div class="form-group">
           <label>Angriff</label>
-          <select name="attack">
-            {{selectOptions statRanks selected=data.attack}}
-          </select>
+          <select name="attack">{{selectOptions statRanks selected=data.attack}}</select>
         </div>
 
         <div class="form-group">
           <label>Schaden</label>
-          <select name="damage">
-            {{selectOptions statRanks selected=data.damage}}
-          </select>
+          <select name="damage">{{selectOptions statRanks selected=data.damage}}</select>
         </div>
       </div>
     </section>
@@ -128,6 +119,7 @@
       <div class="pf2emf-tags">
         <span>{{preview.role}}</span>
         <span>{{preview.size}}</span>
+        <span>{{preview.adjustment}}</span>
       </div>
 
       <div class="pf2emf-statline">

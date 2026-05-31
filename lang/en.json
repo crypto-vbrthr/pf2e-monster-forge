@@ -71,5 +71,10 @@
 
   "PF2EMF.AttackMode": "Attack Mode",
   "PF2EMF.AttackProfiles.Standard": "One standard attack",
-  "PF2EMF.AttackProfiles.AccurateAndHeavy": "Two attacks: accurate & heavy"
+  "PF2EMF.AttackProfiles.AccurateAndHeavy": "Two attacks: accurate & heavy",
+
+  "PF2EMF.Adjustment": "Adjustment",
+  "PF2EMF.Adjustments.Normal": "Normal",
+  "PF2EMF.Adjustments.Weak": "Weak",
+  "PF2EMF.Adjustments.Elite": "Elite"
 }
