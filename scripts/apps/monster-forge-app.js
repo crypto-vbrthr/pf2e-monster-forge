@@ -2,8 +2,8 @@ import { generateMonsterDraft } from "../generators/monster-generator.js";
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ATTACK_PROFILES } from "../data/attack-profiles.js";
 import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
-import * as TraitsData from "../data/traits.js";
 import { MONSTER_FAMILIES } from "../data/monster-families.js";
+import * as TraitsData from "../data/traits.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -40,9 +40,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       name: "Forged Monster",
       level: game.settings.get(MODULE_ID, "defaultLevel") ?? 1,
       role,
+      family: "custom",
       size: game.settings.get(MODULE_ID, "defaultSize") ?? "med",
       traits: [],
-      family: "custom",
       attackProfile: "standard",
       adjustment: "normal",
       ac: preset.ac ?? "moderate",
@@ -60,25 +60,12 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   async _prepareContext(options) {
     const selectedTraits = new Set(this.formData.traits ?? []);
-
-    const rawTraitsSource =
+    const rawTraits = normalizeTraitSource(
       TraitsData.CREATURE_TRAITS ??
-      TraitsData.TRAITS ??
-      TraitsData.default ??
-      [];
-
-    const rawTraits = Array.isArray(rawTraitsSource)
-      ? rawTraitsSource
-      : Object.entries(rawTraitsSource).map(([key, value]) => {
-          if (typeof value === "string") {
-            return { value: key, label: value };
-          }
-
-          return {
-            value: value?.value ?? value?.slug ?? value?.id ?? key,
-            label: value?.label ?? value?.name ?? key
-          };
-        });
+        TraitsData.TRAITS ??
+        TraitsData.default ??
+        []
+    );
 
     const traitList = rawTraits.map(trait => {
       if (typeof trait === "string") {
@@ -89,12 +76,25 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         };
       }
 
-      const value = trait?.value ?? trait?.slug ?? trait?.id ?? String(trait);
-      const rawLabel = trait?.label ?? trait?.name ?? value;
+      const value =
+        trait?.value ??
+        trait?.slug ??
+        trait?.id ??
+        String(trait);
+
+      const rawLabel =
+        trait?.label ??
+        trait?.name ??
+        value;
+
+      const fallback =
+        typeof rawLabel === "string"
+          ? localizeMaybe(rawLabel, value)
+          : String(value);
 
       return {
         value,
-        label: typeof rawLabel === "string" ? localizeMaybe(rawLabel, value) : String(value),
+        label: localizeMaybe(`PF2EMF.Traits.${value}`, fallback),
         checked: selectedTraits.has(value)
       };
     });
@@ -186,8 +186,8 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       event.stopPropagation();
 
       this.#readForm();
-      const monster = this.#makeMonster();
 
+      const monster = this.#makeMonster();
       await this.#createActor(monster);
 
       ui.notifications.info(`Monster Forge: ${monster.name} erstellt.`);
@@ -204,9 +204,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       name: fd.get("name") || "Forged Monster",
       level: Number(fd.get("level") ?? 1),
       role: fd.get("role") || "brute",
+      family: fd.get("family") || "custom",
       size: fd.get("size") || "med",
       traits: fd.getAll("traits"),
-      family: fd.get("family") || "custom",
       attackProfile: fd.get("attackProfile") || "standard",
       adjustment: fd.get("adjustment") || "normal",
       ac: fd.get("ac") || "moderate",
@@ -221,7 +221,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   #applyRolePreset() {
-    const preset = ROLE_PRESETS[this.formData.role] ?? ROLE_PRESETS.brute;
+    const preset =
+      ROLE_PRESETS[this.formData.role] ??
+      ROLE_PRESETS.brute;
 
     this.formData = {
       ...this.formData,
@@ -241,9 +243,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       MONSTER_FAMILIES[this.formData.family] ??
       MONSTER_FAMILIES.custom;
 
-    if (this.formData.family === "custom") {
-      return;
-    }
+    if (this.formData.family === "custom") return;
 
     this.formData = {
       ...this.formData,
@@ -279,9 +279,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       name: raw.name ?? this.formData.name ?? "Forged Monster",
       level: Number(raw.level ?? this.formData.level ?? 1),
       role: raw.role ?? this.formData.role ?? "brute",
+      family: this.formData.family ?? "custom",
       size: raw.size ?? this.formData.size ?? "med",
       adjustment: raw.adjustment ?? this.formData.adjustment ?? "normal",
-      family: this.formData.family ?? "custom",
       traits: [...new Set(traits)],
 
       ac: Number(raw.ac ?? raw.armorClass ?? 10),
@@ -397,21 +397,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             slug,
             { base: skill.value }
           ])
-        ),
-
-        resistances: Object.entries(monster.resistances ?? {}).map(([type, value]) => ({
-          type,
-          value
-        })),
-
-        weaknesses: Object.entries(monster.weaknesses ?? {}).map(([type, value]) => ({
-          type,
-          value
-        })),
-
-        immunities: (monster.immunities ?? []).map(type => ({
-          type
-        }))
+        )
       }
     });
 
@@ -443,6 +429,26 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       }
     };
   }
+}
+
+function normalizeTraitSource(source) {
+  if (Array.isArray(source)) return source;
+
+  if (!source || typeof source !== "object") return [];
+
+  return Object.entries(source).map(([key, value]) => {
+    if (typeof value === "string") {
+      return {
+        value: key,
+        label: value
+      };
+    }
+
+    return {
+      value: value?.value ?? value?.slug ?? value?.id ?? key,
+      label: value?.label ?? value?.name ?? key
+    };
+  });
 }
 
 function localizeMaybe(key, fallback) {

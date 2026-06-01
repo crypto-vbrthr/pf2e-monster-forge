@@ -5,7 +5,10 @@ import {
 
 import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ABILITY_MODIFIERS } from "../data/ability-modifiers.js";
-import { ROLE_SKILL_PRESETS, SKILL_LABELS } from "../data/skill-presets.js";
+import {
+  ROLE_SKILL_PRESETS,
+  SKILL_FALLBACK_LABELS
+} from "../data/skill-presets.js";
 import { TRAIT_EFFECTS, scaleTraitValue } from "../data/trait-effects.js";
 
 import {
@@ -431,7 +434,10 @@ function generateSkills(level, role, traitEffects = {}) {
 
   for (const [slug, rank] of Object.entries(skills)) {
     result[slug] = {
-      label: SKILL_LABELS[slug] ?? slug,
+      label:
+        game.i18n.localize(`PF2EMF.Skills.${slug}`) !== `PF2EMF.Skills.${slug}`
+          ? game.i18n.localize(`PF2EMF.Skills.${slug}`)
+          : (SKILL_FALLBACK_LABELS[slug] ?? slug),
       value: getSkillModifier(level, rank)
     };
   }

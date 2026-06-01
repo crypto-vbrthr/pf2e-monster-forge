@@ -1,20 +1,19 @@
 export const ROLE_SKILL_PRESETS = {
   brute: {
     athletics: "high",
-    intimidation: "moderate",
-    survival: "low"
+    intimidation: "moderate"
   },
 
   soldier: {
-    athletics: "high",
+    athletics: "moderate",
     intimidation: "moderate",
-    warfareLore: "moderate"
+    warfareLore: "high"
   },
 
   skirmisher: {
     acrobatics: "high",
-    athletics: "moderate",
     stealth: "high",
+    athletics: "moderate",
     survival: "moderate"
   },
 
@@ -22,19 +21,38 @@ export const ROLE_SKILL_PRESETS = {
     arcana: "high",
     occultism: "high",
     religion: "moderate",
-    society: "moderate"
+    nature: "moderate",
+    diplomacy: "moderate"
   }
 };
 
-export const SKILL_LABELS = {
-  acrobatics: "Akrobatik",
-  arcana: "Arkane Künste",
-  athletics: "Athletik",
-  intimidation: "Einschüchtern",
-  occultism: "Okkultismus",
-  religion: "Religionskunde",
-  society: "Gesellschaftskunde",
-  stealth: "Heimlichkeit",
-  survival: "Überlebenskunde",
-  warfareLore: "Kenntnis: Kriegsführung"
+/**
+ * Fallbacks für den Fall, dass ein Sprachschlüssel fehlt.
+ * Die eigentliche Anzeige sollte über
+ * PF2EMF.Skills.<slug>
+ * in den Sprachdateien erfolgen.
+ */
+export const SKILL_FALLBACK_LABELS = {
+  acrobatics: "Acrobatics",
+  arcana: "Arcana",
+  athletics: "Athletics",
+  crafting: "Crafting",
+  deception: "Deception",
+  diplomacy: "Diplomacy",
+  intimidation: "Intimidation",
+  medicine: "Medicine",
+  nature: "Nature",
+  occultism: "Occultism",
+  performance: "Performance",
+  religion: "Religion",
+  society: "Society",
+  stealth: "Stealth",
+  survival: "Survival",
+  thievery: "Thievery",
+
+  lore: "Lore",
+  warfareLore: "Warfare Lore",
+  sailingLore: "Sailing Lore",
+  underworldLore: "Underworld Lore",
+  engineeringLore: "Engineering Lore"
 };
