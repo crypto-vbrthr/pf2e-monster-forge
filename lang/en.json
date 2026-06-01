@@ -145,5 +145,45 @@
   "PF2EMF.DamageTypes.disease": "Disease",
   "PF2EMF.DamageTypes.death-effects": "Death Effects",
   "PF2EMF.DamageTypes.nonlethal": "Nonlethal",
-  "PF2EMF.DamageTypes.healing": "Healing"
+  "PF2EMF.DamageTypes.healing": "Healing",
+
+  "PF2EMF.Sections.Basic": "Basic",
+  "PF2EMF.Sections.Values": "Values",
+  "PF2EMF.Sections.Preview": "Preview",
+  "PF2EMF.Sections.Saves": "Saving Throws",
+  "PF2EMF.Sections.Abilities": "Abilities",
+  "PF2EMF.Sections.Traits": "Traits",
+  "PF2EMF.Sections.Senses": "Senses",
+  "PF2EMF.Sections.Speeds": "Movement",
+  "PF2EMF.Sections.Languages": "Languages",
+  "PF2EMF.Sections.Resistances": "Resistances",
+  "PF2EMF.Sections.Weaknesses": "Weaknesses",
+  "PF2EMF.Sections.Immunities": "Immunities",
+  "PF2EMF.Sections.Skills": "Skills",
+  "PF2EMF.Sections.Attacks": "Generated Attacks",
+
+  "PF2EMF.Fields.Name": "Name",
+  "PF2EMF.Fields.Level": "Level",
+  "PF2EMF.Fields.Size": "Size",
+  "PF2EMF.Fields.Role": "Role",
+  "PF2EMF.Fields.CreatureTraits": "Creature Traits",
+
+  "PF2EMF.Stats.AC": "AC",
+  "PF2EMF.Stats.HP": "HP",
+  "PF2EMF.Stats.Perception": "Perception",
+  "PF2EMF.Stats.Attack": "Attack",
+  "PF2EMF.Stats.Damage": "Damage",
+  "PF2EMF.Stats.Fortitude": "Fort",
+  "PF2EMF.Stats.Reflex": "Ref",
+  "PF2EMF.Stats.Will": "Will",
+
+  "PF2EMF.Abilities.STR": "STR",
+  "PF2EMF.Abilities.DEX": "DEX",
+  "PF2EMF.Abilities.CON": "CON",
+  "PF2EMF.Abilities.INT": "INT",
+  "PF2EMF.Abilities.WIS": "WIS",
+  "PF2EMF.Abilities.CHA": "CHA",
+
+  "PF2EMF.Buttons.Preview": "Update Preview",
+  "PF2EMF.Buttons.CreateActor": "Create Actor"
 }

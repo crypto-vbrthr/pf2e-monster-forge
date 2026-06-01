@@ -3,21 +3,21 @@
   <div class="pf2emf-grid">
 
     <section class="pf2emf-panel">
-      <h3>Grunddaten</h3>
+      <h3>{{localize "PF2EMF.Sections.Basic"}}</h3>
 
       <div class="form-group">
-        <label>Name</label>
+        <label>{{localize "PF2EMF.Fields.Name"}}</label>
         <input type="text" name="name" value="{{data.name}}" />
       </div>
 
       <div class="pf2emf-two">
         <div class="form-group">
-          <label>Level</label>
+          <label>{{localize "PF2EMF.Fields.Level"}}</label>
           <input type="number" name="level" value="{{data.level}}" min="-1" max="25" />
         </div>
 
         <div class="form-group">
-          <label>Größe</label>
+          <label>{{localize "PF2EMF.Fields.Size"}}</label>
           <select name="size">
             {{selectOptions sizes selected=data.size}}
           </select>
@@ -32,7 +32,7 @@
       </div>
 
       <div class="form-group">
-        <label>Rolle</label>
+        <label>{{localize "PF2EMF.Fields.Role"}}</label>
         <select name="role">
           {{selectOptions roles selected=data.role}}
         </select>
@@ -53,7 +53,7 @@
       </div>
 
       <div class="form-group pf2emf-traits">
-        <label>Kreaturenmerkmale</label>
+        <label>{{localize "PF2EMF.Fields.CreatureTraits"}}</label>
 
         <div class="pf2emf-trait-grid">
           {{#each traits}}
@@ -70,57 +70,57 @@
         </div>
       </div>
 
-      <h3>Werte</h3>
+      <h3>{{localize "PF2EMF.Sections.Values"}}</h3>
 
       <div class="pf2emf-two">
         <div class="form-group">
-          <label>RK</label>
+          <label>{{localize "PF2EMF.Stats.AC"}}</label>
           <select name="ac">{{selectOptions statRanks selected=data.ac}}</select>
         </div>
 
         <div class="form-group">
-          <label>TP</label>
+          <label>{{localize "PF2EMF.Stats.HP"}}</label>
           <select name="hp">{{selectOptions statRanks selected=data.hp}}</select>
         </div>
 
         <div class="form-group">
-          <label>Wahrnehmung</label>
+          <label>{{localize "PF2EMF.Stats.Perception"}}</label>
           <select name="perception">{{selectOptions statRanks selected=data.perception}}</select>
         </div>
 
         <div class="form-group">
-          <label>Zähigkeit</label>
+          <label>{{localize "PF2EMF.Stats.Fortitude"}}</label>
           <select name="fortitude">{{selectOptions statRanks selected=data.fortitude}}</select>
         </div>
 
         <div class="form-group">
-          <label>Reflex</label>
+          <label>{{localize "PF2EMF.Stats.Reflex"}}</label>
           <select name="reflex">{{selectOptions statRanks selected=data.reflex}}</select>
         </div>
 
         <div class="form-group">
-          <label>Willen</label>
+          <label>{{localize "PF2EMF.Stats.Will"}}</label>
           <select name="will">{{selectOptions statRanks selected=data.will}}</select>
         </div>
 
         <div class="form-group">
-          <label>Angriff</label>
+          <label>{{localize "PF2EMF.Stats.Attack"}}</label>
           <select name="attack">{{selectOptions statRanks selected=data.attack}}</select>
         </div>
 
         <div class="form-group">
-          <label>Schaden</label>
+          <label>{{localize "PF2EMF.Stats.Damage"}}</label>
           <select name="damage">{{selectOptions statRanks selected=data.damage}}</select>
         </div>
       </div>
     </section>
 
     <section class="pf2emf-panel pf2emf-preview">
-      <h3>Vorschau</h3>
+      <h3>{{localize "PF2EMF.Sections.Preview"}}</h3>
 
       <div class="pf2emf-title">
         <strong>{{preview.name}}</strong>
-        <span>Stufe {{preview.level}}</span>
+        <span>{{localize "PF2EMF.Fields.Level"}} {{preview.level}}</span>
       </div>
 
       <div class="pf2emf-tags">
@@ -131,32 +131,32 @@
       </div>
 
       <div class="pf2emf-statline">
-        <div><strong>RK</strong><span>{{preview.ac}}</span></div>
-        <div><strong>TP</strong><span>{{preview.hp}}</span></div>
-        <div><strong>Wahrnehmung</strong><span>+{{preview.perception}}</span></div>
-        <div><strong>Angriff</strong><span>+{{preview.attack}}</span></div>
-        <div><strong>Schaden</strong><span>{{preview.damage}}</span></div>
+        <div><strong>{{localize "PF2EMF.Stats.AC"}}</strong><span>{{preview.ac}}</span></div>
+        <div><strong>{{localize "PF2EMF.Stats.HP"}}</strong><span>{{preview.hp}}</span></div>
+        <div><strong>{{localize "PF2EMF.Stats.Perception"}}</strong><span>+{{preview.perception}}</span></div>
+        <div><strong>{{localize "PF2EMF.Stats.Attack"}}</strong><span>+{{preview.attack}}</span></div>
+        <div><strong>{{localize "PF2EMF.Stats.Damage"}}</strong><span>{{preview.damage}}</span></div>
       </div>
 
-      <h4>Rettungswürfe</h4>
+      <h4>{{localize "PF2EMF.Sections.Saves"}}</h4>
       <div class="pf2emf-inline">
-        <span>ZÄH +{{preview.saves.fortitude}}</span>
-        <span>REF +{{preview.saves.reflex}}</span>
-        <span>WIL +{{preview.saves.will}}</span>
+        <span>{{localize "PF2EMF.Stats.Fortitude"}} +{{preview.saves.fortitude}}</span>
+        <span>{{localize "PF2EMF.Stats.Reflex"}} +{{preview.saves.reflex}}</span>
+        <span>{{localize "PF2EMF.Stats.Will"}} +{{preview.saves.will}}</span>
       </div>
 
-      <h4>Attribute</h4>
+      <h4>{{localize "PF2EMF.Sections.Abilities"}}</h4>
       <div class="pf2emf-abilities">
-        <span>STR {{preview.abilities.str}}</span>
-        <span>DEX {{preview.abilities.dex}}</span>
-        <span>CON {{preview.abilities.con}}</span>
-        <span>INT {{preview.abilities.int}}</span>
-        <span>WIS {{preview.abilities.wis}}</span>
-        <span>CHA {{preview.abilities.cha}}</span>
+        <span>{{localize "PF2EMF.Abilities.STR"}} {{preview.abilities.str}}</span>
+        <span>{{localize "PF2EMF.Abilities.DEX"}} {{preview.abilities.dex}}</span>
+        <span>{{localize "PF2EMF.Abilities.CON"}} {{preview.abilities.con}}</span>
+        <span>{{localize "PF2EMF.Abilities.INT"}} {{preview.abilities.int}}</span>
+        <span>{{localize "PF2EMF.Abilities.WIS"}} {{preview.abilities.wis}}</span>
+        <span>{{localize "PF2EMF.Abilities.CHA"}} {{preview.abilities.cha}}</span>
       </div>
 
       {{#if preview.traits.length}}
-        <h4>Merkmale</h4>
+        <h4>{{localize "PF2EMF.Sections.Traits"}}</h4>
         <div class="pf2emf-tags">
           {{#each preview.traits}}
             <span>{{this}}</span>
@@ -165,7 +165,7 @@
       {{/if}}
 
       {{#if preview.senses.length}}
-        <h4>Sinne</h4>
+        <h4>{{localize "PF2EMF.Sections.Senses"}}</h4>
         <div class="pf2emf-tags">
           {{#each preview.senses}}
             <span>{{this}}</span>
@@ -174,7 +174,7 @@
       {{/if}}
 
       {{#if preview.speeds}}
-        <h4>Bewegung</h4>
+        <h4>{{localize "PF2EMF.Sections.Speeds"}}</h4>
         <ul class="pf2emf-list">
           {{#each preview.speeds}}
             <li>{{@key}} {{this}} ft.</li>
@@ -183,7 +183,7 @@
       {{/if}}
 
       {{#if preview.languages.length}}
-        <h4>Sprachen</h4>
+        <h4>{{localize "PF2EMF.Sections.Languages"}}</h4>
         <div class="pf2emf-tags">
           {{#each preview.languages}}
             <span>{{this}}</span>
@@ -192,7 +192,7 @@
       {{/if}}
 
       {{#if preview.resistanceList.length}}
-        <h4>Resistenzen</h4>
+        <h4>{{localize "PF2EMF.Sections.Resistances"}}</h4>
         <ul class="pf2emf-list">
           {{#each preview.resistanceList}}
             <li>{{this.label}} {{this.value}}</li>
@@ -201,7 +201,7 @@
       {{/if}}
 
       {{#if preview.weaknessList.length}}
-        <h4>Schwächen</h4>
+        <h4>{{localize "PF2EMF.Sections.Weaknesses"}}</h4>
         <ul class="pf2emf-list">
           {{#each preview.weaknessList}}
             <li>{{this.label}} {{this.value}}</li>
@@ -210,7 +210,7 @@
       {{/if}}
 
       {{#if preview.immunityList.length}}
-        <h4>Immunitäten</h4>
+        <h4>{{localize "PF2EMF.Sections.Immunities"}}</h4>
         <div class="pf2emf-tags">
           {{#each preview.immunityList}}
             <span>{{this.label}}</span>
@@ -219,7 +219,7 @@
       {{/if}}
 
       {{#if preview.skills}}
-        <h4>Fertigkeiten</h4>
+        <h4>{{localize "PF2EMF.Sections.Skills"}}</h4>
         <ul class="pf2emf-list">
           {{#each preview.skills}}
             <li>{{this.label}} +{{this.value}}</li>
@@ -228,7 +228,7 @@
       {{/if}}
 
       {{#if preview.attacks}}
-        <h4>Generierte Angriffe</h4>
+        <h4>{{localize "PF2EMF.Sections.Attacks"}}</h4>
         <ul class="pf2emf-list">
           {{#each preview.attacks}}
             <li>
@@ -254,12 +254,12 @@
   <footer class="pf2emf-footer">
     <button type="button" data-action="preview">
       <i class="fas fa-eye"></i>
-      Vorschau aktualisieren
+      {{localize "PF2EMF.Buttons.Preview"}}
     </button>
 
     <button type="button" data-action="createActor">
       <i class="fas fa-user-plus"></i>
-      Actor erstellen
+      {{localize "PF2EMF.Buttons.CreateActor"}}
     </button>
   </footer>
 

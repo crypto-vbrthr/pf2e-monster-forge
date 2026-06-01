@@ -145,5 +145,45 @@
   "PF2EMF.DamageTypes.disease": "Krankheit",
   "PF2EMF.DamageTypes.death-effects": "Todeseffekte",
   "PF2EMF.DamageTypes.nonlethal": "Nichttödlich",
-  "PF2EMF.DamageTypes.healing": "Heilung"
+  "PF2EMF.DamageTypes.healing": "Heilung",
+
+  "PF2EMF.Sections.Basic": "Grunddaten",
+  "PF2EMF.Sections.Values": "Werte",
+  "PF2EMF.Sections.Preview": "Vorschau",
+  "PF2EMF.Sections.Saves": "Rettungswürfe",
+  "PF2EMF.Sections.Abilities": "Attribute",
+  "PF2EMF.Sections.Traits": "Merkmale",
+  "PF2EMF.Sections.Senses": "Sinne",
+  "PF2EMF.Sections.Speeds": "Bewegung",
+  "PF2EMF.Sections.Languages": "Sprachen",
+  "PF2EMF.Sections.Resistances": "Resistenzen",
+  "PF2EMF.Sections.Weaknesses": "Schwächen",
+  "PF2EMF.Sections.Immunities": "Immunitäten",
+  "PF2EMF.Sections.Skills": "Fertigkeiten",
+  "PF2EMF.Sections.Attacks": "Generierte Angriffe",
+
+  "PF2EMF.Fields.Name": "Name",
+  "PF2EMF.Fields.Level": "Level",
+  "PF2EMF.Fields.Size": "Größe",
+  "PF2EMF.Fields.Role": "Rolle",
+  "PF2EMF.Fields.CreatureTraits": "Kreaturenmerkmale",
+
+  "PF2EMF.Stats.AC": "RK",
+  "PF2EMF.Stats.HP": "TP",
+  "PF2EMF.Stats.Perception": "Wahrnehmung",
+  "PF2EMF.Stats.Attack": "Angriff",
+  "PF2EMF.Stats.Damage": "Schaden",
+  "PF2EMF.Stats.Fortitude": "ZÄH",
+  "PF2EMF.Stats.Reflex": "REF",
+  "PF2EMF.Stats.Will": "WIL",
+
+  "PF2EMF.Abilities.STR": "ST",
+  "PF2EMF.Abilities.DEX": "GE",
+  "PF2EMF.Abilities.CON": "KO",
+  "PF2EMF.Abilities.INT": "IN",
+  "PF2EMF.Abilities.WIS": "WE",
+  "PF2EMF.Abilities.CHA": "CH",
+
+  "PF2EMF.Buttons.Preview": "Vorschau aktualisieren",
+  "PF2EMF.Buttons.CreateActor": "Actor erstellen"
 }
