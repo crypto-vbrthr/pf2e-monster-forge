@@ -275,6 +275,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       ...(raw.extraTraits ?? [])
     ];
 
+    const resistances = raw.resistances ?? {};
+    const weaknesses = raw.weaknesses ?? {};
+    const immunities = Array.isArray(raw.immunities) ? raw.immunities : [];
+
     return {
       name: raw.name ?? this.formData.name ?? "Forged Monster",
       level: Number(raw.level ?? this.formData.level ?? 1),
@@ -314,6 +318,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       resistances: raw.resistances ?? {},
       weaknesses: raw.weaknesses ?? {},
       immunities: Array.isArray(raw.immunities) ? raw.immunities : [],
+      resistanceList: localizeValueMap(resistances, "PF2EMF.DamageTypes"),
+      weaknessList: localizeValueMap(weaknesses, "PF2EMF.DamageTypes"),
+      immunityList: localizeValueList(immunities, "PF2EMF.DamageTypes"),
 
       attacks: Array.isArray(raw.attacks)
         ? raw.attacks.map(attack => ({
@@ -461,4 +468,19 @@ function localizeMaybe(key, fallback) {
   }
 
   return localized;
+}
+
+function localizeValueMap(map, prefix) {
+  return Object.entries(map ?? {}).map(([key, value]) => ({
+    key,
+    label: localizeMaybe(`${prefix}.${key}`, key),
+    value
+  }));
+}
+
+function localizeValueList(list, prefix) {
+  return (list ?? []).map(key => ({
+    key,
+    label: localizeMaybe(`${prefix}.${key}`, key)
+  }));
 }

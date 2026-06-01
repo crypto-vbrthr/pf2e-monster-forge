@@ -191,29 +191,29 @@
         </div>
       {{/if}}
 
-      {{#if preview.resistances}}
+      {{#if preview.resistanceList.length}}
         <h4>Resistenzen</h4>
         <ul class="pf2emf-list">
-          {{#each preview.resistances}}
-            <li>{{@key}} {{this}}</li>
+          {{#each preview.resistanceList}}
+            <li>{{this.label}} {{this.value}}</li>
           {{/each}}
         </ul>
       {{/if}}
 
-      {{#if preview.weaknesses}}
+      {{#if preview.weaknessList.length}}
         <h4>Schwächen</h4>
         <ul class="pf2emf-list">
-          {{#each preview.weaknesses}}
-            <li>{{@key}} {{this}}</li>
+          {{#each preview.weaknessList}}
+            <li>{{this.label}} {{this.value}}</li>
           {{/each}}
         </ul>
       {{/if}}
 
-      {{#if preview.immunities.length}}
+      {{#if preview.immunityList.length}}
         <h4>Immunitäten</h4>
         <div class="pf2emf-tags">
-          {{#each preview.immunities}}
-            <span>{{this}}</span>
+          {{#each preview.immunityList}}
+            <span>{{this.label}}</span>
           {{/each}}
         </div>
       {{/if}}

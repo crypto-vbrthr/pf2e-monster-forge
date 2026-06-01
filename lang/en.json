@@ -128,5 +128,22 @@
   "PF2EMF.Skills.warfareLore": "Warfare Lore",
   "PF2EMF.Skills.sailingLore": "Sailing Lore",
   "PF2EMF.Skills.underworldLore": "Underworld Lore",
-  "PF2EMF.Skills.engineeringLore": "Engineering Lore"
+  "PF2EMF.Skills.engineeringLore": "Engineering Lore",
+
+  "PF2EMF.DamageTypes.fire": "Fire",
+  "PF2EMF.DamageTypes.cold": "Cold",
+  "PF2EMF.DamageTypes.electricity": "Electricity",
+  "PF2EMF.DamageTypes.acid": "Acid",
+  "PF2EMF.DamageTypes.holy": "Holy",
+  "PF2EMF.DamageTypes.unholy": "Unholy",
+  "PF2EMF.DamageTypes.poison": "Poison",
+  "PF2EMF.DamageTypes.mental": "Mental",
+  "PF2EMF.DamageTypes.spirit": "Spirit",
+  "PF2EMF.DamageTypes.void": "Void",
+  "PF2EMF.DamageTypes.vitality": "Vitality",
+  "PF2EMF.DamageTypes.bleed": "Bleed",
+  "PF2EMF.DamageTypes.disease": "Disease",
+  "PF2EMF.DamageTypes.death-effects": "Death Effects",
+  "PF2EMF.DamageTypes.nonlethal": "Nonlethal",
+  "PF2EMF.DamageTypes.healing": "Healing"
 }

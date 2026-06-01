@@ -128,5 +128,22 @@
   "PF2EMF.Skills.warfareLore": "Kenntnis: Kriegsführung",
   "PF2EMF.Skills.sailingLore": "Kenntnis: Seefahrt",
   "PF2EMF.Skills.underworldLore": "Kenntnis: Unterwelt",
-  "PF2EMF.Skills.engineeringLore": "Kenntnis: Ingenieurswesen"
+  "PF2EMF.Skills.engineeringLore": "Kenntnis: Ingenieurswesen",
+
+  "PF2EMF.DamageTypes.fire": "Feuer",
+  "PF2EMF.DamageTypes.cold": "Kälte",
+  "PF2EMF.DamageTypes.electricity": "Elektrizität",
+  "PF2EMF.DamageTypes.acid": "Säure",
+  "PF2EMF.DamageTypes.holy": "Heilig",
+  "PF2EMF.DamageTypes.unholy": "Unheilig",
+  "PF2EMF.DamageTypes.poison": "Gift",
+  "PF2EMF.DamageTypes.mental": "Mental",
+  "PF2EMF.DamageTypes.spirit": "Geist",
+  "PF2EMF.DamageTypes.void": "Leere",
+  "PF2EMF.DamageTypes.vitality": "Vitalität",
+  "PF2EMF.DamageTypes.bleed": "Blutung",
+  "PF2EMF.DamageTypes.disease": "Krankheit",
+  "PF2EMF.DamageTypes.death-effects": "Todeseffekte",
+  "PF2EMF.DamageTypes.nonlethal": "Nichttödlich",
+  "PF2EMF.DamageTypes.healing": "Heilung"
 }
