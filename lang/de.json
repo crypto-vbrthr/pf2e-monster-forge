@@ -185,5 +185,32 @@
   "PF2EMF.Abilities.CHA": "CH",
 
   "PF2EMF.Buttons.Preview": "Vorschau aktualisieren",
-  "PF2EMF.Buttons.CreateActor": "Actor erstellen"
+  "PF2EMF.Buttons.CreateActor": "Actor erstellen",
+
+  "PF2EMF.Sections.SpecialAbilities": "Spezialfähigkeiten",
+  "PF2EMF.Actions.Actions": "Aktionen",
+  "PF2EMF.Actions.Passive": "Passiv",
+  "PF2EMF.Stats.DC": "SG",
+
+  "PF2EMF.AbilityNames.DragonBreath": "Drachenodem",
+  "PF2EMF.AbilityNames.FrightfulPresence": "Furchteinflößende Präsenz",
+  "PF2EMF.AbilityNames.VoidHealing": "Leerenheilung",
+  "PF2EMF.AbilityNames.GraveChill": "Grabeskälte",
+  "PF2EMF.AbilityNames.InfernalCurse": "Infernaler Fluch",
+  "PF2EMF.AbilityNames.RadiantAid": "Strahlender Beistand",
+  "PF2EMF.AbilityNames.ConstructBody": "Konstruktkörper",
+  "PF2EMF.AbilityNames.TricksterGlamour": "Trickserglanz",
+  "PF2EMF.AbilityNames.FireBurst": "Feuerexplosion",
+  "PF2EMF.AbilityNames.FreezingAura": "Frostaura",
+
+  "PF2EMF.AbilityDescriptions.DragonBreath": "Die Kreatur stößt zerstörerische Energie in einem Kegel oder einer Linie aus. Kreaturen im Bereich legen einen einfachen Reflexwurf gegen den angegebenen SG ab.",
+  "PF2EMF.AbilityDescriptions.FrightfulPresence": "Die bloße Gegenwart dieser Kreatur erschüttert ihre Gegner. Kreaturen im Umkreis müssen einen Willenswurf gegen den angegebenen SG ablegen oder werden verängstigt.",
+  "PF2EMF.AbilityDescriptions.VoidHealing": "Diese Kreatur wird durch Leerenenergie geheilt und durch Vitalitätsenergie geschädigt.",
+  "PF2EMF.AbilityDescriptions.GraveChill": "Die Kreatur berührt ein Ziel mit Grabeskälte. Das Ziel erleidet den angegebenen Kälteschaden und muss einen Zähigkeitswurf gegen den angegebenen SG ablegen.",
+  "PF2EMF.AbilityDescriptions.InfernalCurse": "Die Kreatur verflucht ein Ziel mit infernaler Macht. Das Ziel muss einen Willenswurf gegen den angegebenen SG ablegen oder erleidet einen Malus auf seine Würfe.",
+  "PF2EMF.AbilityDescriptions.RadiantAid": "Die Kreatur erfüllt einen Verbündeten mit heiliger Kraft und verleiht temporäre Trefferpunkte oder einen kurzen Schutzbonus.",
+  "PF2EMF.AbilityDescriptions.ConstructBody": "Diese Kreatur besitzt einen künstlichen Körper. Sie ist widerstandsfähig gegen viele körperliche Bedürfnisse und Effekte.",
+  "PF2EMF.AbilityDescriptions.TricksterGlamour": "Die Kreatur verzerrt mit Feenmagie die Wahrnehmung eines Gegners und erschwert es ihm, sie zu treffen.",
+  "PF2EMF.AbilityDescriptions.FireBurst": "Die Kreatur entfesselt eine plötzliche Feuereruption. Kreaturen im Bereich erleiden den angegebenen Feuerschaden mit einfachem Reflexwurf gegen den angegebenen SG.",
+  "PF2EMF.AbilityDescriptions.FreezingAura": "Eine Aura aus übernatürlicher Kälte umgibt die Kreatur. Gegner in der Nähe erleiden Kälteschaden oder werden verlangsamt."
 }

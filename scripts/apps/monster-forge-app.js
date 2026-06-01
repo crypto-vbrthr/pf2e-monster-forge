@@ -19,8 +19,8 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       resizable: true
     },
     position: {
-      width: 760,
-      height: 620
+      width: 1040,
+      height: 680
     }
   };
 
@@ -311,6 +311,17 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       },
 
       skills: raw.skills ?? {},
+      specialAbilities: Array.isArray(raw.specialAbilities)
+        ? raw.specialAbilities.map(ability => ({
+            key: ability.key,
+            name: ability.name,
+            type: ability.type ?? "passive",
+            actionCost: ability.actionCost ?? null,
+            description: ability.description ?? "",
+            dc: Number(ability.dc ?? 0),
+            damage: ability.damage ?? ""
+          }))
+        : [],
 
       senses: Array.isArray(raw.senses) ? raw.senses : [],
       speeds: raw.speeds ?? { land: 25 },
@@ -408,11 +419,22 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       }
     });
 
+    const items = [];
+
     if (monster.attacks?.length) {
-      await actor.createEmbeddedDocuments(
-        "Item",
-        monster.attacks.map(attack => this.#buildStrikeItem(attack))
+      items.push(
+        ...monster.attacks.map(attack => this.#buildStrikeItem(attack))
       );
+    }
+
+    if (monster.specialAbilities?.length) {
+      items.push(
+        ...monster.specialAbilities.map(ability => this.#buildAbilityItem(ability))
+      );
+    }
+
+    if (items.length) {
+      await actor.createEmbeddedDocuments("Item", items);
     }
 
     return actor;
@@ -436,7 +458,49 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       }
     };
   }
+
+  #buildAbilityItem(ability) {
+    const actionType = getActionType(ability);
+
+    return {
+      name: localizeMaybe(ability.name, ability.name),
+      type: "action",
+      system: {
+        actionType: {
+          value: actionType
+        },
+        actions: {
+          value: ability.actionCost ?? null
+        },
+        description: {
+          value: this.#buildAbilityDescription(ability)
+        },
+        traits: {
+          value: []
+        }
+      }
+    };
+  }
+
+  #buildAbilityDescription(ability) {
+    const description = localizeMaybe(ability.description, ability.description);
+
+    const parts = [
+      `<p>${description}</p>`
+    ];
+
+    if (ability.dc) {
+      parts.push(`<p><strong>DC</strong> ${ability.dc}</p>`);
+    }
+
+    if (ability.damage) {
+      parts.push(`<p><strong>Damage</strong> ${ability.damage}</p>`);
+    }
+
+    return parts.join("");
+  }
 }
+
 
 function normalizeTraitSource(source) {
   if (Array.isArray(source)) return source;
@@ -483,4 +547,21 @@ function localizeValueList(list, prefix) {
     key,
     label: localizeMaybe(`${prefix}.${key}`, key)
   }));
+}
+
+function getActionType(ability) {
+  switch (ability.type) {
+    case "reaction":
+      return "reaction";
+
+    case "free":
+      return "free";
+
+    case "passive":
+      return "passive";
+
+    case "action":
+    default:
+      return "action";
+  }
 }

@@ -247,6 +247,34 @@
           {{/each}}
         </ul>
       {{/if}}
+
+      {{#if preview.specialAbilities.length}}
+        <h4>{{localize "PF2EMF.Sections.SpecialAbilities"}}</h4>
+
+        <ul class="pf2emf-list">
+          {{#each preview.specialAbilities}}
+            <li>
+              <strong>{{localize this.name}}</strong>
+
+              {{#if this.actionCost}}
+                <span>{{this.actionCost}} {{localize "PF2EMF.Actions.Actions"}}</span>
+              {{else}}
+                <span>{{localize "PF2EMF.Actions.Passive"}}</span>
+              {{/if}}
+
+              {{#if this.dc}}
+                <small>{{localize "PF2EMF.Stats.DC"}} {{this.dc}}</small>
+              {{/if}}
+
+              {{#if this.damage}}
+                <small>{{localize "PF2EMF.Stats.Damage"}} {{this.damage}}</small>
+              {{/if}}
+
+              <small>{{localize this.description}}</small>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
     </section>
 
   </div>

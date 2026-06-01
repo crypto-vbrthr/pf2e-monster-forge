@@ -185,5 +185,32 @@
   "PF2EMF.Abilities.CHA": "CHA",
 
   "PF2EMF.Buttons.Preview": "Update Preview",
-  "PF2EMF.Buttons.CreateActor": "Create Actor"
+  "PF2EMF.Buttons.CreateActor": "Create Actor",
+
+  "PF2EMF.Sections.SpecialAbilities": "Special Abilities",
+  "PF2EMF.Actions.Actions": "Actions",
+  "PF2EMF.Actions.Passive": "Passive",
+  "PF2EMF.Stats.DC": "DC",
+
+  "PF2EMF.AbilityNames.DragonBreath": "Dragon Breath",
+  "PF2EMF.AbilityNames.FrightfulPresence": "Frightful Presence",
+  "PF2EMF.AbilityNames.VoidHealing": "Void Healing",
+  "PF2EMF.AbilityNames.GraveChill": "Grave Chill",
+  "PF2EMF.AbilityNames.InfernalCurse": "Infernal Curse",
+  "PF2EMF.AbilityNames.RadiantAid": "Radiant Aid",
+  "PF2EMF.AbilityNames.ConstructBody": "Construct Body",
+  "PF2EMF.AbilityNames.TricksterGlamour": "Trickster Glamour",
+  "PF2EMF.AbilityNames.FireBurst": "Fire Burst",
+  "PF2EMF.AbilityNames.FreezingAura": "Freezing Aura",
+
+  "PF2EMF.AbilityDescriptions.DragonBreath": "The creature exhales destructive energy in a cone or line. Creatures in the area attempt a basic Reflex save against the listed DC.",
+  "PF2EMF.AbilityDescriptions.FrightfulPresence": "The creature's mere presence shakes its foes. Creatures in the area must attempt a Will save against the listed DC or become frightened.",
+  "PF2EMF.AbilityDescriptions.VoidHealing": "This creature is healed by void energy and harmed by vitality energy.",
+  "PF2EMF.AbilityDescriptions.GraveChill": "The creature touches a target with grave-cold power. The target takes the listed cold damage and must attempt a Fortitude save against the listed DC.",
+  "PF2EMF.AbilityDescriptions.InfernalCurse": "The creature curses a target with infernal power. The target must attempt a Will save against the listed DC or take a penalty to its rolls.",
+  "PF2EMF.AbilityDescriptions.RadiantAid": "The creature fills an ally with holy power, granting temporary Hit Points or a brief protective bonus.",
+  "PF2EMF.AbilityDescriptions.ConstructBody": "This creature has an artificial body. It is resistant to many bodily needs and effects.",
+  "PF2EMF.AbilityDescriptions.TricksterGlamour": "The creature twists a foe's perception with fey magic, making itself harder to hit.",
+  "PF2EMF.AbilityDescriptions.FireBurst": "The creature releases a sudden eruption of fire. Creatures in the area take the listed fire damage with a basic Reflex save against the listed DC.",
+  "PF2EMF.AbilityDescriptions.FreezingAura": "An aura of supernatural cold surrounds the creature. Nearby foes take cold damage or are slowed."
 }

@@ -23,6 +23,12 @@ import {
   ATTACK_TEMPLATES
 } from "../data/attack-profiles.js";
 
+import {
+  ABILITY_PACKAGES,
+  MONSTER_ABILITIES
+} from "../data/ability-packages.js"
+
+
 export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
   const role = input.role ?? "brute";
@@ -54,6 +60,7 @@ export function generateMonsterDraft(input = {}) {
 
   const traitEffects = generateTraitEffects(level, traits);
   const abilities = generateAbilities(level, preset, traitEffects);
+  const specialAbilities = generateSpecialAbilities(level, traits);
 
   const skills = applySkillAdjustment(
     generateSkills(level, role, traitEffects),
@@ -94,6 +101,7 @@ export function generateMonsterDraft(input = {}) {
 
     abilities,
     skills,
+    specialAbilities,
 
     senses: traitEffects.senses,
     speeds: traitEffects.speeds,
@@ -183,6 +191,62 @@ function generateTraitEffects(level, traits = []) {
   }
 
   return result;
+}
+
+function generateSpecialAbilities(level, traits = []) {
+  const abilityKeys = new Set();
+
+  for (const trait of traits) {
+    const packageAbilities = ABILITY_PACKAGES[trait] ?? [];
+
+    for (const abilityKey of packageAbilities) {
+      abilityKeys.add(abilityKey);
+    }
+  }
+
+  return [...abilityKeys]
+    .map(key => buildSpecialAbility(key, level))
+    .filter(Boolean);
+}
+
+function buildSpecialAbility(key, level) {
+  const ability = MONSTER_ABILITIES[key];
+
+  if (!ability) return null;
+
+  return {
+    key,
+    name: ability.name,
+    type: ability.type ?? "passive",
+    actionCost: ability.actionCost ?? null,
+    description: ability.description,
+    dc: getAbilityDC(level),
+    damage: getAbilityDamage(level)
+  };
+}
+
+function getAbilityDamage(level) {
+  const table =
+    PF2E_CREATURE_STATS[level] ??
+    PF2E_CREATURE_STATS[String(level)] ??
+    PF2E_CREATURE_STATS[1];
+
+  return table?.damage?.moderate ?? "1d6";
+}
+
+function getAbilityDC(level) {
+  const table =
+    PF2E_CREATURE_STATS[level] ??
+    PF2E_CREATURE_STATS[String(level)] ??
+    PF2E_CREATURE_STATS[1];
+
+  const spellDc =
+    table?.dc?.moderate ??
+    table?.spellDc?.moderate;
+
+  if (spellDc) return spellDc;
+
+  return 14 + Number(level);
 }
 
 function getPerception(level, rank, traits = []) {
