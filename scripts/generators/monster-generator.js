@@ -220,8 +220,10 @@ function buildSpecialAbility(key, level) {
     type: ability.type ?? "passive",
     actionCost: ability.actionCost ?? null,
     description: ability.description,
-    dc: getAbilityDC(level),
-    damage: getAbilityDamage(level)
+    dc: ability.save ? getAbilityDC(level) : null,
+    save: ability.save ?? null,
+    basicSave: Boolean(ability.basicSave),
+    damage: ability.damage === null ? null : getAbilityDamage(level)
   };
 }
 

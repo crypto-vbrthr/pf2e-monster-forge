@@ -318,8 +318,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             type: ability.type ?? "passive",
             actionCost: ability.actionCost ?? null,
             description: ability.description ?? "",
-            dc: Number(ability.dc ?? 0),
-            damage: ability.damage ?? ""
+            dc: ability.dc === null ? null : Number(ability.dc ?? 0),
+            save: ability.save ?? null,
+            basicSave: Boolean(ability.basicSave),
+            damage: ability.damage ?? null
           }))
         : [],
 
@@ -489,12 +491,22 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       `<p>${description}</p>`
     ];
 
-    if (ability.dc) {
-      parts.push(`<p><strong>DC</strong> ${ability.dc}</p>`);
+    if (ability.dc && ability.save) {
+      const saveLabel = getSaveLabel(ability.save, ability.basicSave);
+
+      parts.push(`
+        <p>
+          @Check[type:${ability.save}|dc:${ability.dc}${ability.basicSave ? "|basic:true" : ""}]{${saveLabel}}
+        </p>
+      `);
     }
 
     if (ability.damage) {
-      parts.push(`<p><strong>Damage</strong> ${ability.damage}</p>`);
+      parts.push(`
+        <p>
+          @Damage[${ability.damage}]{${localizeMaybe("PF2EMF.Rolls.Damage", "Damage")}}
+        </p>
+      `);
     }
 
     return parts.join("");
@@ -563,5 +575,23 @@ function getActionType(ability) {
     case "action":
     default:
       return "action";
+  }
+}
+
+function getSaveLabel(save, basic = false) {
+  const prefix = basic ? "Basic" : "Normal";
+
+  switch (save) {
+    case "fortitude":
+      return localizeMaybe(`PF2EMF.Checks.${prefix}Fortitude`, "Fortitude Save");
+
+    case "reflex":
+      return localizeMaybe(`PF2EMF.Checks.${prefix}Reflex`, "Reflex Save");
+
+    case "will":
+      return localizeMaybe(`PF2EMF.Checks.${prefix}Will`, "Will Save");
+
+    default:
+      return localizeMaybe("PF2EMF.Checks.Save", "Save");
   }
 }

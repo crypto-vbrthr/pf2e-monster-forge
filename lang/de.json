@@ -212,5 +212,14 @@
   "PF2EMF.AbilityDescriptions.ConstructBody": "Diese Kreatur besitzt einen künstlichen Körper. Sie ist widerstandsfähig gegen viele körperliche Bedürfnisse und Effekte.",
   "PF2EMF.AbilityDescriptions.TricksterGlamour": "Die Kreatur verzerrt mit Feenmagie die Wahrnehmung eines Gegners und erschwert es ihm, sie zu treffen.",
   "PF2EMF.AbilityDescriptions.FireBurst": "Die Kreatur entfesselt eine plötzliche Feuereruption. Kreaturen im Bereich erleiden den angegebenen Feuerschaden mit einfachem Reflexwurf gegen den angegebenen SG.",
-  "PF2EMF.AbilityDescriptions.FreezingAura": "Eine Aura aus übernatürlicher Kälte umgibt die Kreatur. Gegner in der Nähe erleiden Kälteschaden oder werden verlangsamt."
+  "PF2EMF.AbilityDescriptions.FreezingAura": "Eine Aura aus übernatürlicher Kälte umgibt die Kreatur. Gegner in der Nähe erleiden Kälteschaden oder werden verlangsamt.",
+
+  "PF2EMF.Checks.NormalFortitude": "Zähigkeitswurf",
+  "PF2EMF.Checks.NormalReflex": "Reflexwurf",
+  "PF2EMF.Checks.NormalWill": "Willenswurf",
+  "PF2EMF.Checks.BasicFortitude": "Einfacher Zähigkeitswurf",
+  "PF2EMF.Checks.BasicReflex": "Einfacher Reflexwurf",
+  "PF2EMF.Checks.BasicWill": "Einfacher Willenswurf",
+  "PF2EMF.Checks.Save": "Rettungswurf",
+  "PF2EMF.Rolls.Damage": "Schaden"
 }

@@ -212,5 +212,14 @@
   "PF2EMF.AbilityDescriptions.ConstructBody": "This creature has an artificial body. It is resistant to many bodily needs and effects.",
   "PF2EMF.AbilityDescriptions.TricksterGlamour": "The creature twists a foe's perception with fey magic, making itself harder to hit.",
   "PF2EMF.AbilityDescriptions.FireBurst": "The creature releases a sudden eruption of fire. Creatures in the area take the listed fire damage with a basic Reflex save against the listed DC.",
-  "PF2EMF.AbilityDescriptions.FreezingAura": "An aura of supernatural cold surrounds the creature. Nearby foes take cold damage or are slowed."
+  "PF2EMF.AbilityDescriptions.FreezingAura": "An aura of supernatural cold surrounds the creature. Nearby foes take cold damage or are slowed.",
+
+  "PF2EMF.Checks.NormalFortitude": "Fortitude Save",
+  "PF2EMF.Checks.NormalReflex": "Reflex Save",
+  "PF2EMF.Checks.NormalWill": "Will Save",
+  "PF2EMF.Checks.BasicFortitude": "Basic Fortitude Save",
+  "PF2EMF.Checks.BasicReflex": "Basic Reflex Save",
+  "PF2EMF.Checks.BasicWill": "Basic Will Save",
+  "PF2EMF.Checks.Save": "Save",
+  "PF2EMF.Rolls.Damage": "Damage"
 }
