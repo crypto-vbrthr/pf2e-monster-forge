@@ -76,5 +76,16 @@
   "PF2EMF.Adjustment": "Anpassung",
   "PF2EMF.Adjustments.Normal": "Normal",
   "PF2EMF.Adjustments.Weak": "Schwach",
-  "PF2EMF.Adjustments.Elite": "Elite"
+  "PF2EMF.Adjustments.Elite": "Elite",
+
+  "PF2EMF.Family": "Monsterfamilie",
+  "PF2EMF.Families.Custom": "Benutzerdefiniert",
+  "PF2EMF.Families.FireDragon": "Feuerdrache",
+  "PF2EMF.Families.UndeadWarrior": "Untoter Krieger",
+  "PF2EMF.Families.FiendBrute": "Scheusal-Haudrauf",
+  "PF2EMF.Families.CelestialGuardian": "Celestischer Wächter",
+  "PF2EMF.Families.SkirmishingBeast": "Bestien-Plänkler",
+  "PF2EMF.Families.ConstructGuardian": "Konstrukt-Wächter",
+  "PF2EMF.Families.FeyTrickster": "Feen-Trickser",
+  "PF2EMF.Families.AquaticPredator": "Aquatischer Räuber"
 }

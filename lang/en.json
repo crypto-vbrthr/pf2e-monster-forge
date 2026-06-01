@@ -76,5 +76,16 @@
   "PF2EMF.Adjustment": "Adjustment",
   "PF2EMF.Adjustments.Normal": "Normal",
   "PF2EMF.Adjustments.Weak": "Weak",
-  "PF2EMF.Adjustments.Elite": "Elite"
+  "PF2EMF.Adjustments.Elite": "Elite",
+
+  "PF2EMF.Family": "Monster Family",
+  "PF2EMF.Families.Custom": "Custom",
+  "PF2EMF.Families.FireDragon": "Fire Dragon",
+  "PF2EMF.Families.UndeadWarrior": "Undead Warrior",
+  "PF2EMF.Families.FiendBrute": "Fiend Brute",
+  "PF2EMF.Families.CelestialGuardian": "Celestial Guardian",
+  "PF2EMF.Families.SkirmishingBeast": "Skirmishing Beast",
+  "PF2EMF.Families.ConstructGuardian": "Construct Guardian",
+  "PF2EMF.Families.FeyTrickster": "Fey Trickster",
+  "PF2EMF.Families.AquaticPredator": "Aquatic Predator"
 }

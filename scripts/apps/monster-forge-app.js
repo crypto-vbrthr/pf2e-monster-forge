@@ -3,6 +3,7 @@ import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ATTACK_PROFILES } from "../data/attack-profiles.js";
 import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
 import * as TraitsData from "../data/traits.js";
+import { MONSTER_FAMILIES } from "../data/monster-families.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -41,6 +42,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       role,
       size: game.settings.get(MODULE_ID, "defaultSize") ?? "med",
       traits: [],
+      family: "custom",
       attackProfile: "standard",
       adjustment: "normal",
       ac: preset.ac ?? "moderate",
@@ -126,6 +128,13 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         grg: localizeMaybe("PF2EMF.Sizes.Gargantuan", "Gargantuan")
       },
 
+      families: Object.fromEntries(
+        Object.entries(MONSTER_FAMILIES).map(([key, family]) => [
+          key,
+          localizeMaybe(family.label, key)
+        ])
+      ),
+
       attackProfiles: Object.fromEntries(
         Object.entries(ATTACK_PROFILES).map(([key, profile]) => [
           key,
@@ -152,7 +161,9 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       input.addEventListener("change", () => {
         this.#readForm();
 
-        if (input.name === "role") {
+        if (input.name === "family") {
+          this.#applyFamilyPreset();
+        } else if (input.name === "role") {
           this.#applyRolePreset();
         }
 
@@ -195,6 +206,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       role: fd.get("role") || "brute",
       size: fd.get("size") || "med",
       traits: fd.getAll("traits"),
+      family: fd.get("family") || "custom",
       attackProfile: fd.get("attackProfile") || "standard",
       adjustment: fd.get("adjustment") || "normal",
       ac: fd.get("ac") || "moderate",
@@ -224,6 +236,34 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     };
   }
 
+  #applyFamilyPreset() {
+    const family =
+      MONSTER_FAMILIES[this.formData.family] ??
+      MONSTER_FAMILIES.custom;
+
+    if (this.formData.family === "custom") {
+      return;
+    }
+
+    this.formData = {
+      ...this.formData,
+
+      role: family.role ?? this.formData.role,
+      size: family.size ?? this.formData.size,
+      traits: family.traits ?? this.formData.traits,
+      attackProfile: family.attackProfile ?? this.formData.attackProfile,
+
+      ac: family.ac ?? this.formData.ac,
+      hp: family.hp ?? this.formData.hp,
+      perception: family.perception ?? this.formData.perception,
+      fortitude: family.fortitude ?? this.formData.fortitude,
+      reflex: family.reflex ?? this.formData.reflex,
+      will: family.will ?? this.formData.will,
+      attack: family.attack ?? this.formData.attack,
+      damage: family.damage ?? this.formData.damage
+    };
+  }
+
   #makeMonster() {
     const raw = generateMonsterDraft(this.formData);
     return this.#normalizeMonster(raw);
@@ -241,6 +281,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       role: raw.role ?? this.formData.role ?? "brute",
       size: raw.size ?? this.formData.size ?? "med",
       adjustment: raw.adjustment ?? this.formData.adjustment ?? "normal",
+      family: this.formData.family ?? "custom",
       traits: [...new Set(traits)],
 
       ac: Number(raw.ac ?? raw.armorClass ?? 10),

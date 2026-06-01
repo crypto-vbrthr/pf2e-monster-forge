@@ -25,6 +25,13 @@
       </div>
 
       <div class="form-group">
+        <label>{{localize "PF2EMF.Family"}}</label>
+        <select name="family">
+          {{selectOptions families selected=data.family}}
+        </select>
+      </div>
+
+      <div class="form-group">
         <label>Rolle</label>
         <select name="role">
           {{selectOptions roles selected=data.role}}
@@ -117,6 +124,7 @@
       </div>
 
       <div class="pf2emf-tags">
+        <span>{{preview.family}}</span>
         <span>{{preview.role}}</span>
         <span>{{preview.size}}</span>
         <span>{{preview.adjustment}}</span>
