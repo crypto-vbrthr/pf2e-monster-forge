@@ -239,5 +239,19 @@
   "PF2EMF.AbilityDescriptions.SwallowWhole": "Die Kreatur versucht, ein ergriffenes Ziel zu verschlingen. Das Ziel muss einen Zähigkeitswurf gegen den angegebenen SG ablegen oder wird verschlungen.",
   "PF2EMF.AbilityDescriptions.Teleport": "Die Kreatur teleportiert sich magisch an einen Ort in kurzer Reichweite, den sie sehen kann.",
   "PF2EMF.AbilityDescriptions.Invisibility": "Die Kreatur wird kurzzeitig unsichtbar oder verschleiert ihre genaue Position.",
-  "PF2EMF.AbilityDescriptions.Spellcasting": "Die Kreatur besitzt angeborene oder vorbereitete Zauber. Wähle passende Zauber nach Thema, Tradition und Stufe der Kreatur."
+  "PF2EMF.AbilityDescriptions.Spellcasting": "Die Kreatur besitzt angeborene oder vorbereitete Zauber. Wähle passende Zauber nach Thema, Tradition und Stufe der Kreatur.",
+
+  "PF2EMF.Attacks.Claw": "Klaue",
+  "PF2EMF.Attacks.Bite": "Biss",
+  "PF2EMF.Attacks.Jaws": "Kiefer",
+  "PF2EMF.Attacks.Slam": "Hieb",
+  "PF2EMF.Attacks.GraveSlam": "Grabeshieb",
+  "PF2EMF.Attacks.Spear": "Speer",
+  "PF2EMF.Attacks.Sword": "Schwert",
+  "PF2EMF.Attacks.Greatsword": "Großschwert",
+  "PF2EMF.Attacks.Hellblade": "Höllenklinge",
+  "PF2EMF.Attacks.HolyBlade": "Heilige Klinge",
+  "PF2EMF.Attacks.RadiantStrike": "Strahlender Schlag",
+  "PF2EMF.Attacks.SpellRay": "Zauberstrahl",
+  "PF2EMF.Attacks.Staff": "Stab"
 }

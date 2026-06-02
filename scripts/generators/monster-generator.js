@@ -414,7 +414,7 @@ function buildAttack({
 
   return {
     key,
-    name: template.name,
+    name: localizeMaybe(template.name, template.name),
     attack,
     damage: adjustDamageFormula(baseDamage, damageAdjustment),
     damageType: elemental?.damageType ?? template.damageType ?? "bludgeoning",
@@ -573,4 +573,13 @@ function fallback(category) {
     default:
       return 0;
   }
+}
+
+function localizeMaybe(key, fallback) {
+  if (typeof key !== "string") return String(fallback ?? "");
+
+  const localized = game.i18n.localize(key);
+  return localized && localized !== key
+    ? localized
+    : String(fallback ?? key);
 }

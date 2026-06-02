@@ -239,5 +239,19 @@
   "PF2EMF.AbilityDescriptions.SwallowWhole": "The creature attempts to swallow a grabbed target. The target must attempt a Fortitude save against the listed DC or be swallowed.",
   "PF2EMF.AbilityDescriptions.Teleport": "The creature magically teleports to a nearby location it can see.",
   "PF2EMF.AbilityDescriptions.Invisibility": "The creature briefly becomes invisible or obscures its exact position.",
-  "PF2EMF.AbilityDescriptions.Spellcasting": "The creature has innate or prepared spells. Choose appropriate spells based on the creature's theme, tradition, and level."
+  "PF2EMF.AbilityDescriptions.Spellcasting": "The creature has innate or prepared spells. Choose appropriate spells based on the creature's theme, tradition, and level.",
+
+  "PF2EMF.Attacks.Claw": "Claw",
+  "PF2EMF.Attacks.Bite": "Bite",
+  "PF2EMF.Attacks.Jaws": "Jaws",
+  "PF2EMF.Attacks.Slam": "Slam",
+  "PF2EMF.Attacks.GraveSlam": "Grave Slam",
+  "PF2EMF.Attacks.Spear": "Spear",
+  "PF2EMF.Attacks.Sword": "Sword",
+  "PF2EMF.Attacks.Greatsword": "Greatsword",
+  "PF2EMF.Attacks.Hellblade": "Hellblade",
+  "PF2EMF.Attacks.HolyBlade": "Holy Blade",
+  "PF2EMF.Attacks.RadiantStrike": "Radiant Strike",
+  "PF2EMF.Attacks.SpellRay": "Spell Ray",
+  "PF2EMF.Attacks.Staff": "Staff"
 }

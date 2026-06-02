@@ -102,79 +102,79 @@ export const TRAIT_ATTACK_OVERRIDES = {
 
 export const ATTACK_TEMPLATES = {
   claw: {
-    name: "Claw",
-    damageType: "slashing",
-    traits: ["agile", "finesse"]
-  },
+  name: "PF2EMF.Attacks.Claw",
+  damageType: "slashing",
+  traits: ["agile", "finesse"]
+},
 
   bite: {
-    name: "Bite",
+    name: "PF2EMF.Attacks.Bite",
     damageType: "piercing",
     traits: []
   },
 
   jaws: {
-    name: "Jaws",
+    name: "PF2EMF.Attacks.Jaws",
     damageType: "piercing",
     traits: ["deadly-d10"]
   },
 
   slam: {
-    name: "Slam",
+    name: "PF2EMF.Attacks.Slam",
     damageType: "bludgeoning",
     traits: ["forceful"]
   },
 
   graveSlam: {
-    name: "Grave Slam",
+    name: "PF2EMF.Attacks.GraveSlam",
     damageType: "bludgeoning",
     traits: ["void"]
   },
 
   spear: {
-    name: "Spear",
+    name: "PF2EMF.Attacks.Spear",
     damageType: "piercing",
     traits: ["reach"]
   },
 
   sword: {
-    name: "Sword",
+    name: "PF2EMF.Attacks.Sword",
     damageType: "slashing",
     traits: ["versatile-p"]
   },
 
   greatsword: {
-    name: "Greatsword",
+    name: "PF2EMF.Attacks.Greatsword",
     damageType: "slashing",
     traits: ["forceful"]
   },
 
   hellblade: {
-    name: "Hellblade",
+    name: "PF2EMF.Attacks.Hellblade",
     damageType: "slashing",
     traits: ["unholy", "magical"]
   },
 
   holyBlade: {
-    name: "Holy Blade",
+    name: "PF2EMF.Attacks.HolyBlade",
     damageType: "slashing",
     traits: ["holy", "magical"]
   },
 
   radiantStrike: {
-    name: "Radiant Strike",
+    name: "PF2EMF.Attacks.RadiantStrike",
     damageType: "spirit",
     traits: ["holy", "magical"]
   },
 
   spellRay: {
-    name: "Spell Ray",
+    name: "PF2EMF.Attacks.SpellRay",
     damageType: "force",
     traits: ["magical", "range-60"]
   },
 
   staff: {
-    name: "Staff",
+    name: "PF2EMF.Attacks.Staff",
     damageType: "bludgeoning",
     traits: ["magical", "two-hand-d8"]
   }
