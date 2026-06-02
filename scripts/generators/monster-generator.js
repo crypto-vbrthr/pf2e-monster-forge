@@ -60,7 +60,11 @@ export function generateMonsterDraft(input = {}) {
 
   const traitEffects = generateTraitEffects(level, traits);
   const abilities = generateAbilities(level, preset, traitEffects);
-  const specialAbilities = generateSpecialAbilities(level, traits);
+  const specialAbilities = generateSpecialAbilities(
+    level,
+    traits,
+    input
+  );
 
   const skills = applySkillAdjustment(
     generateSkills(level, role, traitEffects),
@@ -193,15 +197,26 @@ function generateTraitEffects(level, traits = []) {
   return result;
 }
 
-function generateSpecialAbilities(level, traits = []) {
+function generateSpecialAbilities(level, traits = [], input = {}) {
   const abilityKeys = new Set();
 
-  for (const trait of traits) {
-    const packageAbilities = ABILITY_PACKAGES[trait] ?? [];
+  const autoAbilities = input.autoAbilities !== false;
+  const selectedAbilities = Array.isArray(input.selectedAbilities)
+    ? input.selectedAbilities
+    : [];
 
-    for (const abilityKey of packageAbilities) {
-      abilityKeys.add(abilityKey);
+  if (autoAbilities) {
+    for (const trait of traits) {
+      const packageAbilities = ABILITY_PACKAGES[trait] ?? [];
+
+      for (const abilityKey of packageAbilities) {
+        abilityKeys.add(abilityKey);
+      }
     }
+  }
+
+  for (const abilityKey of selectedAbilities) {
+    abilityKeys.add(abilityKey);
   }
 
   return [...abilityKeys]

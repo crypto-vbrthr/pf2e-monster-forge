@@ -221,5 +221,23 @@
   "PF2EMF.Checks.BasicReflex": "Basic Reflex Save",
   "PF2EMF.Checks.BasicWill": "Basic Will Save",
   "PF2EMF.Checks.Save": "Save",
-  "PF2EMF.Rolls.Damage": "Damage"
+  "PF2EMF.Rolls.Damage": "Damage",
+
+  "PF2EMF.AbilityNames.Regeneration": "Regeneration",
+  "PF2EMF.AbilityNames.Aura": "Aura",
+  "PF2EMF.AbilityNames.DeathBurst": "Death Burst",
+  "PF2EMF.AbilityNames.PackTactics": "Pack Tactics",
+  "PF2EMF.AbilityNames.SwallowWhole": "Swallow Whole",
+  "PF2EMF.AbilityNames.Teleport": "Teleport",
+  "PF2EMF.AbilityNames.Invisibility": "Invisibility",
+  "PF2EMF.AbilityNames.Spellcasting": "Spellcasting",
+
+  "PF2EMF.AbilityDescriptions.Regeneration": "The creature regains Hit Points at the start of its turn. An appropriate damage type can suppress this regeneration until the start of its next turn.",
+  "PF2EMF.AbilityDescriptions.Aura": "The creature is surrounded by a supernatural aura. Enemies within the aura must attempt a Will save against the listed DC or suffer the described effect.",
+  "PF2EMF.AbilityDescriptions.DeathBurst": "When the creature is destroyed or killed, it explodes in a burst of destructive energy. Creatures in the area attempt a basic Reflex save against the listed DC.",
+  "PF2EMF.AbilityDescriptions.PackTactics": "The creature fights especially well alongside allies. It gains benefits when an ally threatens or attacks the same enemy.",
+  "PF2EMF.AbilityDescriptions.SwallowWhole": "The creature attempts to swallow a grabbed target. The target must attempt a Fortitude save against the listed DC or be swallowed.",
+  "PF2EMF.AbilityDescriptions.Teleport": "The creature magically teleports to a nearby location it can see.",
+  "PF2EMF.AbilityDescriptions.Invisibility": "The creature briefly becomes invisible or obscures its exact position.",
+  "PF2EMF.AbilityDescriptions.Spellcasting": "The creature has innate or prepared spells. Choose appropriate spells based on the creature's theme, tradition, and level."
 }

@@ -4,6 +4,9 @@ import { ATTACK_PROFILES } from "../data/attack-profiles.js";
 import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
 import { MONSTER_FAMILIES } from "../data/monster-families.js";
 import * as TraitsData from "../data/traits.js";
+import { SPECIAL_ABILITIES }
+  from "../data/special-abilities.js";
+
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -43,6 +46,8 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       family: "custom",
       size: game.settings.get(MODULE_ID, "defaultSize") ?? "med",
       traits: [],
+      autoAbilities: true,
+      selectedAbilities: [],
       attackProfile: "standard",
       adjustment: "normal",
       ac: preset.ac ?? "moderate",
@@ -128,6 +133,18 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         grg: localizeMaybe("PF2EMF.Sizes.Gargantuan", "Gargantuan")
       },
 
+      abilityOptions: Object.entries(SPECIAL_ABILITIES)
+        .map(([key, ability]) => ({
+          key,
+          label: localizeMaybe(
+            ability.label,
+            key
+          ),
+          checked: (
+            this.formData.selectedAbilities ?? []
+          ).includes(key)
+        })),
+        
       families: Object.fromEntries(
         Object.entries(MONSTER_FAMILIES).map(([key, family]) => [
           key,
@@ -207,6 +224,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       family: fd.get("family") || "custom",
       size: fd.get("size") || "med",
       traits: fd.getAll("traits"),
+      autoAbilities:
+        fd.has("autoAbilities"),
+      selectedAbilities:
+        fd.getAll("selectedAbilities"),
       attackProfile: fd.get("attackProfile") || "standard",
       adjustment: fd.get("adjustment") || "normal",
       ac: fd.get("ac") || "moderate",
@@ -311,6 +332,8 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       },
 
       skills: raw.skills ?? {},
+      autoAbilities: this.formData.autoAbilities ?? true,
+      selectedAbilities: this.formData.selectedAbilities ?? [],
       specialAbilities: Array.isArray(raw.specialAbilities)
         ? raw.specialAbilities.map(ability => ({
             key: ability.key,

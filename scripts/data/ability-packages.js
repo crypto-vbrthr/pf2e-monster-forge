@@ -96,5 +96,77 @@ export const MONSTER_ABILITIES = {
     save: "fortitude",
     basicSave: false,
     description: "PF2EMF.AbilityDescriptions.FreezingAura"
+  },
+
+  regeneration: {
+  name: "PF2EMF.AbilityNames.Regeneration",
+  type: "passive",
+  save: null,
+  basicSave: false,
+  damage: null,
+  description: "PF2EMF.AbilityDescriptions.Regeneration"
+},
+
+  aura: {
+    name: "PF2EMF.AbilityNames.Aura",
+    type: "passive",
+    save: "will",
+    basicSave: false,
+    description: "PF2EMF.AbilityDescriptions.Aura"
+  },
+
+  deathBurst: {
+    name: "PF2EMF.AbilityNames.DeathBurst",
+    type: "reaction",
+    save: "reflex",
+    basicSave: true,
+    description: "PF2EMF.AbilityDescriptions.DeathBurst"
+  },
+
+  packTactics: {
+    name: "PF2EMF.AbilityNames.PackTactics",
+    type: "passive",
+    save: null,
+    basicSave: false,
+    damage: null,
+    description: "PF2EMF.AbilityDescriptions.PackTactics"
+  },
+
+  swallowWhole: {
+    name: "PF2EMF.AbilityNames.SwallowWhole",
+    type: "action",
+    actionCost: 1,
+    save: "fortitude",
+    basicSave: false,
+    description: "PF2EMF.AbilityDescriptions.SwallowWhole"
+  },
+
+  teleport: {
+    name: "PF2EMF.AbilityNames.Teleport",
+    type: "action",
+    actionCost: 1,
+    save: null,
+    basicSave: false,
+    damage: null,
+    description: "PF2EMF.AbilityDescriptions.Teleport"
+  },
+
+  invisibility: {
+    name: "PF2EMF.AbilityNames.Invisibility",
+    type: "action",
+    actionCost: 2,
+    save: null,
+    basicSave: false,
+    damage: null,
+    description: "PF2EMF.AbilityDescriptions.Invisibility"
+  },
+
+  spellcasting: {
+    name: "PF2EMF.AbilityNames.Spellcasting",
+    type: "passive",
+    save: null,
+    basicSave: false,
+    damage: null,
+    description: "PF2EMF.AbilityDescriptions.Spellcasting"
   }
 };

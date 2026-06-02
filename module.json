@@ -2,7 +2,7 @@
   "id": "pf2e-monster-forge",
   "title": "PF2e Monster Forge",
   "description": "A lightweight PF2e creature draft generator for Foundry VTT.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14"

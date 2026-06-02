@@ -221,5 +221,23 @@
   "PF2EMF.Checks.BasicReflex": "Einfacher Reflexwurf",
   "PF2EMF.Checks.BasicWill": "Einfacher Willenswurf",
   "PF2EMF.Checks.Save": "Rettungswurf",
-  "PF2EMF.Rolls.Damage": "Schaden"
+  "PF2EMF.Rolls.Damage": "Schaden",
+
+  "PF2EMF.AbilityNames.Regeneration": "Regeneration",
+  "PF2EMF.AbilityNames.Aura": "Aura",
+  "PF2EMF.AbilityNames.DeathBurst": "Todesexplosion",
+  "PF2EMF.AbilityNames.PackTactics": "Rudeltaktik",
+  "PF2EMF.AbilityNames.SwallowWhole": "Verschlingen",
+  "PF2EMF.AbilityNames.Teleport": "Teleportation",
+  "PF2EMF.AbilityNames.Invisibility": "Unsichtbarkeit",
+  "PF2EMF.AbilityNames.Spellcasting": "Zauberwirken",
+
+  "PF2EMF.AbilityDescriptions.Regeneration": "Die Kreatur erhält zu Beginn ihres Zuges Trefferpunkte zurück. Eine passende Schadensart kann diese Regeneration bis zum Beginn ihres nächsten Zuges unterdrücken.",
+  "PF2EMF.AbilityDescriptions.Aura": "Die Kreatur ist von einer übernatürlichen Aura umgeben. Gegner innerhalb der Aura müssen einen Willenswurf gegen den angegebenen SG ablegen oder erleiden den beschriebenen Effekt.",
+  "PF2EMF.AbilityDescriptions.DeathBurst": "Wenn die Kreatur zerstört oder getötet wird, explodiert sie in einem Ausbruch zerstörerischer Energie. Kreaturen im Bereich legen einen einfachen Reflexwurf gegen den angegebenen SG ab.",
+  "PF2EMF.AbilityDescriptions.PackTactics": "Die Kreatur kämpft besonders effektiv mit Verbündeten. Sie erhält Vorteile, wenn ein Verbündeter denselben Gegner bedroht oder angreift.",
+  "PF2EMF.AbilityDescriptions.SwallowWhole": "Die Kreatur versucht, ein ergriffenes Ziel zu verschlingen. Das Ziel muss einen Zähigkeitswurf gegen den angegebenen SG ablegen oder wird verschlungen.",
+  "PF2EMF.AbilityDescriptions.Teleport": "Die Kreatur teleportiert sich magisch an einen Ort in kurzer Reichweite, den sie sehen kann.",
+  "PF2EMF.AbilityDescriptions.Invisibility": "Die Kreatur wird kurzzeitig unsichtbar oder verschleiert ihre genaue Position.",
+  "PF2EMF.AbilityDescriptions.Spellcasting": "Die Kreatur besitzt angeborene oder vorbereitete Zauber. Wähle passende Zauber nach Thema, Tradition und Stufe der Kreatur."
 }

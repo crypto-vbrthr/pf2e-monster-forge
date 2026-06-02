@@ -2,7 +2,7 @@
 
   <div class="pf2emf-grid">
 
-    <section class="pf2emf-panel">
+    <section class="pf2emf-panel pf2emf-basic-panel">
       <h3>{{localize "PF2EMF.Sections.Basic"}}</h3>
 
       <div class="form-group">
@@ -51,25 +51,9 @@
           {{selectOptions attackProfiles selected=data.attackProfile}}
         </select>
       </div>
+    </section>
 
-      <div class="form-group pf2emf-traits">
-        <label>{{localize "PF2EMF.Fields.CreatureTraits"}}</label>
-
-        <div class="pf2emf-trait-grid">
-          {{#each traits}}
-            <label class="pf2emf-trait-pill">
-              <input
-                type="checkbox"
-                name="traits"
-                value="{{this.value}}"
-                {{#if this.checked}}checked{{/if}}
-              />
-              <span>{{this.label}}</span>
-            </label>
-          {{/each}}
-        </div>
-      </div>
-
+    <section class="pf2emf-panel pf2emf-designer-panel">
       <h3>{{localize "PF2EMF.Sections.Values"}}</h3>
 
       <div class="pf2emf-two">
@@ -113,6 +97,53 @@
           <select name="damage">{{selectOptions statRanks selected=data.damage}}</select>
         </div>
       </div>
+
+      <div class="form-group pf2emf-traits">
+        <label>{{localize "PF2EMF.Fields.CreatureTraits"}}</label>
+
+        <div class="pf2emf-trait-grid">
+          {{#each traits}}
+            <label class="pf2emf-trait-pill">
+              <input
+                type="checkbox"
+                name="traits"
+                value="{{this.value}}"
+                {{#if this.checked}}checked{{/if}}
+              />
+              <span>{{this.label}}</span>
+            </label>
+          {{/each}}
+        </div>
+      </div>
+
+      <details class="pf2emf-collapsible" open>
+        <summary>{{localize "PF2EMF.Sections.SpecialAbilities"}}</summary>
+
+        <div class="form-group pf2emf-checkbox-line">
+          <label>
+            <input
+              type="checkbox"
+              name="autoAbilities"
+              {{#if data.autoAbilities}}checked{{/if}}
+            />
+            {{localize "PF2EMF.AutoAbilities"}}
+          </label>
+        </div>
+
+        <div class="pf2emf-trait-grid pf2emf-ability-grid">
+          {{#each abilityOptions}}
+            <label class="pf2emf-trait-pill">
+              <input
+                type="checkbox"
+                name="selectedAbilities"
+                value="{{this.key}}"
+                {{#if this.checked}}checked{{/if}}
+              />
+              <span>{{this.label}}</span>
+            </label>
+          {{/each}}
+        </div>
+      </details>
     </section>
 
     <section class="pf2emf-panel pf2emf-preview">
