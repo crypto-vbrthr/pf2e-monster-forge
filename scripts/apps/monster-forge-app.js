@@ -3,10 +3,8 @@ import { ROLE_PRESETS } from "../data/role-presets.js";
 import { ATTACK_PROFILES } from "../data/attack-profiles.js";
 import { ADJUSTMENT_PROFILES } from "../data/adjustment-profiles.js";
 import { MONSTER_FAMILIES } from "../data/monster-families.js";
+import { SPECIAL_ABILITIES } from "../data/special-abilities.js";
 import * as TraitsData from "../data/traits.js";
-import { SPECIAL_ABILITIES }
-  from "../data/special-abilities.js";
-
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -38,6 +36,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const role = game.settings.get(MODULE_ID, "defaultRole") ?? "brute";
     const preset = ROLE_PRESETS[role] ?? ROLE_PRESETS.brute;
+
     this.openSections = {
       specialAbilities: false,
       spellcasting: false
@@ -52,12 +51,12 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       traits: [],
       autoAbilities: true,
       selectedAbilities: [],
+      attackProfile: "standard",
+      adjustment: "normal",
       spellcasting: false,
       spellTradition: "arcane",
       spellStyle: "artillery",
       spellListStyle: "bestiary",
-      attackProfile: "standard",
-      adjustment: "normal",
       ac: preset.ac ?? "moderate",
       hp: preset.hp ?? "moderate",
       perception: preset.perception ?? "moderate",
@@ -141,17 +140,11 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         grg: localizeMaybe("PF2EMF.Sizes.Gargantuan", "Gargantuan")
       },
 
-      abilityOptions: Object.entries(SPECIAL_ABILITIES)
-        .map(([key, ability]) => ({
-          key,
-          label: localizeMaybe(
-            ability.label,
-            key
-          ),
-          checked: (
-            this.formData.selectedAbilities ?? []
-          ).includes(key)
-        })),
+      abilityOptions: Object.entries(SPECIAL_ABILITIES).map(([key, ability]) => ({
+        key,
+        label: localizeMaybe(ability.label, key),
+        checked: (this.formData.selectedAbilities ?? []).includes(key)
+      })),
 
       spellTraditions: {
         arcane: localizeMaybe("PF2EMF.SpellTraditions.Arcane", "Arcane"),
@@ -172,7 +165,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         bestiary: localizeMaybe("PF2EMF.SpellListStyles.Bestiary", "Bestiary Style"),
         full: localizeMaybe("PF2EMF.SpellListStyles.Full", "Full List")
       },
-        
+
       families: Object.fromEntries(
         Object.entries(MONSTER_FAMILIES).map(([key, family]) => [
           key,
@@ -264,16 +257,14 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       family: fd.get("family") || "custom",
       size: fd.get("size") || "med",
       traits: fd.getAll("traits"),
-      autoAbilities:
-        fd.has("autoAbilities"),
-      selectedAbilities:
-        fd.getAll("selectedAbilities"),
+      autoAbilities: fd.has("autoAbilities"),
+      selectedAbilities: fd.getAll("selectedAbilities"),
+      attackProfile: fd.get("attackProfile") || "standard",
+      adjustment: fd.get("adjustment") || "normal",
       spellcasting: fd.has("spellcasting"),
       spellTradition: fd.get("spellTradition") || "arcane",
       spellStyle: fd.get("spellStyle") || "artillery",
       spellListStyle: fd.get("spellListStyle") || "bestiary",
-      attackProfile: fd.get("attackProfile") || "standard",
-      adjustment: fd.get("adjustment") || "normal",
       ac: fd.get("ac") || "moderate",
       hp: fd.get("hp") || "moderate",
       perception: fd.get("perception") || "moderate",
@@ -376,8 +367,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       },
 
       skills: raw.skills ?? {},
+
       autoAbilities: this.formData.autoAbilities ?? true,
       selectedAbilities: this.formData.selectedAbilities ?? [],
+
       specialAbilities: Array.isArray(raw.specialAbilities)
         ? raw.specialAbilities.map(ability => ({
             key: ability.key,
@@ -392,20 +385,16 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           }))
         : [],
 
-        spellcastingConfig: raw.spellcastingConfig ?? {
-          enabled: this.formData.spellcasting ?? false,
-          tradition: this.formData.spellTradition ?? "arcane",
-          style: this.formData.spellStyle ?? "artillery",
-          listStyle: this.formData.spellListStyle ?? "bestiary"
-        },
       spellcasting: raw.spellcasting ?? null,
 
       senses: Array.isArray(raw.senses) ? raw.senses : [],
       speeds: raw.speeds ?? { land: 25 },
       languages: Array.isArray(raw.languages) ? raw.languages : [],
-      resistances: raw.resistances ?? {},
-      weaknesses: raw.weaknesses ?? {},
-      immunities: Array.isArray(raw.immunities) ? raw.immunities : [],
+
+      resistances,
+      weaknesses,
+      immunities,
+
       resistanceList: localizeValueMap(resistances, "PF2EMF.DamageTypes"),
       weaknessList: localizeValueMap(weaknesses, "PF2EMF.DamageTypes"),
       immunityList: localizeValueList(immunities, "PF2EMF.DamageTypes"),
@@ -496,22 +485,38 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       }
     });
 
-    const items = [];
+    const normalItems = [];
 
     if (monster.attacks?.length) {
-      items.push(
+      normalItems.push(
         ...monster.attacks.map(attack => this.#buildStrikeItem(attack))
       );
     }
 
     if (monster.specialAbilities?.length) {
-      items.push(
+      normalItems.push(
         ...monster.specialAbilities.map(ability => this.#buildAbilityItem(ability))
       );
     }
 
-    if (items.length) {
-      await actor.createEmbeddedDocuments("Item", items);
+    if (normalItems.length) {
+      await actor.createEmbeddedDocuments("Item", normalItems);
+    }
+
+    if (monster.spellcasting?.enabled) {
+      const spellcastingEntries = await actor.createEmbeddedDocuments("Item", [
+        this.#buildSpellcastingEntry(monster.spellcasting)
+      ]);
+
+      const spellcastingEntry = spellcastingEntries[0];
+      const spellItems = await this.#buildSpellItems(
+        monster.spellcasting,
+        spellcastingEntry?.id
+      );
+
+      if (spellItems.length) {
+        await actor.createEmbeddedDocuments("Item", spellItems);
+      }
     }
 
     return actor;
@@ -586,8 +591,110 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     return parts.join("");
   }
-}
 
+  #buildSpellcastingEntry(spellcasting) {
+    const tradition = spellcasting.tradition ?? "arcane";
+
+    return {
+      name: localizeMaybe(
+        `PF2EMF.SpellTraditions.${capitalize(tradition)}`,
+        tradition
+      ),
+      type: "spellcastingEntry",
+      system: {
+        ability: {
+          value: "cha"
+        },
+        tradition: {
+          value: tradition
+        },
+        prepared: {
+          value: "innate"
+        },
+        spelldc: {
+          value: spellcasting.dc ?? 10,
+          dc: spellcasting.dc ?? 10,
+          mod: spellcasting.attack ?? 0
+        },
+        slots: {}
+      }
+    };
+  }
+
+  async #buildSpellItems(spellcasting, spellcastingEntryId = null) {
+    const pack =
+      game.packs.get("pf2e.spells-srd") ??
+      game.packs.find(pack =>
+        pack.documentName === "Item" &&
+        pack.metadata?.type === "Item" &&
+        (
+          pack.collection?.includes("spells") ||
+          pack.metadata?.id?.includes("spells") ||
+          pack.metadata?.label?.toLowerCase?.().includes("spell")
+        )
+      );
+
+    if (!pack) {
+      console.warn("PF2e Monster Forge | Kein Zauber-Kompendium gefunden.");
+      ui.notifications.warn("PF2e Monster Forge | Kein Zauber-Kompendium gefunden.");
+      return [];
+    }
+
+    const index = await pack.getIndex({
+      fields: [
+        "name",
+        "type",
+        "system.slug",
+        "system.level.value"
+      ]
+    });
+
+    console.log(
+      "PF2e Monster Forge | spell keys:",
+      spellcasting.spells?.map(spell => spell.key)
+    );
+    console.log("PF2e Monster Forge | spell pack:", pack.collection);
+
+    const result = [];
+
+    for (const spell of spellcasting.spells ?? []) {
+      const slug = spell.key;
+
+      const entry = index.find(entry =>
+        entry.type === "spell" &&
+        (
+          entry.system?.slug === slug ||
+          entry.name?.slugify?.() === slug ||
+          entry.name?.toLowerCase?.().replaceAll(" ", "-") === slug
+        )
+      );
+
+      if (!entry) {
+        console.warn(`PF2e Monster Forge | Zauber nicht gefunden: ${slug}`);
+        continue;
+      }
+
+      const document = await pack.getDocument(entry._id);
+      if (!document) continue;
+
+      const data = document.toObject();
+
+      delete data._id;
+
+      if (spellcastingEntryId) {
+        foundry.utils.setProperty(data, "system.location.value", spellcastingEntryId);
+        foundry.utils.setProperty(data, "system.location.signature", false);
+        foundry.utils.setProperty(data, "system.location.heightenedLevel", null);
+      }
+
+      result.push(data);
+    }
+
+    console.log("PF2e Monster Forge | generated spell items:", result);
+
+    return result;
+  }
+}
 
 function normalizeTraitSource(source) {
   if (Array.isArray(source)) return source;
@@ -669,4 +776,9 @@ function getSaveLabel(save, basic = false) {
     default:
       return localizeMaybe("PF2EMF.Checks.Save", "Save");
   }
+}
+
+function capitalize(value) {
+  if (!value) return "";
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
