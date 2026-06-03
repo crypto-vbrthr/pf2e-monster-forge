@@ -1,42 +1,9 @@
 {
   "id": "pf2e-monster-forge",
-  "title": "PF2e Monster Forge",
-  "description": "A lightweight PF2e creature draft generator for Foundry VTT.",
+  "title": "PF2E Monster Forge",
   "version": "0.1.1",
-  "compatibility": {
-    "minimum": "14",
-    "verified": "14"
-  },
-  "authors": [
-    {
-      "name": "Bully"
-    }
-  ],
-  "esmodules": [
-    "scripts/main.js"
-  ],
-  "styles": [
-    "styles/monster-forge.css"
-  ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    },
-    {
-      "lang": "de",
-      "name": "Deutsch",
-      "path": "lang/de.json"
-    }
-  ],
-  "relationships": {
-    "systems": [
-      {
-        "id": "pf2e",
-        "type": "system",
-        "compatibility": {}
-      }
-    ]
-  }
+
+  "manifest": "https://github.com/crypto-vbrthr/pf2e-monster-forge/blob/main/module.json",
+
+  "download": "https://github.com/crypto-vbrthr/pf2e-monster-forge/tree/main"
 }

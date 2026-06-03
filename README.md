@@ -279,3 +279,12 @@ Planned improvements include:
 Created for Pathfinder 2e Remastered and Foundry VTT.
 
 Pathfinder and PF2E content remain the property of Paizo Inc.
+
+---
+
+## Disclaimer
+
+This module is an unofficial community project for Foundry VTT and Pathfinder 2e.
+
+Pathfinder and Pathfinder 2e are trademarks of Paizo Inc.
+This project is not affiliated with or endorsed by Paizo Inc.
