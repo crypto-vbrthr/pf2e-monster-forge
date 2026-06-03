@@ -28,6 +28,11 @@ import {
   MONSTER_ABILITIES
 } from "../data/ability-packages.js"
 
+import {
+  SPELL_PACKAGES,
+  SPELL_LABELS
+} from "../data/spell-packages.js";
+
 
 export function generateMonsterDraft(input = {}) {
   const level = Number(input.level ?? 1);
@@ -65,6 +70,8 @@ export function generateMonsterDraft(input = {}) {
     traits,
     input
   );
+
+  const spellcasting = generateSpellcasting(level, input);
 
   const skills = applySkillAdjustment(
     generateSkills(level, role, traitEffects),
@@ -106,6 +113,7 @@ export function generateMonsterDraft(input = {}) {
     abilities,
     skills,
     specialAbilities,
+    spellcasting,
 
     senses: traitEffects.senses,
     speeds: traitEffects.speeds,
@@ -582,4 +590,59 @@ function localizeMaybe(key, fallback) {
   return localized && localized !== key
     ? localized
     : String(fallback ?? key);
+}
+
+function generateSpellcasting(level, input = {}) {
+  if (!input.spellcasting) return null;
+
+  const tradition = input.spellTradition ?? "arcane";
+  const style = input.spellStyle ?? "artillery";
+  const listStyle = input.spellListStyle ?? "bestiary";
+
+  const dc = getAbilityDC(level);
+  const attack = dc - 8;
+
+  const spellKeys = pickSpells(level, tradition, style, listStyle);
+
+  return {
+    enabled: true,
+    tradition,
+    style,
+    listStyle,
+    dc,
+    attack,
+    spells: spellKeys.map(key => ({
+      key,
+      name: SPELL_LABELS[key] ?? key
+    }))
+  };
+}
+
+function pickSpells(level, tradition, style, listStyle) {
+  const pack =
+    SPELL_PACKAGES[style]?.[tradition] ??
+    SPELL_PACKAGES.artillery?.[tradition] ??
+    SPELL_PACKAGES.artillery.arcane;
+
+  const tiers = getSpellTiers(level);
+
+  const result = [];
+
+  if (listStyle === "few") {
+    result.push(...(pack.high ?? []).slice(0, 2));
+  } else if (listStyle === "full") {
+    result.push(...(pack.low ?? []), ...(pack.mid ?? []), ...(pack.high ?? []));
+  } else {
+    for (const tier of tiers) {
+      result.push(...(pack[tier] ?? []).slice(0, 2));
+    }
+  }
+
+  return [...new Set(result)];
+}
+
+function getSpellTiers(level) {
+  if (level <= 4) return ["low"];
+  if (level <= 10) return ["mid", "low"];
+  return ["high", "mid", "low"];
 }

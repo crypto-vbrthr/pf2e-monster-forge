@@ -23,7 +23,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     position: {
       width: 1040,
-      height: 680
+      height: 760
     }
   };
 
@@ -38,6 +38,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const role = game.settings.get(MODULE_ID, "defaultRole") ?? "brute";
     const preset = ROLE_PRESETS[role] ?? ROLE_PRESETS.brute;
+    this.openSections = {
+      specialAbilities: false,
+      spellcasting: false
+    };
 
     this.formData = {
       name: "Forged Monster",
@@ -48,6 +52,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       traits: [],
       autoAbilities: true,
       selectedAbilities: [],
+      spellcasting: false,
+      spellTradition: "arcane",
+      spellStyle: "artillery",
+      spellListStyle: "bestiary",
       attackProfile: "standard",
       adjustment: "normal",
       ac: preset.ac ?? "moderate",
@@ -144,6 +152,26 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             this.formData.selectedAbilities ?? []
           ).includes(key)
         })),
+
+      spellTraditions: {
+        arcane: localizeMaybe("PF2EMF.SpellTraditions.Arcane", "Arcane"),
+        divine: localizeMaybe("PF2EMF.SpellTraditions.Divine", "Divine"),
+        occult: localizeMaybe("PF2EMF.SpellTraditions.Occult", "Occult"),
+        primal: localizeMaybe("PF2EMF.SpellTraditions.Primal", "Primal")
+      },
+
+      spellStyles: {
+        artillery: localizeMaybe("PF2EMF.SpellStyles.Artillery", "Artillery"),
+        control: localizeMaybe("PF2EMF.SpellStyles.Control", "Control"),
+        support: localizeMaybe("PF2EMF.SpellStyles.Support", "Support"),
+        summoning: localizeMaybe("PF2EMF.SpellStyles.Summoning", "Summoning")
+      },
+
+      spellListStyles: {
+        few: localizeMaybe("PF2EMF.SpellListStyles.Few", "Few Powerful Spells"),
+        bestiary: localizeMaybe("PF2EMF.SpellListStyles.Bestiary", "Bestiary Style"),
+        full: localizeMaybe("PF2EMF.SpellListStyles.Full", "Full List")
+      },
         
       families: Object.fromEntries(
         Object.entries(MONSTER_FAMILIES).map(([key, family]) => [
@@ -173,6 +201,18 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const root = this.element;
     if (!root) return;
+
+    root.querySelectorAll("details[data-section]").forEach(details => {
+      const section = details.dataset.section;
+
+      if (this.openSections?.[section]) {
+        details.open = true;
+      }
+
+      details.addEventListener("toggle", () => {
+        this.openSections[section] = details.open;
+      });
+    });
 
     root.querySelectorAll("input, select").forEach(input => {
       input.addEventListener("change", () => {
@@ -228,6 +268,10 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
         fd.has("autoAbilities"),
       selectedAbilities:
         fd.getAll("selectedAbilities"),
+      spellcasting: fd.has("spellcasting"),
+      spellTradition: fd.get("spellTradition") || "arcane",
+      spellStyle: fd.get("spellStyle") || "artillery",
+      spellListStyle: fd.get("spellListStyle") || "bestiary",
       attackProfile: fd.get("attackProfile") || "standard",
       adjustment: fd.get("adjustment") || "normal",
       ac: fd.get("ac") || "moderate",
@@ -347,6 +391,14 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
             damage: ability.damage ?? null
           }))
         : [],
+
+        spellcastingConfig: raw.spellcastingConfig ?? {
+          enabled: this.formData.spellcasting ?? false,
+          tradition: this.formData.spellTradition ?? "arcane",
+          style: this.formData.spellStyle ?? "artillery",
+          listStyle: this.formData.spellListStyle ?? "bestiary"
+        },
+      spellcasting: raw.spellcasting ?? null,
 
       senses: Array.isArray(raw.senses) ? raw.senses : [],
       speeds: raw.speeds ?? { land: 25 },

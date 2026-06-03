@@ -253,5 +253,25 @@
   "PF2EMF.Attacks.HolyBlade": "Heilige Klinge",
   "PF2EMF.Attacks.RadiantStrike": "Strahlender Schlag",
   "PF2EMF.Attacks.SpellRay": "Zauberstrahl",
-  "PF2EMF.Attacks.Staff": "Stab"
+  "PF2EMF.Attacks.Staff": "Stab",
+
+  "PF2EMF.Sections.Spellcasting": "Zauberwirken",
+  "PF2EMF.Spellcasting.Enabled": "Zauberwirken aktivieren",
+  "PF2EMF.Spellcasting.Tradition": "Tradition",
+  "PF2EMF.Spellcasting.Style": "Zauberstil",
+  "PF2EMF.Spellcasting.ListStyle": "Zauberanzahl",
+
+  "PF2EMF.SpellTraditions.Arcane": "Arkan",
+  "PF2EMF.SpellTraditions.Divine": "Göttlich",
+  "PF2EMF.SpellTraditions.Occult": "Okkult",
+  "PF2EMF.SpellTraditions.Primal": "Natur",
+
+  "PF2EMF.SpellStyles.Artillery": "Artillerie",
+  "PF2EMF.SpellStyles.Control": "Kontrolle",
+  "PF2EMF.SpellStyles.Support": "Unterstützung",
+  "PF2EMF.SpellStyles.Summoning": "Beschwörung",
+
+  "PF2EMF.SpellListStyles.Few": "Wenige starke",
+  "PF2EMF.SpellListStyles.Bestiary": "Bestiary-Stil",
+  "PF2EMF.SpellListStyles.Full": "Vollständige Liste"
 }

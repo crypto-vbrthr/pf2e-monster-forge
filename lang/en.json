@@ -253,5 +253,25 @@
   "PF2EMF.Attacks.HolyBlade": "Holy Blade",
   "PF2EMF.Attacks.RadiantStrike": "Radiant Strike",
   "PF2EMF.Attacks.SpellRay": "Spell Ray",
-  "PF2EMF.Attacks.Staff": "Staff"
+  "PF2EMF.Attacks.Staff": "Staff",
+
+  "PF2EMF.Sections.Spellcasting": "Spellcasting",
+  "PF2EMF.Spellcasting.Enabled": "Enable spellcasting",
+  "PF2EMF.Spellcasting.Tradition": "Tradition",
+  "PF2EMF.Spellcasting.Style": "Spell Style",
+  "PF2EMF.Spellcasting.ListStyle": "Spell Count",
+
+  "PF2EMF.SpellTraditions.Arcane": "Arcane",
+  "PF2EMF.SpellTraditions.Divine": "Divine",
+  "PF2EMF.SpellTraditions.Occult": "Occult",
+  "PF2EMF.SpellTraditions.Primal": "Primal",
+
+  "PF2EMF.SpellStyles.Artillery": "Artillery",
+  "PF2EMF.SpellStyles.Control": "Control",
+  "PF2EMF.SpellStyles.Support": "Support",
+  "PF2EMF.SpellStyles.Summoning": "Summoning",
+
+  "PF2EMF.SpellListStyles.Few": "Few Powerful Spells",
+  "PF2EMF.SpellListStyles.Bestiary": "Bestiary Style",
+  "PF2EMF.SpellListStyles.Full": "Full List"
 }

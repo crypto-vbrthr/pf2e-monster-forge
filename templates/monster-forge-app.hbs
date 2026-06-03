@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <details class="pf2emf-collapsible" open>
+      <details class="pf2emf-collapsible" data-section="specialAbilities">
         <summary>{{localize "PF2EMF.Sections.SpecialAbilities"}}</summary>
 
         <div class="form-group pf2emf-checkbox-line">
@@ -144,6 +144,43 @@
           {{/each}}
         </div>
       </details>
+
+      <details class="pf2emf-collapsible" data-section="spellcasting">
+        <summary>{{localize "PF2EMF.Sections.Spellcasting"}}</summary>
+
+        <div class="form-group">
+          <label>
+            <input
+              type="checkbox"
+              name="spellcasting"
+              {{#if data.spellcasting}}checked{{/if}}
+            />
+            {{localize "PF2EMF.Spellcasting.Enabled"}}
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>{{localize "PF2EMF.Spellcasting.Tradition"}}</label>
+          <select name="spellTradition">
+            {{selectOptions spellTraditions selected=data.spellTradition}}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{localize "PF2EMF.Spellcasting.Style"}}</label>
+          <select name="spellStyle">
+            {{selectOptions spellStyles selected=data.spellStyle}}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>{{localize "PF2EMF.Spellcasting.ListStyle"}}</label>
+          <select name="spellListStyle">
+            {{selectOptions spellListStyles selected=data.spellListStyle}}
+          </select>
+        </div>
+      </details>
+
     </section>
 
     <section class="pf2emf-panel pf2emf-preview">
@@ -306,6 +343,23 @@
           {{/each}}
         </ul>
       {{/if}}
+
+      {{#if preview.spellcasting}}
+        <h4>{{localize "PF2EMF.Sections.Spellcasting"}}</h4>
+
+        <div class="pf2emf-inline">
+          <span>{{preview.spellcasting.tradition}}</span>
+          <span>{{localize "PF2EMF.Stats.DC"}} {{preview.spellcasting.dc}}</span>
+          <span>{{localize "PF2EMF.Stats.Attack"}} +{{preview.spellcasting.attack}}</span>
+        </div>
+
+        <ul class="pf2emf-list">
+          {{#each preview.spellcasting.spells}}
+            <li>{{this.name}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+
     </section>
 
   </div>
