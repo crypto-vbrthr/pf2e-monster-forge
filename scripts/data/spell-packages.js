@@ -151,5 +151,83 @@ export const SPELL_LABELS = {
   "summon-fiend": "Summon Fiend",
   "summon-entity": "Summon Entity",
   "summon-fey": "Summon Fey",
-  "summon-animal": "Summon Animal"
+  "summon-animal": "Summon Animal",
+  "breathe-fire": "Breathe Fire",
+  "falling-stars": "Falling Stars"
+};
+
+export const SPELL_TRAIT_PREFERENCES = {
+  fire: {
+    low: ["breathe-fire", "ignite"],
+    mid: ["fireball", "wall-of-fire"],
+    high: ["volcanic-eruption", "falling-stars"]
+  },
+
+  cold: {
+    low: ["frostbite"],
+    mid: ["wall-of-ice", "cone-of-cold"],
+    high: ["polar-ray"]
+  },
+
+  undead: {
+    low: ["harm", "fear"],
+    mid: ["bind-undead", "vampiric-feast"],
+    high: ["visions-of-danger", "spirit-blast"]
+  },
+
+  void: {
+    low: ["harm", "grim-tendrils"],
+    mid: ["vampiric-feast", "enervation"],
+    high: ["spirit-blast"]
+  },
+
+  fey: {
+    low: ["charm", "illusory-disguise"],
+    mid: ["confusion", "suggestion"],
+    high: ["dominate", "visions-of-danger"]
+  },
+
+  celestial: {
+    low: ["heal", "bless"],
+    mid: ["heroism", "restoration"],
+    high: ["regenerate", "divine-decree"]
+  },
+
+  fiend: {
+    low: ["fear", "harm"],
+    mid: ["vampiric-feast", "fireball"],
+    high: ["divine-decree", "dominate"]
+  }
+};
+
+export const SPELL_FAMILY_PREFERENCES = {
+  fireDragon: {
+    low: ["burning-hands", "sure-strike"],
+    mid: ["fireball", "wall-of-fire"],
+    high: ["chain-lightning", "volcanic-eruption"]
+  },
+
+  undeadWarrior: {
+    low: ["harm", "fear"],
+    mid: ["bind-undead", "vampiric-feast"],
+    high: ["spirit-blast", "visions-of-danger"]
+  },
+
+  feyTrickster: {
+    low: ["charm", "illusory-disguise"],
+    mid: ["confusion", "invisibility"],
+    high: ["dominate", "visions-of-danger"]
+  },
+
+  celestialGuardian: {
+    low: ["heal", "bless"],
+    mid: ["heroism", "restoration"],
+    high: ["regenerate", "divine-decree"]
+  },
+
+  fiendBrute: {
+    low: ["fear", "harm"],
+    mid: ["fireball", "vampiric-feast"],
+    high: ["divine-decree", "dominate"]
+  }
 };

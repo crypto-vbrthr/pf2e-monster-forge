@@ -273,5 +273,24 @@
 
   "PF2EMF.SpellListStyles.Few": "Wenige starke",
   "PF2EMF.SpellListStyles.Bestiary": "Bestiary-Stil",
-  "PF2EMF.SpellListStyles.Full": "Vollständige Liste"
+  "PF2EMF.SpellListStyles.Full": "Vollständige Liste",
+
+  "PF2EMF.Spells.Fireball": "Feuerball",
+  "PF2EMF.Spells.LightningBolt": "Blitz",
+  "PF2EMF.Spells.ChainLightning": "Kettenblitz",
+  "PF2EMF.Spells.Disintegrate": "Auflösen",
+  "PF2EMF.Spells.Harm": "Leid",
+  "PF2EMF.Spells.Heal": "Heilung",
+  "PF2EMF.Spells.Fear": "Furcht",
+  "PF2EMF.Spells.Slow": "Verlangsamen",
+  "PF2EMF.Spells.Confusion": "Verwirrung",
+  "PF2EMF.Spells.Haste": "Hast",
+  "PF2EMF.Spells.Invisibility": "Unsichtbarkeit",
+  "PF2EMF.Spells.WallOfFire": "Feuerwand",
+  "PF2EMF.Spells.ConeOfCold": "Kältekegel",
+  "PF2EMF.Spells.PolarRay": "Polarstrahl",
+  "PF2EMF.Spells.VampiricFeast": "Vampirisches Mahl",
+  "PF2EMF.Spells.BindUndead": "Untote binden",
+  "PF2EMF.Spells.VisionsOfDanger": "Visionen der Gefahr",
+  "PF2EMF.Spells.SpiritBlast": "Geisterexplosion"
 }

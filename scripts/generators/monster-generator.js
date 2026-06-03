@@ -30,7 +30,9 @@ import {
 
 import {
   SPELL_PACKAGES,
-  SPELL_LABELS
+  SPELL_LABELS,
+  SPELL_TRAIT_PREFERENCES,
+  SPELL_FAMILY_PREFERENCES
 } from "../data/spell-packages.js";
 
 
@@ -71,7 +73,7 @@ export function generateMonsterDraft(input = {}) {
     input
   );
 
-  const spellcasting = generateSpellcasting(level, input);
+  const spellcasting = generateSpellcasting(level, input, traits);
 
   const skills = applySkillAdjustment(
     generateSkills(level, role, traitEffects),
@@ -592,7 +594,7 @@ function localizeMaybe(key, fallback) {
     : String(fallback ?? key);
 }
 
-function generateSpellcasting(level, input = {}) {
+function generateSpellcasting(level, input = {}, traits = []) {
   if (!input.spellcasting) return null;
 
   const tradition = input.spellTradition ?? "arcane";
@@ -602,7 +604,10 @@ function generateSpellcasting(level, input = {}) {
   const dc = getAbilityDC(level);
   const attack = dc - 8;
 
-  const spellKeys = pickSpells(level, tradition, style, listStyle);
+  const spellKeys = pickSpells(level, tradition, style, listStyle, {
+    traits,
+    family: input.family
+  });
 
   return {
     enabled: true,
@@ -613,32 +618,69 @@ function generateSpellcasting(level, input = {}) {
     attack,
     spells: spellKeys.map(key => ({
       key,
-      name: SPELL_LABELS[key] ?? key
+      name: key
     }))
   };
 }
 
-function pickSpells(level, tradition, style, listStyle) {
+function pickSpells(level, tradition, style, listStyle, context = {}) {
   const pack =
     SPELL_PACKAGES[style]?.[tradition] ??
     SPELL_PACKAGES.artillery?.[tradition] ??
     SPELL_PACKAGES.artillery.arcane;
 
   const tiers = getSpellTiers(level);
+  const weighted = [];
 
-  const result = [];
+  // Basiszauber aus Stil + Tradition
+  for (const tier of tiers) {
+    addWeighted(weighted, pack[tier] ?? [], 1);
+  }
 
-  if (listStyle === "few") {
-    result.push(...(pack.high ?? []).slice(0, 2));
-  } else if (listStyle === "full") {
-    result.push(...(pack.low ?? []), ...(pack.mid ?? []), ...(pack.high ?? []));
-  } else {
+  // Familienpräferenzen stärker gewichten
+  const familyPrefs = SPELL_FAMILY_PREFERENCES[context.family] ?? {};
+  for (const tier of tiers) {
+    addWeighted(weighted, familyPrefs[tier] ?? [], 3);
+  }
+
+  // Traitpräferenzen mittel gewichten
+  for (const trait of context.traits ?? []) {
+    const traitPrefs = SPELL_TRAIT_PREFERENCES[trait] ?? {};
     for (const tier of tiers) {
-      result.push(...(pack[tier] ?? []).slice(0, 2));
+      addWeighted(weighted, traitPrefs[tier] ?? [], 2);
     }
   }
 
-  return [...new Set(result)];
+  const ordered = collapseWeighted(weighted);
+
+  if (listStyle === "few") return ordered.slice(0, 2);
+  if (listStyle === "full") return ordered.slice(0, 8);
+
+  return ordered.slice(0, 5);
+}
+
+function addWeighted(target, spells = [], weight = 1) {
+  for (const spell of spells) {
+    target.push({
+      spell,
+      weight
+    });
+  }
+}
+
+function collapseWeighted(entries = []) {
+  const scores = new Map();
+
+  for (const entry of entries) {
+    scores.set(
+      entry.spell,
+      (scores.get(entry.spell) ?? 0) + entry.weight
+    );
+  }
+
+  return [...scores.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([spell]) => spell);
 }
 
 function getSpellTiers(level) {

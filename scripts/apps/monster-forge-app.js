@@ -53,10 +53,12 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       selectedAbilities: [],
       attackProfile: "standard",
       adjustment: "normal",
+
       spellcasting: false,
       spellTradition: "arcane",
       spellStyle: "artillery",
       spellListStyle: "bestiary",
+
       ac: preset.ac ?? "moderate",
       hp: preset.hp ?? "moderate",
       perception: preset.perception ?? "moderate",
@@ -111,9 +113,17 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       };
     });
 
+    const preview = foundry.utils.deepClone(this.preview);
+
+    if (preview.spellcasting?.spells?.length) {
+      preview.spellcasting.spells = await localizeSpellPreviewNames(
+        preview.spellcasting.spells
+      );
+    }
+
     return {
       data: this.formData,
-      preview: this.preview,
+      preview,
       traits: traitList,
 
       statRanks: {
@@ -261,10 +271,12 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       selectedAbilities: fd.getAll("selectedAbilities"),
       attackProfile: fd.get("attackProfile") || "standard",
       adjustment: fd.get("adjustment") || "normal",
+
       spellcasting: fd.has("spellcasting"),
       spellTradition: fd.get("spellTradition") || "arcane",
       spellStyle: fd.get("spellStyle") || "artillery",
       spellListStyle: fd.get("spellListStyle") || "bestiary",
+
       ac: fd.get("ac") || "moderate",
       hp: fd.get("hp") || "moderate",
       perception: fd.get("perception") || "moderate",
@@ -509,6 +521,7 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       ]);
 
       const spellcastingEntry = spellcastingEntries[0];
+
       const spellItems = await this.#buildSpellItems(
         monster.spellcasting,
         spellcastingEntry?.id
@@ -649,12 +662,6 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       ]
     });
 
-    console.log(
-      "PF2e Monster Forge | spell keys:",
-      spellcasting.spells?.map(spell => spell.key)
-    );
-    console.log("PF2e Monster Forge | spell pack:", pack.collection);
-
     const result = [];
 
     for (const spell of spellcasting.spells ?? []) {
@@ -690,8 +697,6 @@ export class MonsterForgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       result.push(data);
     }
 
-    console.log("PF2e Monster Forge | generated spell items:", result);
-
     return result;
   }
 }
@@ -726,6 +731,46 @@ function localizeMaybe(key, fallback) {
   }
 
   return localized;
+}
+
+async function localizeSpellPreviewNames(spells = []) {
+  const pack =
+    game.packs.get("pf2e.spells-srd") ??
+    game.packs.find(pack =>
+      pack.documentName === "Item" &&
+      pack.metadata?.type === "Item" &&
+      (
+        pack.collection?.includes("spells") ||
+        pack.metadata?.id?.includes("spells") ||
+        pack.metadata?.label?.toLowerCase?.().includes("spell")
+      )
+    );
+
+  if (!pack) return spells;
+
+  const index = await pack.getIndex({
+    fields: [
+      "name",
+      "type",
+      "system.slug"
+    ]
+  });
+
+  return spells.map(spell => {
+    const entry = index.find(entry =>
+      entry.type === "spell" &&
+      (
+        entry.system?.slug === spell.key ||
+        entry.name?.slugify?.() === spell.key ||
+        entry.name?.toLowerCase?.().replaceAll(" ", "-") === spell.key
+      )
+    );
+
+    return {
+      ...spell,
+      name: entry?.name ?? spell.name ?? spell.key
+    };
+  });
 }
 
 function localizeValueMap(map, prefix) {
