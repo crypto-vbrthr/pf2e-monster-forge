@@ -2,7 +2,7 @@
   "id": "pf2e-monster-forge",
   "title": "PF2E Monster Forge",
   "description": "Generate PF2E Remastered NPCs and monsters based on creature-building guidelines.",
-  "version": "0.1.2",
+  "version": "0.1.3",
 
   "authors": [
     {
@@ -12,7 +12,7 @@
 
   "compatibility": {
     "minimum": "14",
-    "verified": "14.361"
+    "verified": "14"
   },
 
   "relationships": {
@@ -25,8 +25,8 @@
   },
 
   "url": "https://github.com/crypto-vbrthr/pf2e-monster-forge",
-  "manifest": "https://raw.githubusercontent.com/crypto-vbrthr/pf2e-monster-forge/main/module.json",
-  "download": "https://github.com/crypto-vbrthr/pf2e-monster-forge/releases/download/v0.1.2/pf2e-monster-forge.zip",
+  "manifest": "https://raw.githubusercontent.com/crypto-vbrthr/pf2e-monster-forge/refs/heads/main/module.json",
+  "download": "https://github.com/crypto-vbrthr/pf2e-monster-forge/releases/download/v0.1.3/pf2e-monster-forge.zip",
 
   "esmodules": [
     "scripts/main.js"
